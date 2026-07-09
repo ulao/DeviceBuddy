@@ -125,15 +125,13 @@ async function selectDevice(dev)
 			{
 				const key = deviceKey(dev);
 
-				// optionally also remove from UI list source if you want it gone visually
 				devices = devices.filter(d => deviceKey(d) !== key);
 
-				// re-render list so UI updates immediately
 				renderDeviceList();
 
-				connBtn.onclick();
+				console.warn("Device failed to open:", e);
 
-				return; // THIS is required
+				return;
 			}
 		}
  
@@ -225,7 +223,18 @@ async function autoSelector(name)
 
 async function startup()
 {
+    if (!navigator.hid)
+    {
+        status.textContent = "WebHID not supported";
+        return;
+    }
+
     await loadKnownDevices();
+
+    if (devices.length)
+    {
+        await selectDevice(devices[0]);
+    }
 
 	navigator.hid.addEventListener("connect", async (event) => {
 		const dev = event.device;
@@ -546,24 +555,35 @@ function init()
 	controllerSelect.value = currentController;
 	loadControllerLayout(currentController);
 		
-	connBtn.onclick = async () => {
-		try {
-			const newDevices = await navigator.hid.requestDevice({
-				filters: [
-					{ usagePage: 0x01, usage: 0x05 }, // Gamepad
-					{ usagePage: 0x01, usage: 0x04 }  // Joystick
+	connBtn.onclick = async () =>
+	{
+		try
+		{
+			console.log("Opening HID picker");
+
+			const newDevices = await navigator.hid.requestDevice(
+			{
+				filters:
+				[
+					{ usagePage: 0x01, usage: 0x05 },
+					{ usagePage: 0x01, usage: 0x04 }
 				]
 			});
 
-			if (newDevices.length) {
-				await selectDevice(newDevices[0]);
-			}
+			console.log("Selected:", newDevices);
+
+			if (!newDevices.length)
+				return;
+
+			await selectDevice(newDevices[0]);
 
 			await loadKnownDevices();
-		} catch (e) {
-			console.warn(e);
 		}
-	}
+		catch(e)
+		{
+			console.error("HID connect failed:", e);
+		}
+	};
 
 	btnDownload.onclick =  async () =>   {
 		document.getElementById("mapperCustom").checked = true;
@@ -597,14 +617,7 @@ function init()
 	});
 	loadKnownDevices(); 
  
-	let start = setInterval ( async () =>
-	{
-		 selectDevice(devices[0])
-		 clearInterval(start);
-	}, 100);
-	
-
-	
+ 
 }
 
 function showPopup(message)
