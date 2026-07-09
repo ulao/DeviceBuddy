@@ -1,6 +1,7 @@
 //Bliss-Box Device Buddy
 //see Copyright in index.html
 //https://bliss-box.com
+
 export class WebHIDDevice
 {
     constructor()
@@ -8,39 +9,72 @@ export class WebHIDDevice
         this.device = null;
     }
 
-    // Connect to a HID device.
+
+    // Connect to a previously authorized HID device.
     //
-    // If the user has already granted permission, reconnect automatically.
-    // Otherwise, show the browser's device picker.
+    // This is safe to call during startup.
+    // It will NOT show the browser device picker.
     async connect(filters = [])
     {
-        let devices = await navigator.hid.getDevices(); // Check for previously authorized devices.
-        if (!devices.length)        // No authorized devices? Ask the user to select one.
-        {
-            devices = await navigator.hid.requestDevice({ filters });
-            if (!devices.length) return false;  // User cancelled the dialog.
-        }     
-        this.device = devices[0];   // Use the first selected device.
-        if (!this.device.opened) await this.device.open();    // Open the device if it isn't already open.
+        if (!navigator.hid)
+            return false;
+
+        const devices = await navigator.hid.getDevices();
+
+        if (!devices.length)
+            return false;
+
+        this.device = devices[0];
+
+        if (!this.device.opened)
+            await this.device.open();
+
         return true;
     }
 
-	async sendFeature(reportId, data) // Send a feature report to the device.
-	{
-		return await this.device.sendFeatureReport(reportId, data);
-	}
+
+    // Request permission to use a HID device.
+    //
+    // This MUST be called from a user action
+    // (button click, menu selection, etc.)
+    async request(filters = [])
+    {
+        if (!navigator.hid)
+            return false;
+
+        const devices = await navigator.hid.requestDevice({ filters });
+
+        if (!devices.length)
+            return false;
+
+        this.device = devices[0];
+
+        if (!this.device.opened)
+            await this.device.open();
+
+        return true;
+    }
+
+
+    async sendFeature(reportId, data) // Send a feature report to the device.
+    {
+        return await this.device.sendFeatureReport(reportId, data);
+    }
+
 
     async receiveFeature(reportId)   // Read a feature report from the device.
     {
         const dataView = await this.device.receiveFeatureReport(reportId);
 
-        const bytes = new Uint8Array // Convert the DataView into a byte array.
-		(
+        const bytes = new Uint8Array
+        (
             dataView.buffer,
             dataView.byteOffset,
             dataView.byteLength
         );
-        let b = Array.from(bytes);      // Make a mutable copy.
+
+        let b = Array.from(bytes);
+
 
         // -----------------------------------------------------------------
         // WebHID Bug Workaround
@@ -53,7 +87,12 @@ export class WebHIDDevice
         //
         // Detect this pattern and rotate the data back into the correct order.
         // -----------------------------------------------------------------
-        const shiftDetected = (b.length === 5 && b[0] === 0x80 && b[4] === 0x00);
+        const shiftDetected = 
+        (
+            b.length === 5 &&
+            b[0] === 0x80 &&
+            b[4] === 0x00
+        );
 
         if (shiftDetected)
         {
@@ -70,31 +109,38 @@ export class WebHIDDevice
         return new Uint8Array(b);
     }
 
-  
-    addInputListener(callback)  // Register for incoming input reports.
+
+    // Register for incoming input reports.
+    addInputListener(callback)
     {
-        this.device.addEventListener("inputreport", callback);
+        if (this.device)
+            this.device.addEventListener("inputreport", callback);
     }
 
 
-    removeInputListener(callback)    // Remove a previously registered input report listener.
+    // Remove a previously registered input report listener.
+    removeInputListener(callback)
     {
-        this.device.removeEventListener("inputreport", callback);
+        if (this.device)
+            this.device.removeEventListener("inputreport", callback);
     }
 
- 
-    get productName()   // Device information.
+
+    // Device information.
+    get productName()
     {
-        return this.device.productName;
+        return this.device?.productName ?? "";
     }
+
 
     get vendorId()
     {
-        return this.device.vendorId;
+        return this.device?.vendorId ?? 0;
     }
+
 
     get productId()
     {
-        return this.device.productId;
+        return this.device?.productId ?? 0;
     }
 }
