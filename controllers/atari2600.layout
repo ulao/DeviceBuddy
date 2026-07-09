@@ -1,0 +1,35 @@
+﻿# Simple controller layout file.
+# Blocks are separated by a blank line.
+# x and y are the center of the shape inside the controller area.
+# byte indexes are zero-based: first stream byte is byte 0.
+
+
+# D-pad: max 1.
+# Leave byte/bit values off if you only want a static d-pad shape.
+type: dpad
+x: 210
+y: 125
+arrange: left
+byte: 12
+upData: 0
+uprightData: 1
+rightData: 2
+downrightData: 3
+downData: 4
+downleftData: 5
+leftData: 6
+leftupData: 7
+shapeType: plus
+
+# Face buttons. Max buttons total is 24.
+# bit is a bit number, so bit 3 means mask 0x08.
+type: button
+label:  
+x: 120
+y: 50
+byte: 0
+bit: 0
+group: face
+shapeType: circle3
+ 
+ 

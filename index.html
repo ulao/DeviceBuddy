@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!--
+Bliss-Box Device Buddy
+Copyright (c) 2026 Bliss-Box LLC
+https://bliss-box.com
+
+This code is NOT open source. Permission to use, modify, or redistribute this code is granted only if:
+- This copyright notice remains.
+- The Bliss-Box logo remains visible.
+- A visible link to https://bliss-box.com remains on the page.
+- Derivative works continue to display this attribution.
+
+Bliss-Box® and the Bliss-Box logo are trademarks of Bliss-Box LLC.
+
+Copyright © 2026 Bliss-Box LLC. All rights reserved.
+
+Permission to use, modify, or redistribute this code is granted only if this copyright notice,
+the Bliss-Box logo, and a visible link to https://bliss-box.com remain intact on all copies and derivative works.
+Any use that does not comply with these terms is unauthorized and may constitute copyright infringement. 
+Bliss-Box LLC reserves all legal rights and remedies. Bliss-Box® and the Bliss-Box logo are trademarks of Bliss-Box LLC.
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Bliss-Box - Device Buddy</title>
+	<link rel="stylesheet" href="main_style.css">
+	<link rel="stylesheet" href="blissBox_style.css">
+		
+</head>
+<body>
+
+	
+<div class="header">
+
+    <h1>Bliss-Box - Device Buddy</h1>
+	<a href="https://bliss-box.com">
+    <img
+        src="https://cdn.shopify.com/s/files/1/0674/4742/3196/files/newLogo_white.png?v=1783198224"
+        alt="Bliss-Box Logo"
+        width="300"
+        height="80"> Copyright &copy; <span id="year"></span>  Bliss-Box LLC <br>see restrictions in htrml</a> </div>
+   
+		<div class="topbar">
+
+			<div class="topbar-left">
+				<button id="connBtn">Connect Device</button>
+
+				<label for="controllerSelect">Controller Layout</label>
+				<select id="controllerSelect"></select>
+			</div>
+
+			<div class="topbar-right">
+				<div class="mapper-row">
+					<span class="mapper-label">Mapper</span>
+
+					<label>
+						<input type="radio" name="mapperMode" id="mapperDefault" value="default" checked>
+						Default
+					</label>
+
+					<label>
+						<input type="radio" name="mapperMode" id="mapperCustom" value="custom">
+						Custom
+					</label>
+				</div>
+
+				<div class="mapper-buttons">
+					<button id="btnDownload">template</button>
+					<button id="btnUpload">Upload</button>
+					<button id="btnClear">clear</button>
+				</div>
+			</div>
+		</div>
+    <p>
+        <strong>Status:</strong>
+        <span id="status">Disconnected</span>
+        &nbsp;|&nbsp;
+        <strong>Device:</strong>
+        <span id="devName">None</span>
+
+    </p>
+    <!-- Main Layout -->
+    <div class="layout">
+        <!-- Left Panel -->
+        <div class="panel">
+            <h3>Connected Devices</h3>
+            <div id="deviceList" class="deviceList">
+                <div class="empty">No devices connected.</div>
+            </div>
+        </div>
+        <!-- Center Panel -->
+        <div class="panel center">
+            <div id="controllerContainer">
+                <div id="controller"></div>
+                <div id="selectOverlay">
+                    Select a controller layout to begin.
+                </div>
+            </div>
+			
+			<div class="hidPressureBox"  id ="hidpressurebox" >
+			<div class="hidPressure" id ="hidpressure" > 
+				<div class="hidbar" style="--level:00"></div>
+				<div class="hidbar" style="--level:00"></div>
+				<div class="hidbar" style="--level:00"></div>
+				<div class="hidbar" style="--level:00"></div>
+			</div><label>HID Pressure</label>
+			</div>
+		
+			
+            <pre id="pollLog" class="logBox"></pre>
+        </div>
+        <!-- Right BlissBox -->
+        <div id="blissbox-container" class="BlissBox">
+        </div>
+    </div>
+	<div id="mapperDialog" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);">
+  <div style="background:#222; color:#fff; padding:20px; width:300px; margin:100px auto; border-radius:10px;">
+    
+    <div id="mapperText"></div>
+
+    <br>
+    <button id="btnCancel">Cancel</button>
+
+  </div>
+</div>
+
+    <script type="module" src="bliss_box_api.js"></script>
+    <script type="module" src="device_api.js"></script>
+</body>
+</html>

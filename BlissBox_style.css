@@ -1,0 +1,233 @@
+.label {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-weight: 700;
+}
+.modes {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-weight: 700;
+	display: flex;
+    align-items: center;
+}
+.value {
+    color: #00ff66;
+    font-weight: 700;
+	 margin-left: auto;
+    font-family: ui-monospace, Consolas, monospace;
+}
+.BBeeprom-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.BBeeprom-label {
+  width: 120px;
+  text-align: right;
+  margin-right: 10px;
+  font-size: 12px;
+  color: #aaa;
+}
+.BBbutton-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 14px;
+
+    width: 340px;        /* controls layout width */
+    margin: 10px 0;
+}
+
+.BBbutton-grid button {
+    width: 100%;
+    padding: 10px 12px;
+
+    border-radius: 6px;
+    border: 1px solid #444;
+    background: #222;
+    color: #fff;
+
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.BBbutton-grid button:hover {
+    background: #333;
+    border-color: #666;
+}
+
+.BlissBox {
+    background: #8B689E;
+    border-color: #6F6;
+}
+
+#BBPressurePopup,
+#BBeepromPopup {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+}
+
+.BBEEPROM-window {
+    width: 900px;
+    background: #111;
+    border: 1px solid #444;
+    color: #ddd;
+    font-family: monospace;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+.close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  background: #333;
+  color: white;
+}
+
+ 
+.titlebar {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #9ad;
+}
+
+.BBeeprom-notice {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+.BBeeprom-header-grid {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  font-size: 10px;
+  margin-bottom: 6px;
+  color: #6cf;
+}
+
+.BBeeprom-grid {
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  column-gap: 4px;
+  row-gap: 4px;
+}
+
+.BBeeprom-grid input.hex:nth-child(16) {
+  margin-bottom: 12px;
+}
+
+.BBhex {
+  width: 100%;
+  font-size: 11px;
+  text-align: center;
+  background: #000;
+  color: #0f0;
+  border: 1px solid #333;
+  padding: 2px;
+}
+ .alt-map {
+    padding-left: 8px;
+}
+
+.BBadapterRow {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.BBadapterInfo {
+    min-width: 180px;
+}
+
+.BBPressure {
+    display: flex;
+    height: 120px;
+    background: black;
+    align-items: flex-end;
+    gap: 3px;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.BBPressureBox {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.BBPressureBox.show {
+    display: flex;
+}
+
+.BBbar {
+    width: 8px;
+    height: calc(1px + (var(--level) * 0.98px));
+    background: #00ff00;
+    border-radius: 2px 2px 0 0;
+    transition: height 0.1s ease;
+}
+#controllerId,
+#major,
+#minor,
+#player {
+    color: limegreen;
+}
+#BBPressurePopup {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.BBPRESSURE-window {
+  background: #111;
+  border: 1px solid #444;
+  color: #ddd;
+  font-family: monospace;
+  position: fixed;
+  top: 50%;
+  left: 50%; 
+  transform: translate(-50%, -50%);
+  padding: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+.BBPRESSURE-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.BBPRESSURE-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+
+.BBPRESSURE-row label {
+    width: 260px;
+    white-space: nowrap;
+}
+
+.BBPRESSURE-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.BBPRESSURE-buttons button {
+    width: 72px;
+    height: 24px;
+}

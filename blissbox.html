@@ -1,0 +1,279 @@
+<!--
+Bliss-Box Device Buddy
+see Copyright in index.html
+https://bliss-box.com
+--->
+
+<div class="BlissBox">
+    <h3>Bliss-Box API</h3>
+		
+	<div class="BBadapterRow">
+
+		<div class="BBadapterInfo">
+			<label>Adapter Info:</label>
+
+			<div class="row">
+				<span class="label">Controller ID:</span>
+				<span id="controllerId">0</span>
+			</div>
+
+			<div class="row">
+				<span class="label">Version:</span>
+				<span id="major">4</span>.<span id="minor">5</span>
+			</div>
+
+			<div class="row">
+				<span class="label">Player #</span>
+				<span id="player">0</span>
+			</div>
+		</div>
+
+		<div class="BBPressureBox"  id ="BBpressurebox" >
+			<div class="BBPressure" id ="BBpressure" > 
+				<div class="BBbar" style="--level:00"></div>
+				<div class="BBbar" style="--level:00"></div>
+				<div class="BBbar" style="--level:00"></div>
+				<div class="BBbar" style="--level:00"></div>
+				<div class="BBbar" style="--level:00"></div>
+				<div class="BBbar" style="--level:00"></div>
+				<div class="BBbar" style="--level:00"></div>
+				<div class="BBbar" style="--level:00"></div>
+				<div class="BBbar" style="--level:00"></div>
+				<div class="BBbar" style="--level:00"></div>
+				<div class="BBbar" style="--level:00"></div>
+				<div class="BBbar" style="--level:00"></div>
+			</div><label>Extended Pressure</label>
+		</div>
+</div>
+    <br>Modes:<br>
+
+    <div class="modes" id="hsd">Hotswap Disabled <span class="value">OFF</span></div>
+    <div class="modes" id="udlr">UDLR <span class="value">OFF</span></div>
+    <div class="modes" id="dac">Disable All Combos <span class="value">OFF</span></div>
+    <div class="modes" id="apd">AutoPause Disabled <span class="value">OFF</span></div>
+    <div class="modes" id="dmo">Dpad Mode Only <span class="value">OFF</span></div>
+	<BR>
+	<div class="BBbutton-grid">
+		<button class="connBtn" data-action="rumble">Rumble</button>
+		<button class="connBtn" data-action="memcard">MemCard</button>
+
+		<button class="connBtn" data-action="stick_range">Stick Range</button>
+		<button class="connBtn" data-action="hotkey">Hotkey</button>
+
+		<button class="connBtn" data-action="talk">Talk</button>
+		<button class="connBtn" data-action="mapper">Mapper</button>
+
+		<button class="connBtn" data-action="save">Save</button>
+		<button class="connBtn" data-action="defaults">Defaults</button>
+
+		<button class="connBtn" data-action="pressure">Pressure</button>
+		<button class="connBtn" data-action="eeprom">EEPROM</button>
+	</div>
+	<!-- psx pressure POPUP -->
+	<div id="BBPressurePopup" style="display:none;">
+		<div class="BBPRESSURE-window">
+			<button class="close" onclick="document.getElementById('BBPressurePopup').style.display='none'">X</button>
+			<div class="titlebar">PSX Pressure Configuration</div>
+			<br><br>
+			<div class="BBPRESSURE-row">
+				<label>Defaults Pressure config Button 1</label>
+				<select id="pressureBtn1">
+					<option>Dpad - Right</option>
+					<option>Dpad - Left</option>
+					<option>Dpad - Up</option>
+					<option>Dpad - Down</option>
+					<option>Triangle</option>
+					<option>Circle</option>
+					<option>Cross</option>
+					<option>Square</option>
+					<option>L Shoulder 1</option>
+					<option>R Shoulder 1</option>
+					<option>L Shoulder 2</option>
+					<option>R Shoulder 2</option>
+				</select>
+			</div>
+
+			<div class="BBPRESSURE-row">
+				<label>Defaults Pressure config Button 2</label>
+				<select id="pressureBtn2">
+					<option>Dpad - Right</option>
+					<option>Dpad - Left</option>
+					<option>Dpad - Up</option>
+					<option>Dpad - Down</option>
+					<option>Triangle</option>
+					<option>Circle</option>
+					<option>Cross</option>
+					<option>Square</option>
+					<option>L Shoulder 1</option>
+					<option>R Shoulder 1</option>
+					<option>L Shoulder 2</option>
+					<option>R Shoulder 2</option>
+				</select>
+			</div>
+
+			<div class="BBPRESSURE-row">
+				<label>Defaults Pressure config Button 3</label>
+				<select id="pressureBtn3">
+					<option>Dpad - Right</option>
+					<option>Dpad - Left</option>
+					<option>Dpad - Up</option>
+					<option>Dpad - Down</option>
+					<option>Triangle</option>
+					<option>Circle</option>
+					<option>Cross</option>
+					<option>Square</option>
+					<option>L Shoulder 1</option>
+					<option>R Shoulder 1</option>
+					<option>L Shoulder 2</option>
+					<option>R Shoulder 2</option>
+				</select>
+			</div>
+
+			<div class="BBPRESSURE-row">
+				<label>Defaults Pressure config Button 4</label>
+				<select id="pressureBtn4">
+					<option>Dpad - Right</option>
+					<option>Dpad - Left</option>
+					<option>Dpad - Up</option>
+					<option>Dpad - Down</option>
+					<option>Triangle</option>
+					<option>Circle</option>
+					<option>Cross</option>
+					<option>Square</option>
+					<option>L Shoulder 1</option>
+					<option>R Shoulder 1</option>
+					<option>L Shoulder 2</option>
+					<option>R Shoulder 2</option>
+				</select>
+			</div>
+
+			<div class="BBPRESSURE-buttons">
+				<button id="pressureApply">Apply</button>
+				<button id="pressureSave">Save</button>
+			</div>
+
+		</div>
+	</div>
+	
+	
+	<!-- EEPROM POPUP -->
+	<div id="BBeepromPopup" style="display:none;">
+	  <div class="BBEEPROM-window">
+		
+		 <button class="close" onclick="document.getElementById('BBeepromPopup').style.display='none'">X</button>
+		<div class="titlebar"> EEPROM Editor (Read Only View Style)</div>
+		<div class="BBeeprom-notice">
+		  EEPROM data from the Bliss-Box port. This screen is read-only.
+		</div>
+
+		<!-- Header row labels (optional visual guide) -->
+		<div class="BBeeprom-header-grid">
+		  <div>Version</div>
+		  <div>Player</div>
+		  <div>Force UDLR</div>
+		  <div>Combos</div>
+		  <div>AutoPause</div>
+		  <div>HotSwap</div>
+		  <div>Turbo</div>
+		  <div>Range</div>
+		  <div>Mask</div>
+		  <div>PSX</div>
+		  <div>Defaults</div>
+		  <div>Extra</div>
+		  <div>Extra</div>
+		  <div>Extra</div>
+		  <div>Extra</div>
+		  <div>Extra</div>
+		</div>
+
+		<!-- 48 BBhex inputs -->
+		<div class="BBeeprom-row">
+		  <div class="BBeeprom-label">User Data</div>
+
+		  <div class="BBeeprom-grid">
+			<!-- Row 1 -->
+			<input class="BBhex" data-i="0">
+			<input class="BBhex" data-i="1">
+			<input class="BBhex" data-i="2">
+			<input class="BBhex" data-i="3">
+			<input class="BBhex" data-i="4">
+			<input class="BBhex" data-i="5">
+			<input class="BBhex" data-i="6">
+			<input class="BBhex" data-i="7">
+			<input class="BBhex" data-i="8">
+			<input class="BBhex" data-i="9">
+			<input class="BBhex" data-i="10">
+			<input class="BBhex" data-i="11">
+			<input class="BBhex" data-i="12">
+			<input class="BBhex" data-i="13">
+			<input class="BBhex" data-i="14">
+			<input class="BBhex" data-i="15">
+		  </div>
+		</div>
+
+
+		<div class="BBeeprom-row">
+		  <div class="BBeeprom-label">Mapping Data 1</div>
+
+		  <div class="BBeeprom-grid">
+			<!-- Row 2 -->
+			<input class="BBhex" data-i="16">
+			<input class="BBhex" data-i="17">
+			<input class="BBhex" data-i="18">
+			<input class="BBhex" data-i="19">
+			<input class="BBhex" data-i="20">
+			<input class="BBhex" data-i="21">
+			<input class="BBhex" data-i="22">
+			<input class="BBhex" data-i="23">
+			<input class="BBhex" data-i="24">
+			<input class="BBhex" data-i="25">
+			<input class="BBhex" data-i="26">
+			<input class="BBhex" data-i="27">
+			<input class="BBhex" data-i="28">
+			<input class="BBhex" data-i="29">
+			<input class="BBhex" data-i="30">
+			<input class="BBhex" data-i="31">
+		  </div>
+		</div>
+
+
+		<div class="BBeeprom-row">
+		  <div class="BBeeprom-label">Mapping Data 2</div>
+
+		  <div class="BBeeprom-grid">
+			<!-- Row 3 -->
+			 <!-- first 9 bytes -->
+				<input class="BBhex" data-i="32">
+				<input class="BBhex" data-i="33">
+				<input class="BBhex" data-i="34">
+				<input class="BBhex" data-i="35">
+				<input class="BBhex" data-i="36">
+				<input class="BBhex" data-i="37">
+				<input class="BBhex" data-i="38">
+				<input class="BBhex" data-i="39">
+				<input class="BBhex" data-i="40">
+
+				<div class="extended-label">Extended:</div>
+
+				<input class="BBhex" data-i="43">
+				<input class="BBhex" data-i="44">
+				<input class="BBhex" data-i="45">
+				<input class="BBhex" data-i="46">
+				<input class="BBhex" data-i="47">
+
+				<!-- second line -->
+				<div></div><div></div><div></div><div></div><div></div>
+				<div></div><div></div><div></div><div></div>
+				<div></div>
+
+				<div class="BBextended-name"> </div>
+				<div class="BBextended-name">Latency</div>
+				<div class="BBextended-name alt-map">Alt Map</div>
+				<div class="BBextended-name">DDR</div>
+				<div class="BBextended-name">N/A</div>
+				<div class="BBextended-name">N/A</div>
+
+			</div>
+		</div>
+	</div>	
+</div>

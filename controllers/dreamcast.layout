@@ -1,0 +1,103 @@
+﻿# Simple controller layout file.
+# Blocks are separated by a blank line.
+# x and y are the center of the shape inside the controller area.
+# byte indexes are zero-based: first stream byte is byte 0.
+
+
+
+# Analog sticks: up to 8.
+# xByte/yByte choose the stream bytes that move the stick.
+type: analog
+label:  
+x: 100
+y: 70
+xByte: 3
+yByte: 4
+side: left
+shapeType: circle2
+
+
+# D-pad: max 1.
+# Leave byte/bit values off if you only want a static d-pad shape.
+type: dpad
+x: 120
+y: 140
+arrange: left
+byte: 12
+upData: 0
+uprightData: 1
+rightData: 2
+downrightData: 3
+downData: 4
+downleftData: 5
+leftData: 6
+leftupData: 7
+shapeType: plus
+
+# Face buttons. Max buttons total is 24.
+# bit is a bit number, so bit 3 means mask 0x08.
+ 
+type: button
+label: s
+x: 210
+y: 175
+byte: 0
+bit: 5
+group: center
+shapeType: circle1
+
+
+type: button
+label: Y
+x: 314
+y: 75
+byte: 0
+bit: 3
+group: face
+shapeType: circle1
+
+type: button
+label: B
+x: 344
+y: 110
+byte: 0
+bit: 1
+group: face
+shapeType: circle1
+
+type: button
+label: X
+x: 284
+y: 110
+byte: 0
+bit: 2
+group: face
+shapeType: circle1
+
+type: button
+label: A
+x: 314
+y: 140
+byte: 0
+bit: 0
+group: face
+shapeType: circle1
+
+
+type: button
+label: L1
+x: 30
+y: 210
+byte: 0
+bit: 6
+group: top
+shapeType: rectangle2
+
+type: button
+label: R1
+x: 400
+y: 210
+byte: 0
+bit: 7
+group: top
+shapeType: rectangle2

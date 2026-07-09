@@ -1,0 +1,105 @@
+# Simple controller layout file.
+# Blocks are separated by a blank line.
+# x and y are the center of the shape inside the controller area.
+# byte indexes are zero-based: first stream byte is byte 0.
+
+name: Bliss-Box Test Controller
+width: 420
+height: 260
+
+# Analog sticks: up to 8.
+# xByte/yByte choose the stream bytes that move the stick.
+type: analog
+id: stickL
+label:  
+x: 170
+y: 200
+xByte: 3
+yByte: 4
+side: left
+movementSize: 25
+shapeType: circle2
+
+type: analog
+id: stickR
+label:  
+x: 270
+y: 200
+xByte: 6
+yByte: 7
+side: right
+movementSize: 25
+shapeType: circle2
+
+ 
+
+# Face buttons. Max buttons total is 24.
+# bit is a bit number, so bit 3 means mask 0x08.
+type: button
+id: btnA
+label: A
+x: 334
+y: 106
+byte: 0
+bit: 3
+group: face
+shapeType: circle1
+
+type: button
+id: btnB
+label: B
+x: 364
+y: 136
+byte: 0
+bit: 1
+group: face
+shapeType: circle1
+
+type: button
+id: btnX
+label: X
+x: 304
+y: 136
+byte: 0
+bit: 2
+group: face
+shapeType: circle1
+
+type: button
+id: btnY
+label: Y
+x: 334
+y: 166
+byte: 0
+bit: 0
+group: face
+shapeType: circle1
+
+# Examples you can copy when needed:
+#
+# type: button
+# id: btnL1
+# label: L1
+# x: 95
+# y: 55
+# byte: 1
+# bit: 0
+# group: back
+#
+# type: button
+# id: start
+# label: Start
+# x: 235
+# y: 108
+# byte: 1
+# bit: 2
+# group: middle
+#
+# type: button
+# id: turbo
+# label: Turbo
+# x: 385
+# y: 60
+# byte: 2
+# bit: 1
+# group: special

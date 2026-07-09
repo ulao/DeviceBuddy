@@ -1,0 +1,408 @@
+.hidPressure {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 110px;
+    height: fit-content;
+    background: black;
+    gap: 3px;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.hidbar {
+    width: calc(1px + (var(--level) * 0.98px));
+    height: 8px;
+    background: #00ff00;
+    border-radius: 0 2px 2px 0;
+    transition: width 0.1s ease;
+}
+.hidPressureBox {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hidPressureBox.show {
+    display: flex;
+}
+ 
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background: #fafafa;
+    padding: 20px;
+	background-image: url("bg.png");
+    background-repeat: repeat;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.header
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h1
+{
+    margin: 0;
+}
+
+.header img
+{
+    display: block;
+}
+
+.topbar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 10px; 
+
+}
+
+.layout {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    padding: 10px 12px;
+    background: #555;
+}
+
+.panel {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 12px;
+}
+.BlissBox {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 12px;
+}
+.panel:first-child {
+    width: 260px;
+}
+
+.panel.center {
+    flex: 1;
+    min-width: 500px;
+}
+
+/* DEVICE LIST */
+.deviceList {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: #111;
+    color: #0f0;
+    padding: 8px;
+    border: 1px solid #444;
+}
+
+.deviceList button {
+    padding: 6px;
+    background: #222;
+    color: white;
+    border: 1px solid #444;
+    cursor: pointer;
+    text-align: left;
+}
+
+.deviceList button:hover {
+    background: #333;
+}
+
+.empty {
+    opacity: 0.6;
+}
+
+/* CONTROLLER AREA */
+#controller {
+    position: relative;
+    transform-origin: top left;
+}
+
+#controllerContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* OVERLAY */
+#selectOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    z-index: 10;
+}
+
+#selectOverlay.hidden {
+    display: none;
+}
+
+/* LOG BOXES */
+.logBox {
+    margin-top: 10px;
+    height: 260px;
+    overflow: auto;
+    background: #111;
+    color: #0f0;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    padding: 8px;
+    border: 1px solid #444;
+}
+.controls {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 6px 12px;
+    cursor: pointer;
+}
+.controller-bg {
+    z-index: 0;
+}
+
+.body {
+    position: relative;
+    z-index: 1;
+}
+
+.stick, .button, .dpad {
+    position: absolute;
+    z-index: 2;
+}
+
+/* sticks */
+.stick {
+    outline: 1px solid white !important;
+    pointer-events: auto !important;
+    
+}
+.stick.active {
+    background: limegreen;
+    box-shadow: 0 0 10px limegreen;
+}
+
+/* dpad */
+.dpad {
+    position: absolute;
+    left: 70px;
+    top: 110px;
+    background: transparent;
+}
+/* buttons */
+.button {
+    position: absolute;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+    font-size: 12px;
+    color: white;
+    background: #555;
+}
+.trigger {
+    position: absolute;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+    font-size: 12px;
+    color: white;
+    background: #555;
+}
+.shape-circle0 .buttonLabel {
+    position: relative;
+    top: -8px;
+    left: 0px;
+}
+ 
+.shape-circle1 {
+    border-radius: 50%;
+}
+.shape-circle3 {
+    border-radius: 80%;
+}
+.shape-circle2 {
+    border-radius: 50%;
+    border: 4px solid white;
+}
+.shape-square {
+    border-radius: 0;
+}
+
+.shape-rectangle1 {
+    border-radius: 6px;
+}
+.shape-rectangle2 {
+    width: 32px;
+    height: 32px;
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ 
+.shape-rectangle3 {
+    border-radius: 12px;
+}
+.shape-rectangle4 {
+    border-radius: 12px;
+}
+.shape-rectangle5 {
+    border-radius: 12px;
+}
+.shape-triangle {
+    width: 0;
+    height: 0;
+    background: transparent;
+
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-bottom: 28px solid #555;
+
+    border-radius: 0;
+}
+.shape-triangler {
+  width: 32px;
+    height: 50px;
+    background: #555;
+
+    clip-path: polygon(
+         var(--angle) 0%,     /* top left */
+        100% 0%,   /* top right */
+        100% 100%, /* bottom right */
+        95% 100%   /* bottom left */
+    );
+
+    border-radius: 0;
+}
+.shape-trianglel {
+  width: 32px;
+    height: 50px;
+    background: #555;
+
+    clip-path: polygon(
+		0%  0%,      /* top left */
+		100% 0%,    /* top right */
+		calc(100% - var(--angle)) 5%,   /* right side down */
+		5% 100%,   /* diagonal to bottom */
+		0% 100%     /* bottom left */
+    );
+
+    border-radius: 0;
+}
+.shape-triangler.active {
+    background: green;
+}
+.shape-trianglel.active {
+    background: green;
+}
+
+.shape-plus
+{
+    position: relative;
+    width: 64px;
+    height: 64px;
+}
+.dpad-piece
+{
+    position: absolute;
+    background: #555;
+    border-radius: 4px;
+}
+.dpad-up
+{
+    width: 16px;
+    height: 22px;
+    left: 24px;
+    top: 0px;
+}
+
+.dpad-down
+{
+    width: 16px;
+    height: 22px;
+    left: 24px;
+    bottom: 0px;
+}
+
+.dpad-left
+{
+    width: 22px;
+    height: 16px;
+    left: 0px;
+    top: 24px;
+}
+
+.dpad-right
+{
+    width: 22px;
+    height: 16px;
+    right: 0px;
+    top: 24px;
+}
+
+.dpad-diagonal
+{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #666;
+}
+
+.dpad-upright
+{
+    right: 8px;
+    top: 8px;
+}
+
+.dpad-downright
+{
+    right: 8px;
+    bottom: 8px;
+}
+
+.dpad-downleft
+{
+    left: 8px;
+    bottom: 8px;
+}
+
+.dpad-leftup
+{
+    left: 8px;
+    top: 8px;
+}
+.dpad-piece.active
+{
+    background:limegreen;
+    box-shadow:0 0 8px limegreen;
+}
+
+.button.active {
+    background: limegreen;
+    box-shadow: 0 0 10px limegreen;
+}
