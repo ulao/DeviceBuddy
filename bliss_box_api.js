@@ -12,7 +12,7 @@ export function BlissBox_lookUpName(id)
 	if (id == 6  ) return "A5200"         ;
 	if (id == 7  ) return "HPD"		      ;
 	if (id == 8  ) return "SATURN_ANALOG" ;
-	if (id == 9  ) return "gamecube"            ;
+	if (id == 9  ) return "gamecube"      ;
 	if (id == 10 ) return "atmark" 		  ;
 	if (id == 11 ) return "JAG"	          ;
 	if (id == 12 ) return "DRV_CNT" 	;
