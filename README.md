@@ -1,5 +1,7 @@
 # DeviceBuddy
 Diag, display, and your ontroller anywhere. 
+<img width="275" height="199" alt="image" src="https://github.com/user-attachments/assets/89fe4f43-66c1-4b2c-a019-4cc2914b3423" />
+
 _____________________________________________________________________________________________________________
 If you came here, chances are you just stumbled on to this. Or maybe got a invite, its new, do not expect much!
 _____________________________________________________________________________________________________________
@@ -42,3 +44,14 @@ Bliss-Box LLC reserves all legal rights and remedies. Bliss-Box® and the Bliss-
  
 
 
+<img width="1343" height="943" alt="image" src="https://github.com/user-attachments/assets/f3785177-9d5e-40d9-b1cb-d2b50677a0b6" />
+
+
+
+<img width="1334" height="876" alt="image" src="https://github.com/user-attachments/assets/4c20a887-5e0e-4eca-971b-b80b0652f784" />
+
+
+<img width="1318" height="889" alt="image" src="https://github.com/user-attachments/assets/51fd8bda-1023-496c-9be9-25700b5f8dd7" />
+
+
+<img width="819" height="675" alt="image" src="https://github.com/user-attachments/assets/5c1ed7e5-baa7-4d83-977d-53e5877cd470" />
