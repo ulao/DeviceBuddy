@@ -2,9 +2,16 @@
 //see Copyright in index.html
 //https://bliss-box.com
 
+//to use on stand a lone browsers
 // chrome.exe --allow-file-access-from-files --disable-web-security --user-data-dir="C:\temp\chrome_dev"
 //"C:\Program Files\Opera\launcher.exe" --allow-file-access-from-files --disable-web-security --disable-site-isolation-trials --user-data-dir="C:\temp\opera_dev"
 //"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --allow-file-access-from-files --disable-web-security --disable-site-isolation-trials --user-data-dir="C:\temp\edge_dev"
+
+//for linux users
+//find the name of the device or devies i.e "mcs-gamer-pro"
+//edit this file:    sudo nano /etc/udev/rules.d/99-mcs-gamer-pro.rules
+//add this line:    SUBSYSTEM=="hidraw", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="0d04", MODE="0666"
+
 
 
 
@@ -1428,9 +1435,9 @@ function moveStick(el, x, y)
 }
 function rotate(el,a)
 {
-	let percent = (a / 255) * 100;
-	if(a) el.classList.add("active" ); else el.classList.remove("active" );
-    el.style.setProperty("--angle", `${a}%`);
+ 
+	if(a>50) el.classList.add("active" ); else el.classList.remove("active" );
+    el.style.setProperty("--angle", `${Math.round((a / 255) * 100)}%`);
 }
 function setActive(el, pressed)
 {

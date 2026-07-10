@@ -12,14 +12,14 @@ export function BlissBox_lookUpName(id)
 	if (id == 6  ) return "A5200"         ;
 	if (id == 7  ) return "HPD"		      ;
 	if (id == 8  ) return "SATURN_ANALOG" ;
-	if (id == 9  ) return "GC"            ;
+	if (id == 9  ) return "gamecube"            ;
 	if (id == 10 ) return "atmark" 		  ;
 	if (id == 11 ) return "JAG"	          ;
 	if (id == 12 ) return "DRV_CNT" 	;
 	if (id == 13 ) return "WII_NUNCHUK"  ;
 	if (id == 14 ) return "INTELI" 		  ;
-	if (id == 15 ) return "DC_ASCI" 	;
-	if (id == 16 ) return "DC_PAD"	      ;
+	if (id == 15 ) return "dreamcast" 	;
+	if (id == 16 ) return "dreamcast"	    ;
 	if (id == 17 ) return "NES"	          ;
 	if (id == 18 ) return "GC_WHEEL"	;
 	if (id == 19 ) return "nintendo64";
