@@ -1,3 +1,47 @@
+/* OBS Overlay Mode */
+body.overlayMode {
+    background: transparent !important;
+    background-image: none !important;
+    padding: 0 !important;
+}
+body.overlayMode #statusLine {
+    display: none !important;
+}
+/* Remove the panel look but keep the controller */
+body.overlayMode .panel:not(.center) {
+    display: none !important;
+}
+body.overlayMode #blissbox-container {
+    display: none !important;
+}
+/* Hide things inside the center panel that are not the controller */
+body.overlayMode #selectOverlay,
+body.overlayMode #hidpressurebox,
+body.overlayMode #pollLog {
+    display: none !important;
+}
+
+/* Hide the rest of the app */
+body.overlayMode .header,
+body.overlayMode .topbar,
+body.overlayMode .deviceList,
+body.overlayMode .controls,
+body.overlayMode button,
+body.overlayMode select,
+body.overlayMode input {
+    display: none !important;
+}
+
+/* Keep controller visible */
+body.overlayMode #controllerContainer,
+body.overlayMode #controller {
+    display: block !important;
+}
+.statusRow {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
 .hidPressure {
     display: flex;
     flex-direction: column;

@@ -48,12 +48,14 @@ const Controllers =
     { file:"nintendo64",   name:"Nintendo 64" },
     { file:"pippin", 	   name:"Apple Pippin" },
     { file:"playstation",  name:"Sony PlayStation" },
-    { file:"playstation4",  name:"Sony PlayStation 4" },
+    { file:"playstation4", name:"Sony PlayStation 4" },
     { file:"saturn", 	   name:"Sega Saturn" },
     { file:"supernintendo",name:"Super Nintendo" },
     { file:"turbografx16", name:"TurboGrafx-16" },
     { file:"virtualboy",   name:"Virtual Boy" },
-    { file:"atmark",name:"Attmark Pippin" } 
+    { file:"atmark",	   name:"Attmark Pippin" } ,
+    { file:"xboxone",	   name:"Xbox One" } ,
+    { file:"xbox360",	   name:"Xbox 360" } 
 ];
 
 let currentController = "playstation"; 						//controller in use
@@ -98,52 +100,45 @@ async function readFeature(value)
     log(toHex(data.buffer));
 }
 
-async function selectDevice(dev)
+async function selectDevice()
 {
     try
     {
-
 		const hidBox = document.getElementById("hidpressurebox");
 		if (hidBox) {
 			hidBox.classList.remove("show");
 		}
-
 		const bbBox = document.getElementById("BBpressurebox");
 		if (bbBox) {
 			bbBox.classList.remove("show");
-		}
-			
-        if (hid.device && hid.device.opened)      await hid.device.close();
+		}		
 		clearInterval(BlissBoxAdapterTimer);
         BlissBoxAdapterTimer = null;
 		document.getElementById("blissbox-container").innerHTML = "";
- 	
-		let name = dev.productName;
-		//name patcher, 
-		if (dev.vendorId == 0x054c && dev.productId == 0x05c4) currentController = name = "playstation4";
-
-        if (!dev.opened)
+		
+		if (hid.device == null)
 		{
+			console.log("Device lost");
 			try
 			{
-				await dev.open();
+				console.log("Trying to get it back");
+				await hid.open();
 			}
 			catch (e) 
 			{
-				const key = deviceKey(dev);
-
-				devices = devices.filter(d => deviceKey(d) !== key);
-
-				renderDeviceList();
-
-				console.warn("Device failed to open:", e);
-
+				console.log("failed, must repoair");
+				connBtn.onclick();
 				return;
 			}
 		}
+		
+		let name = hid.productName;
+		//name patcher, 
+		console.log("Controller id: " + hid.vendorId + " | " + hid.productId); 
+		if (hid.vendorId == 0x054c && hid.productId == 0x05c4) currentController = name = "playstation4";
+		if (hid.vendorId == 0x054c && hid.productId == 0x0268) currentController = name = "playstation";
+		if (hid.vendorId == 0x045e && hid.productId == 0x02ff) currentController = name = "xboxone";
  
-        hid.device = dev;
-
         status.textContent = "Connected";
         status.style.color = "green";
         devName.textContent = name;
@@ -157,8 +152,8 @@ async function selectDevice(dev)
         document.getElementById("selectOverlay")?.classList.add("hidden");
 
 
-		isBlissBox = (dev.vendorId === 0x16d0);
-		if (isBlissBox) BlissBoxInit(dev); else BlissBoxdeInit(dev); 
+		isBlissBox = (hid.vendorId === 0x16d0);
+		if (isBlissBox) BlissBoxInit(); else BlissBoxdeInit(); 
 			
     }
     catch (e)
@@ -236,17 +231,22 @@ async function startup()
         return;
     }
 
+	console.log("startup");
+	
     await loadKnownDevices();
 
     if (devices.length)
-    {
+    {	 
+		await devices[0].open();
+		hid.device = devices[0];		
         await selectDevice(devices[0]);
     }
 
 	navigator.hid.addEventListener("connect", async (event) => {
 		const dev = event.device;
 		await dev.open();
-		await selectDevice(dev); 
+		hid.device = dev;
+		await selectDevice(); 
 	});
 
 	navigator.hid.addEventListener("disconnect", (event) =>
@@ -259,6 +259,14 @@ async function startup()
 		}
 	});
 
+	document.addEventListener("keydown", function(e)
+	{
+		if (e.code === "ScrollLock")
+		{
+			document.body.classList.toggle("overlayMode");
+		}
+	});
+	
     updateStatusHint();
 
 }
@@ -333,7 +341,8 @@ async function readBlissBoxAdapterInfo()
  
 	try
 	{
-		const bytes = await BlissBox_readFeature(hid, 0x11);			
+		const bytes = await BlissBox_readFeature(hid, 0x11);		
+	
 		if (bytes[0] == 121) 
 		{
  			if ( bars == null )
@@ -342,13 +351,22 @@ async function readBlissBoxAdapterInfo()
 				{
 					if (! document.getElementById("BBpressurebox") ) return; 
 					const bar = document.querySelectorAll(".BBbar");
-					const p = await BlissBox_readFeature(hid, 0x15);
-					for (let b = 0; b < 12; b++)
+					try
 					{
-						
-						const level = Math.round(p[b+1] * 100 / 255); // 0-255 -> 0-100
-						bar[b].style.setProperty("--level", level);
+						const p = await BlissBox_readFeature(hid, 0x15);
+						for (let b = 0; b < 12; b++)
+						{
+							
+							const level = Math.round(p[b+1] * 100 / 255); // 0-255 -> 0-100
+							bar[b].style.setProperty("--level", level);
+						}
 					}
+					catch (e) 
+					{
+						clearInterval(bars);
+					}
+	 
+					
 				}, 100);
 			}
 		} 
@@ -524,12 +542,12 @@ function downloadMapperTemplate( )
 
     URL.revokeObjectURL(a.href);
 }
-function BlissBoxdeInit (dev)
+function BlissBoxdeInit ()
 {
 	clearInterval(bars);
 	bars=null;
 }
-function BlissBoxInit(dev)
+function BlissBoxInit()
 {
 	BBloadUI();
 	
@@ -581,7 +599,9 @@ function init()
 
 			if (!newDevices.length)
 				return;
-
+			
+			await newDevices[0].open();
+			hid.device = newDevices[0];
 			await selectDevice(newDevices[0]);
 
 			await loadKnownDevices();
@@ -649,15 +669,17 @@ function showPopup(message)
 
     setTimeout(() => box.remove(), 4000);
 }
-function deviceKey(dev)
+function deviceKey()
 {
-     return `${dev.vendorId}-${dev.productId}`;
+     return `${hid.vendorId}-${hid.productId}`;
 }
 
 function renderDeviceList()
 {
     deviceListEl.innerHTML = "";
 
+	console.log("making device list");
+	
     if (!devices.length)
     {
         deviceListEl.textContent = "No devices found";
@@ -669,7 +691,7 @@ function renderDeviceList()
         const btn = document.createElement("button");
         btn.textContent = dev.productName || "Unknown";
 
-        btn.onclick = () => selectDevice(dev);
+        btn.onclick = () => selectDevice();
 
         deviceListEl.appendChild(btn);
     }
