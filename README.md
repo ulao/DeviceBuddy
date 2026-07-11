@@ -6,6 +6,8 @@ ________________________________________________________________________________
 If you came here, chances are you just stumbled on to this. Or maybe got a invite, its new, do not expect much!
 _____________________________________________________________________________________________________________
 
+https://ulao.github.io/DeviceBuddy/
+
 
 DeviceBuddy is a W.I.P of a quick and handy device utility for controllers. I plan to replace all the crappy non flexable controller testers out there. This will not be an exclusive Bliss-Box tool. This one will support everything I can figure out and be configurable. 
 
