@@ -6,10 +6,37 @@ ________________________________________________________________________________
 If you came here, chances are you just stumbled on to this. Or maybe got a invite, its new, do not expect much!
 _____________________________________________________________________________________________________________
 
+https://ulao.github.io/DeviceBuddy/
 
-DeviceBuddy is a W.I.P of a quick and handy device utility for controllers. I pla to replace all the crappy non-flex able controller testers out there. This will not be an exclusive Bliss-Box tool. This one will support everything I can figure out and be configurable. 
+
+DeviceBuddy is a W.I.P of a quick and handy device utility for controllers. I plan to replace all the crappy non flexable controller testers out there. This will not be an exclusive Bliss-Box tool. This one will support everything I can figure out and be configurable. 
 
 V 1.1: This is the Hello World version, expected to be full of bugs and errors. I have maybe parts of the Bliss-Box API ready, and tested a few controllers. Linux and Windows are working. 
+
+Support added for most common controllers
+3DO
+Atari 2600
+Atari 5200
+Atari 7800
+Philips CD-i
+Sega Dreamcast
+Nintendo GameCube
+Sega Genesis
+Atari Jaguar
+Neo Geo
+Nintendo Entertainment System
+Nintendo 64
+Apple Pippin
+Sony PlayStation
+Sony PlayStation 4
+Sega Saturn
+Super Nintendo
+TurboGrafx-16
+Virtual Boy
+Attmark Pippin
+Xbox One
+Xbox 360
+
 
 Windows Notes:
 if you download the source and want to run locally I got 3 browsers to work. They are chrom based 
