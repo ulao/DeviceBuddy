@@ -115,7 +115,7 @@ async function selectDevice()
 		clearInterval(BlissBoxAdapterTimer);
         BlissBoxAdapterTimer = null;
 		document.getElementById("blissbox-container").innerHTML = "";
-		
+ 
 		if (hid.device == null)
 		{
 			console.log("Device lost");
@@ -142,8 +142,6 @@ async function selectDevice()
         status.textContent = "Connected";
         status.style.color = "green";
         devName.textContent = name;
- 
-        if (activeInputListener)  hid.removeInputListener(activeInputListener);
  
         activeInputListener = onInputReport;
         hid.addInputListener(activeInputListener);
@@ -239,18 +237,15 @@ async function startup()
     {	 
 		await devices[0].open();
 		hid.device = devices[0];		
-        await selectDevice(devices[0]);
+        await selectDevice( );
     }
 
 	navigator.hid.addEventListener("connect", async (event) => {
-		const dev = event.device;
-		await dev.open();
-		hid.device = dev;
-		await selectDevice(); 
+	 //Do we need this?
 	});
 
 	navigator.hid.addEventListener("disconnect", (event) =>
-	{
+	{ ;
 		if (hid.device && deviceKey(hid.device) === deviceKey(event.device))
 		{
 			clearInterval(BlissBoxAdapterTimer);
@@ -274,6 +269,11 @@ async function startup()
 
 async function loadControllerLayout(file)
 {
+	if (file == undefined)
+	{
+		console.log("thats not right");
+		return;
+	}	
     const myToken = ++layoutLoadToken;
 
     resetControllerUI();
@@ -488,6 +488,12 @@ async function BBloadUI()
 	document.getElementById("blissbox-container").innerHTML = html;
 }
 	
+async  function cleanUpSelection( dev )
+{
+	if (activeInputListener)  hid.removeInputListener(activeInputListener);
+	if (!dev.opened) { await dev.open(); }
+	hid.device = dev;
+}
 
 function isBootloader(d)
 {
@@ -599,10 +605,10 @@ function init()
 
 			if (!newDevices.length)
 				return;
-			
-			await newDevices[0].open();
-			hid.device = newDevices[0];
-			await selectDevice(newDevices[0]);
+ 
+			await cleanUpSelection(newDevices[0]);
+
+			await selectDevice( );
 
 			await loadKnownDevices();
 		}
@@ -691,7 +697,10 @@ function renderDeviceList()
         const btn = document.createElement("button");
         btn.textContent = dev.productName || "Unknown";
 
-        btn.onclick = () => selectDevice();
+       btn.onclick = async () => {
+								await cleanUpSelection(dev);
+								selectDevice();
+							};
 
         deviceListEl.appendChild(btn);
     }
@@ -857,6 +866,7 @@ function updateControllerState(data)
         if (part.type === "analog")
         {	
 			//swapp for mapper. 
+ 
 			if ( currentMapper.analog[part.id].x )  part.xByte = currentMapper.analog[part.id].x ;  
 			if ( currentMapper.analog[part.id].y )  part.yByte = currentMapper.analog[part.id].y ;  
 		 
@@ -1085,7 +1095,7 @@ function shapeSize(shapeType)
     switch(shapeType.toLowerCase())
     {
         case "circle0":
-            return { width: 15, height: 15 };
+            return { width: 20, height: 20 };
 			
 		case "circle1":
             return { width: 32, height: 32 };
@@ -1099,6 +1109,9 @@ function shapeSize(shapeType)
         case "square":
             return { width: 32, height: 32 };
 
+		case "rectanglea":
+            return { width: 30, height: 10 };
+			
         case "rectangle1":
             return { width: 30, height: 10 };
 		 
@@ -1310,6 +1323,9 @@ function applyShapeType(el, part)
             break;
         case "square":
             el.classList.add("shape-square");
+            break;
+		case "rectanglea":
+            el.classList.add("shape-rectanglea");
             break;
 		case "rectangle1":
             el.classList.add("shape-rectangle1");

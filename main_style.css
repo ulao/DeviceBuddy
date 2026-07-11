@@ -296,8 +296,16 @@ button {
     border-radius: 0;
 }
 
+.shape-rectanglea {
+    border-radius: 6px;
+	 transform: rotate(-45deg);
+}
 .shape-rectangle1 {
     border-radius: 6px;
+}
+.shape-rectangle1 .buttonLabel {
+    display: inline-block;
+    transform: translateY(-10px);
 }
 .shape-rectangle2 {
     width: 32px;

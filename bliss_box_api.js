@@ -14,7 +14,7 @@ export function BlissBox_lookUpName(id)
 	if (id == 8  ) return "SATURN_ANALOG" ;
 	if (id == 9  ) return "gamecube"      ;
 	if (id == 10 ) return "atmark" 		  ;
-	if (id == 11 ) return "JAG"	          ;
+	if (id == 11 ) return "jaguar"	          ;
 	if (id == 12 ) return "DRV_CNT" 	;
 	if (id == 13 ) return "WII_NUNCHUK"  ;
 	if (id == 14 ) return "INTELI" 		  ;
@@ -28,7 +28,7 @@ export function BlissBox_lookUpName(id)
 	if (id == 22 ) return "SMS"	          ;
 	if (id == 23 ) return "TG16" 		;
 	if (id == 24 ) return "CD32"		;
-	if (id == 25 ) return "THREE_DO"	;
+	if (id == 25 ) return "3DO"	;
 	if (id == 26 ) return "PC_FX"         ;
 	if (id == 27 ) return "SNES"		  ;
 	if (id == 28 ) return "NES_GUN" 	;
