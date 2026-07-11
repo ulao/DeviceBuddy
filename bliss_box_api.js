@@ -99,7 +99,7 @@ export async function BlissBox_readFeature(hid, id)
     const data = await hid.receiveFeature(id);
     return new Uint8Array(data.buffer || data);
 }
-
+ 
 export async function BlissBox_getPressure(hid)
 {
 	if ( document.getElementById("controllerId").innerText != "121" )	return;

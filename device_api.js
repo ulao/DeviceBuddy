@@ -12,7 +12,7 @@
 //edit this file:    sudo nano /etc/udev/rules.d/99-mcs-gamer-pro.rules
 //add this line:    SUBSYSTEM=="hidraw", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="0d04", MODE="0666"
 
-
+ 
 
 
 //firefox requres  CORS Everywhere to be installed and  privacy.file_unique_origin   changed to flause, kind of a pain
