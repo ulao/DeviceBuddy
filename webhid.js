@@ -1,7 +1,8 @@
 //Bliss-Box Device Buddy
 //see Copyright in index.html
 //https://bliss-box.com
-export class WebHIDDevice
+
+class WebHIDDevice
 {
     constructor()
     {

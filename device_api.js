@@ -13,21 +13,6 @@
 //add this line:    SUBSYSTEM=="hidraw", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="0d04", MODE="0666"
 
  
-
-
-//firefox requres  CORS Everywhere to be installed and  privacy.file_unique_origin   changed to flause, kind of a pain
-import { WebHIDDevice } from "./webhid.js";
-import { BlissBox_readFeature } from "./bliss_box_api.js";
-import { BlissBox_writeFeature } from "./bliss_box_api.js";
-import { BlissBox_lookUpName } from "./bliss_box_api.js";
-import { BlissBox_getPressure } from "./bliss_box_api.js";
-import { BlissBox_getEEProm } from "./bliss_box_api.js";
-import { BlissBox_saveModes } from "./bliss_box_api.js";
-import { BlissBox_rumbleTest } from "./bliss_box_api.js";
-import { BlissBox_restoreDefaults } from "./bliss_box_api.js";
-
-
-
 document.getElementById("year").textContent = new Date().getFullYear();
 
 
@@ -75,8 +60,7 @@ const connBtn = document.getElementById("connBtn");         //html element
 const status = document.getElementById("status");           //html element
 const devName = document.getElementById("devName");         //html element
 const controller = document.getElementById("controller");   //html element
-
-let bars = null;
+ 
 init();
 
 async function sendManualReport()
@@ -151,7 +135,7 @@ async function selectDevice()
 
 
 		isBlissBox = (hid.vendorId === 0x16d0);
-		if (isBlissBox) BlissBoxInit(); else BlissBoxdeInit(); 
+		if (isBlissBox) BlissBox_Init( ); else BlissBox_DeInit( ); 
 			
     }
     catch (e)
@@ -213,7 +197,7 @@ async function autoSelector(name)
  
 	if (name.toLowerCase().includes("gamer-pro"))
 	{
-		const data = await BlissBox_readFeature(hid, 0x11);
+		const data = await BlissBox_readFeature(0x11);
 		loadControllerLayout(BlissBox_lookUpName(data[0])); 		
 	}
 	else loadControllerLayout(name); 	
@@ -223,6 +207,7 @@ async function autoSelector(name)
 
 async function startup()
 {
+ 
     if (!navigator.hid)
     {
         status.textContent = "WebHID not supported";
@@ -336,126 +321,6 @@ async function loadControllerLayout(file)
 		
 }
 
-async function readBlissBoxAdapterInfo()
-{	
- 
-	try
-	{
-		const bytes = await BlissBox_readFeature(hid, 0x11);		
-	
-		if (bytes[0] == 121) 
-		{
- 			if ( bars == null )
-			{
-				bars = setInterval ( async () =>
-				{
-					if (! document.getElementById("BBpressurebox") ) return; 
-					const bar = document.querySelectorAll(".BBbar");
-					try
-					{
-						const p = await BlissBox_readFeature(hid, 0x15);
-						for (let b = 0; b < 12; b++)
-						{
-							
-							const level = Math.round(p[b+1] * 100 / 255); // 0-255 -> 0-100
-							bar[b].style.setProperty("--level", level);
-						}
-					}
-					catch (e) 
-					{
-						clearInterval(bars);
-					}
-	 
-					
-				}, 100);
-			}
-		} 
-		else 
-		{
-			clearInterval(bars);
-		}
-
-		if ( BlissBox_lookUpName(bytes[0]) != currentController ) 
-		{
-		
-			controllerSelect.value = currentController = BlissBox_lookUpName(bytes[0]);
-			loadControllerLayout(currentController);
-		}
-		
-		if (bytes[0] == 121) 
-		{ 
-			document.getElementById("hidpressurebox").classList.add("show");
-			document.getElementById("BBpressurebox").classList.add("show");
-		}
-		
-		document.getElementById("controllerId").textContent = bytes[0];
-		document.getElementById("major").textContent = bytes[2];
-		document.getElementById("minor").textContent = bytes[4];
-		document.getElementById("player").textContent = bytes[3]-3;
-
-		document.querySelector("#hsd .value").textContent = bytes[1] & 0x08 ? "ON" : "OFF";//Hotswap Disable
-		document.querySelector("#udlr .value").textContent = bytes[1] & 0x10 ? "ON" : "OFF";//UDLR mode
-		document.querySelector("#dac .value").textContent = bytes[1] & 0x20 ? "ON" : "OFF";//Analog to D-pad Or Disable all combos(
-		document.querySelector("#apd .value").textContent = bytes[1] & 0x40 ? "ON" : "OFF";//Bit 6: Autopause Disab
-		document.querySelector("#dmo .value").textContent = bytes[1] & 0x80 ? "ON" : "OFF";//Bit 7: d-pad only mode
-	}
-	catch (e) 
-	{ 
-	 console.warn("Adapter read failed:", e);
-	}
-	
-	document.querySelector(".BBbutton-grid").addEventListener("click", async  (e) => 
-	{
-		const btn = e.target.closest("button");
-		if (!btn) return;
-
-		const action = btn.dataset.action;
-
-		switch (action) {
-			case "rumble":
-				BlissBox_rumbleTest(hid);
-				break;
-				
-			case "memcard":
-				console.log("MemCard clicked");
-				break;
-
-			case "stick_range":
-				console.log("Stick Range clicked");
-				break;
-
-			case "hotkey":
-				console.log("Hotkey clicked");
-				break;
-
-			case "talk":
-				console.log("Talk clicked");
-				break;
-
-			case "mapper":
-				console.log("Mapper clicked");
-				break;
-
-			case "save":
-				BlissBox_saveModes (hid);	
-				break;
-
-			case "defaults":
-				BlissBox_restoreDefaults(hid);
-				break;
-
-			case "pressure":
-				BlissBox_getPressure (hid);
-				break;
-
-			case "eeprom":
-				BlissBox_getEEProm (hid);				
-				break;
-		}
-	});
-
-		
-}	
 
 async function selectMapperFile()
 {
@@ -482,11 +347,7 @@ async function selectMapperFile()
     });
 }
 
-async function BBloadUI()
-{ 
-	const html = await fetch("blissbox.html").then(r => r.text());
-	document.getElementById("blissbox-container").innerHTML = html;
-}
+
 	
 async  function cleanUpSelection( dev )
 {
@@ -548,21 +409,7 @@ function downloadMapperTemplate( )
 
     URL.revokeObjectURL(a.href);
 }
-function BlissBoxdeInit ()
-{
-	clearInterval(bars);
-	bars=null;
-}
-function BlissBoxInit()
-{
-	BBloadUI();
-	
-    BlissBoxAdapterTimer = setInterval(() => 
-	{
-        readBlissBoxAdapterInfo();
 
-    }, 500);
-}
 	
 function doCasech(text)
 {
@@ -836,11 +683,11 @@ function onInputReport(e)
 	const box = document.getElementById("hidpressurebox");
 	if (isBlissBox && box?.classList.contains("show"))
 	{ 
-		const bars = document.querySelectorAll(".hidbar");
-		bars[0].style.setProperty("--level", Math.round(data[5] * 100 / 255));
-		bars[1].style.setProperty("--level", Math.round(data[8] * 100 / 255));
-		bars[2].style.setProperty("--level", Math.round(data[9] * 100 / 255));
-		bars[3].style.setProperty("--level", Math.round(data[10] * 100 / 255));
+		const b = document.querySelectorAll(".hidbar");
+		b[0].style.setProperty("--level", Math.round(data[5] * 100 / 255));
+		b[1].style.setProperty("--level", Math.round(data[8] * 100 / 255));
+		b[2].style.setProperty("--level", Math.round(data[9] * 100 / 255));
+		b[3].style.setProperty("--level", Math.round(data[10] * 100 / 255));
 	}
 }
  

@@ -1,7 +1,8 @@
 //Bliss-Box Device Buddy
 //see Copyright in index.html
 //https://bliss-box.com
-export function BlissBox_lookUpName(id)
+
+  function BlissBox_lookUpName(id)
 {
 	if (id == 0  ) return "atari2600"  ;
 	if (id == 1  ) return "COL"           ;
@@ -89,22 +90,81 @@ export function BlissBox_lookUpName(id)
 	
 }
 
-export async function BlissBox_writeFeature (hid, id, data)  
-{ 
-	await hid.sendFeature(id,  new Uint8Array(data) );	
+let bars = null;//interval for pressure bars
+ 
+
+  function BlissBox_DeInit ()
+{
+	clearInterval( BlissBoxAdapterTimer);
+	clearInterval(bars);
+	bars=null;
 }
 
-export async function BlissBox_readFeature(hid, id)
+  async function BlissBox_Init ()
 {
-    const data = await hid.receiveFeature(id);
+	const html = await fetch("blissbox.html").then(r => r.text());
+	document.getElementById("blissbox-container").innerHTML = html;
+ 
+     BlissBoxAdapterTimer = setInterval(() => 
+	{
+        BlissBox_readBlissBoxAdapterInfo( );
+
+    }, 500);
+}
+
+
+  async function BlissBox_writeFeature (id, data)  
+{ 
+	await  hid.sendFeature(id,  new Uint8Array(data) );	
+}
+
+  async function BlissBox_readFeature(id)
+{
+    const data = await  hid.receiveFeature(id);
     return new Uint8Array(data.buffer || data);
 }
  
-export async function BlissBox_getPressure(hid)
+ async function getLatestVersion() {
+    const response = await fetch("http://spawnlinux.ddns.net/Downloads/GPA/");
+    const html = await response.text();
+
+    const regex = /GPA\s+(\d+(?:\.\d+)*)\.zip/g;
+
+    let match;
+    let latest = null;
+
+    while ((match = regex.exec(html)) !== null) {
+        const version = match[1];
+
+        if (!latest || compareVersions(version, latest) > 0) {
+            latest = version;
+        }
+    }
+
+    return latest;
+}
+function compareVersions(a, b) {
+    const pa = a.split(".").map(Number);
+    const pb = b.split(".").map(Number);
+
+    const len = Math.max(pa.length, pb.length);
+
+    for (let i = 0; i < len; i++) {
+        const na = pa[i] || 0;
+        const nb = pb[i] || 0;
+
+        if (na > nb) return 1;
+        if (na < nb) return -1;
+    }
+
+    return 0;
+}
+
+  async function BlissBox_getPressure( )
 {
 	if ( document.getElementById("controllerId").innerText != "121" )	return;
 
-	const data = await BlissBox_readFeature(hid, 0x17);
+	const data = await BlissBox_readFeature(  0x17);
 	document.getElementById("pressureBtn1").selectedIndex = data[12]-1;
 	document.getElementById("pressureBtn2").selectedIndex = data[13]-1;
 	document.getElementById("pressureBtn3").selectedIndex = data[14]-1;
@@ -118,8 +178,8 @@ export async function BlissBox_getPressure(hid)
 							  document.getElementById("pressureBtn3").selectedIndex + 1,
 							  document.getElementById("pressureBtn4").selectedIndex + 1
 							, 0 ];  
-		await BlissBox_writeFeature(hid, 0x12, d);//setup pressure
-		BlissBox_saveModes(hid);
+		await BlissBox_writeFeature( hid, 0x12, d);//setup pressure
+		BlissBox_saveModes( hid);
 
 	}
 	
@@ -129,29 +189,153 @@ export async function BlissBox_getPressure(hid)
 							  document.getElementById("pressureBtn3").selectedIndex + 2,
 							  document.getElementById("pressureBtn4").selectedIndex + 2
 							, 0 ];  
-		await BlissBox_writeFeature(hid, 0x12, d);//setup pressure
+		await BlissBox_writeFeature( hid, 0x12, d);//setup pressure
 	}
 }
-export async function BlissBox_getEEProm(hid)
+  async function BlissBox_getEEProm()
 {
 	document.getElementById("BBeepromPopup").style.display = "block";
-	const data = await BlissBox_readFeature(hid, 0x17);
+	const data = await BlissBox_readFeature(  0x17);
 	document.querySelectorAll(".BBhex").forEach((el, i) => {
 		el.value = data[i] ?? "00";
 	});
 }
-export async function BlissBox_saveModes(hid)
+  async function BlissBox_saveModes()
 {
 	let save_data = [ 1, 0, 0, 0xff, 1, 0, 0, 0 ]; //1 for save, need to fill in first byte with the bits/
-	await BlissBox_writeFeature(hid, 0x12, save_data);
+	await BlissBox_writeFeature( hid, 0x12, save_data);
 }
-export async function BlissBox_rumbleTest(hid)
+  async function BlissBox_rumbleTest()
 {
 	let d = [ 4, 0, 0, 2, 255, 200, 0, 0 ]; //Rid, type, 0, 0,  command, amount, loop, padding
-	await BlissBox_writeFeature(hid, 0x12, d);	
+	await BlissBox_writeFeature( hid, 0x12, d);	
 }			
-export async function BlissBox_restoreDefaults(hid)
+  async function BlissBox_restoreDefaults()
 {			
 	let def_data = [ 1, 0, 0, 0xff, 2, 0, 0, 0 ]; //2 restore defaults
-	await BlissBox_writeFeature(hid, 0x12, def_data);
+	await BlissBox_writeFeature( hid, 0x12, def_data);
 }
+
+
+  async function BlissBox_readBlissBoxAdapterInfo( )
+{	
+ 
+	try
+	{
+		const bytes = await BlissBox_readFeature(  0x11);		
+	
+		if (bytes[0] == 121) 
+		{
+ 			if ( bars == null )
+			{
+				bars = setInterval ( async () =>
+				{
+					if (! document.getElementById("BBpressurebox") ) return; 
+					const bar = document.querySelectorAll(".BBbar");
+					try
+					{
+						const p = await BlissBox_readFeature(  0x15);
+						for (let b = 0; b < 12; b++)
+						{
+							
+							const level = Math.round(p[b+1] * 100 / 255); // 0-255 -> 0-100
+							bar[b].style.setProperty("--level", level);
+						}
+					}
+					catch (e) 
+					{
+						clearInterval(bars);
+					}
+	 
+					
+				}, 100);
+			}
+		} 
+		else 
+		{
+			clearInterval(bars);
+		}
+
+		if ( BlissBox_lookUpName(bytes[0]) !=  currentController ) 
+		{
+		
+			controllerSelect.value =  currentController = BlissBox_lookUpName(bytes[0]);
+			loadControllerLayout( currentController);
+		}
+		
+		if (bytes[0] == 121) 
+		{ 
+			document.getElementById("hidpressurebox").classList.add("show");
+			document.getElementById("BBpressurebox").classList.add("show");
+		}
+
+		let latest = await getLatestVersion();
+		
+		document.getElementById("controllerId").textContent = bytes[0];
+		document.getElementById("major").textContent = bytes[2];
+		document.getElementById("minor").textContent = ( latest.split(".")[1] < bytes[4]) ? bytes[4] + " Newer version avilable"  : bytes[4]  ;
+		document.getElementById("player").textContent = bytes[3]-3;
+
+		document.querySelector("#hsd .value").textContent = bytes[1] & 0x08 ? "ON" : "OFF";//Hotswap Disable
+		document.querySelector("#udlr .value").textContent = bytes[1] & 0x10 ? "ON" : "OFF";//UDLR mode
+		document.querySelector("#dac .value").textContent = bytes[1] & 0x20 ? "ON" : "OFF";//Analog to D-pad Or Disable all combos(
+		document.querySelector("#apd .value").textContent = bytes[1] & 0x40 ? "ON" : "OFF";//Bit 6: Autopause Disab
+		document.querySelector("#dmo .value").textContent = bytes[1] & 0x80 ? "ON" : "OFF";//Bit 7: d-pad only mode
+	}
+	catch (e) 
+	{ 
+		console.warn("Adapter read failed:", e);
+	}
+	
+	document.querySelector(".BBbutton-grid").addEventListener("click", async  (e) => 
+	{
+		const btn = e.target.closest("button");
+		if (!btn) return;
+
+		const action = btn.dataset.action;
+
+		switch (action) {
+			case "rumble":
+				BlissBox_rumbleTest();
+				break;
+				
+			case "memcard":
+				console.log("MemCard clicked");
+				break;
+
+			case "stick_range":
+				console.log("Stick Range clicked");
+				break;
+
+			case "hotkey":
+				console.log("Hotkey clicked");
+				break;
+
+			case "talk":
+				console.log("Talk clicked");
+				break;
+
+			case "mapper":
+				console.log("Mapper clicked");
+				break;
+
+			case "save":
+				BlissBox_saveModes ();	
+				break;
+
+			case "defaults":
+				BlissBox_restoreDefaults();
+				break;
+
+			case "pressure":
+				BlissBox_getPressure ();
+				break;
+
+			case "eeprom":
+				BlissBox_getEEProm (hid);				
+				break;
+		}
+	});
+
+		
+}	
