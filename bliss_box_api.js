@@ -123,43 +123,7 @@ let bars = null;//interval for pressure bars
     const data = await  hid.receiveFeature(id);
     return new Uint8Array(data.buffer || data);
 }
- 
- async function getLatestVersion() {
-    const response = await fetch("http://spawnlinux.ddns.net/Downloads/GPA/");
-    const html = await response.text();
-
-    const regex = /GPA\s+(\d+(?:\.\d+)*)\.zip/g;
-
-    let match;
-    let latest = null;
-
-    while ((match = regex.exec(html)) !== null) {
-        const version = match[1];
-
-        if (!latest || compareVersions(version, latest) > 0) {
-            latest = version;
-        }
-    }
-
-    return latest;
-}
-function compareVersions(a, b) {
-    const pa = a.split(".").map(Number);
-    const pb = b.split(".").map(Number);
-
-    const len = Math.max(pa.length, pb.length);
-
-    for (let i = 0; i < len; i++) {
-        const na = pa[i] || 0;
-        const nb = pb[i] || 0;
-
-        if (na > nb) return 1;
-        if (na < nb) return -1;
-    }
-
-    return 0;
-}
-
+  
   async function BlissBox_getPressure( )
 {
 	if ( document.getElementById("controllerId").innerText != "121" )	return;
@@ -269,11 +233,10 @@ function compareVersions(a, b) {
 			document.getElementById("BBpressurebox").classList.add("show");
 		}
 
-		let latest = await getLatestVersion();
-		
+ 
 		document.getElementById("controllerId").textContent = bytes[0];
 		document.getElementById("major").textContent = bytes[2];
-		document.getElementById("minor").textContent = ( latest.split(".")[1] < bytes[4]) ? bytes[4] + " Newer version avilable"  : bytes[4]  ;
+		document.getElementById("minor").textContent =  bytes[4]  ;
 		document.getElementById("player").textContent = bytes[3]-3;
 
 		document.querySelector("#hsd .value").textContent = bytes[1] & 0x08 ? "ON" : "OFF";//Hotswap Disable
