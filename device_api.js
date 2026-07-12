@@ -35,6 +35,7 @@ const Controllers =
     { file:"playstation",  name:"Sony PlayStation" },
     { file:"playstation4", name:"Sony PlayStation 4" },
     { file:"saturn", 	   name:"Sega Saturn" },
+    { file:"saturnanalog", name:"Sega Saturn 3d Stick" },
     { file:"supernintendo",name:"Super Nintendo" },
     { file:"turbografx16", name:"TurboGrafx-16" },
     { file:"virtualboy",   name:"Virtual Boy" },

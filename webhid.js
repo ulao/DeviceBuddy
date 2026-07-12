@@ -54,7 +54,7 @@ class WebHIDDevice
         //
         // Detect this pattern and rotate the data back into the correct order.
         // -----------------------------------------------------------------
-        const shiftDetected = (b.length === 5 && b[0] === 0x80 && b[4] === 0x00);
+        const shiftDetected = (b.length === 5 && b[0] & 0x80 && b[4] === 0x00);
 
         if (shiftDetected)
         {

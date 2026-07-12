@@ -29,11 +29,11 @@ type: button
 label: s
 id:BTN_START
 x: 210
-y: 180
+y: 200
 byte: 0
 bit: 5
 group: center
-shapeType: rectangle1
+shapeType: circle1
 
 
 # Face buttons. Max buttons total is 24.
@@ -41,19 +41,28 @@ shapeType: rectangle1
 type: button
 id: BTN_2
 label: B
-x: 310
-y: 150
+x: 270
+y: 130
 byte: 0
 bit: 1
 group: face
 shapeType: circle1
 
- 
+type: analog
+label:  
+id:LEFTSTICK
+x: 100
+y: 75
+xByte: 3
+yByte: 4
+side: left
+shapeType: circle2
+
 type: button
 id: BTN_R1
 label: C
-x: 345
-y: 135
+x: 305
+y: 115
 byte: 0
 bit: 7
 group: face
@@ -62,8 +71,8 @@ shapeType: circle1
 type: button
 id: BTN_1
 label: A
-x: 275
-y: 165
+x: 235
+y: 145
 byte: 0
 bit: 0
 group: face
@@ -72,32 +81,32 @@ shapeType: circle1
 type: button
 id: BTN_4
 label: Y
-x: 300
-y: 110
+x: 260
+y: 90
 byte: 0
 bit: 3
 group: face
-shapeType: circle0
+shapeType: circle1
 
 type: button
 id: BTN_L1
 label: Z
-x: 335
-y: 95
+x: 295
+y: 75
 byte: 0
 bit: 6
 group: face
-shapeType: circle0
+shapeType: circle1
 
 type: button
 id: BTN_3
 label: X
-x: 265
-y: 125
+x: 225
+y: 105
 byte: 0
 bit: 2
 group: face
-shapeType: circle0
+shapeType: circle1
 
 type: button
 label: L1
@@ -118,6 +127,27 @@ byte: 1
 bit: 1
 group: top
 shapeType: rectangle2
- 
+
+type: trigger
+id:LEFTTRIGGER
+label:  
+x: 50
+y: 220
+byte: 5
+side: left
+shapeType: trianglel
+
+
+type: trigger
+type: trigger
+id:RIGHTTRIGGER
+label:  
+x: 350
+y: 220
+byte: 8
+side: right
+shapeType: triangler
+
+
 
   

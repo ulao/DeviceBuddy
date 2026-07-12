@@ -5,28 +5,28 @@
   function BlissBox_lookUpName(id)
 {
 	if (id == 0  ) return "atari2600"  ;
-	if (id == 1  ) return "COL"           ;
+	if (id == 1  ) return "coleco"           ;
 	if (id == 2  ) return "gx4000"        ;
-	if (id == 3  ) return "SATURN_DIGITAL";
+	if (id == 3  ) return "saturn";
 	if (id == 4  ) return "A7800"         ;
-	if (id == 5  ) return "VEC"           ;
-	if (id == 6  ) return "A5200"         ;
+	if (id == 5  ) return "vectrex"           ;
+	if (id == 6  ) return "atari5200"         ;
 	if (id == 7  ) return "HPD"		      ;
-	if (id == 8  ) return "SATURN_ANALOG" ;
+	if (id == 8  ) return "saturnanalog" ;
 	if (id == 9  ) return "gamecube"      ;
 	if (id == 10 ) return "atmark" 		  ;
-	if (id == 11 ) return "jaguar"	          ;
-	if (id == 12 ) return "DRV_CNT" 	;
-	if (id == 13 ) return "WII_NUNCHUK"  ;
-	if (id == 14 ) return "INTELI" 		  ;
+	if (id == 11 ) return "jaguar" ;
+	if (id == 12 ) return "drivigncontroller" 	;
+	if (id == 13 ) return "nuncheck"  ;
+	if (id == 14 ) return "intellivition" 		  ;
 	if (id == 15 ) return "dreamcast" 	;
 	if (id == 16 ) return "dreamcast"	    ;
-	if (id == 17 ) return "NES"	          ;
-	if (id == 18 ) return "GC_WHEEL"	;
+	if (id == 17 ) return "nintendo"	          ;
+	if (id == 18 ) return "gaemcubewheel"	;
 	if (id == 19 ) return "nintendo64";
-	if (id == 20 ) return "GEN_3" 		  ;
-	if (id == 21 ) return "GEN_6" 		  ;
-	if (id == 22 ) return "SMS"	          ;
+	if (id == 20 ) return "genisis3" 		  ;
+	if (id == 21 ) return "genisis3" 		  ;
+	if (id == 22 ) return "mastersystem"	          ;
 	if (id == 23 ) return "TG16" 		;
 	if (id == 24 ) return "CD32"		;
 	if (id == 25 ) return "3DO"	;
@@ -110,21 +110,49 @@ let bars = null;//interval for pressure bars
         BlissBox_readBlissBoxAdapterInfo( );
 
     }, 500);
+	
+ 
+ 	document.querySelector("#hsd").addEventListener("click", function()
+	{
+		const value = this.querySelector(".value");
+		value.textContent = (value.textContent === "ON") ? "OFF" : "ON";
+		BlissBox_setModes();
+	});
+ 
+ 	document.querySelector("#udlr").addEventListener("click", function()
+	{
+		const value = this.querySelector(".value");
+		value.textContent = (value.textContent === "ON") ? "OFF" : "ON";
+		BlissBox_setModes();
+	});
+ 
+ 	document.querySelector("#dac").addEventListener("click", function()
+	{
+		const value = this.querySelector(".value");
+		value.textContent = (value.textContent === "ON") ? "OFF" : "ON";
+		BlissBox_setModes();
+	});
+ 
+ 	document.querySelector("#apd").addEventListener("click", function()
+	{
+		const value = this.querySelector(".value");
+		value.textContent = (value.textContent === "ON") ? "OFF" : "ON";
+		BlissBox_setModes();
+	});
+
 }
-
-
-  async function BlissBox_writeFeature (id, data)  
+async function BlissBox_writeFeature (id, data)  
 { 
 	await  hid.sendFeature(id,  new Uint8Array(data) );	
 }
 
-  async function BlissBox_readFeature(id)
+async function BlissBox_readFeature(id)
 {
     const data = await  hid.receiveFeature(id);
     return new Uint8Array(data.buffer || data);
 }
   
-  async function BlissBox_getPressure( )
+async function BlissBox_getPressure( )
 {
 	if ( document.getElementById("controllerId").innerText != "121" )	return;
 
@@ -142,8 +170,8 @@ let bars = null;//interval for pressure bars
 							  document.getElementById("pressureBtn3").selectedIndex + 1,
 							  document.getElementById("pressureBtn4").selectedIndex + 1
 							, 0 ];  
-		await BlissBox_writeFeature( hid, 0x12, d);//setup pressure
-		BlissBox_saveModes( hid);
+		await BlissBox_writeFeature(  0x12, d);//setup pressure
+		BlissBox_save( );
 
 	}
 	
@@ -153,10 +181,10 @@ let bars = null;//interval for pressure bars
 							  document.getElementById("pressureBtn3").selectedIndex + 2,
 							  document.getElementById("pressureBtn4").selectedIndex + 2
 							, 0 ];  
-		await BlissBox_writeFeature( hid, 0x12, d);//setup pressure
+		await BlissBox_writeFeature(  0x12, d);//setup pressure
 	}
 }
-  async function BlissBox_getEEProm()
+async function BlissBox_getEEProm()
 {
 	document.getElementById("BBeepromPopup").style.display = "block";
 	const data = await BlissBox_readFeature(  0x17);
@@ -164,24 +192,35 @@ let bars = null;//interval for pressure bars
 		el.value = data[i] ?? "00";
 	});
 }
-  async function BlissBox_saveModes()
+async function BlissBox_save()
 {
 	let save_data = [ 1, 0, 0, 0xff, 1, 0, 0, 0 ]; //1 for save, need to fill in first byte with the bits/
-	await BlissBox_writeFeature( hid, 0x12, save_data);
+	await BlissBox_writeFeature(  0x12, save_data);
+}
+async function BlissBox_setModes( )
+{
+	let modes = 0;
+	if ( document.querySelector("#hsd  .value").textContent == "ON" ) modes |= 0x08; else  modes &= ~0x08;
+	if ( document.querySelector("#udlr .value").textContent == "ON" ) modes |= 0x10; else  modes &= ~0x10;
+	if ( document.querySelector("#dac  .value").textContent == "ON" ) modes |= 0x20; else  modes &= ~0x20;
+	if ( document.querySelector("#apd  .value").textContent == "ON" ) modes |= 0x40; else  modes &= ~0x40;
+ 
+	let save_data = [ 1, 0, 0, modes, 0, 0, 0, 0 ]; //1 for save, need to fill in first byte with the bits/
+	await BlissBox_writeFeature(  0x12, save_data);
 }
   async function BlissBox_rumbleTest()
 {
 	let d = [ 4, 0, 0, 2, 255, 200, 0, 0 ]; //Rid, type, 0, 0,  command, amount, loop, padding
-	await BlissBox_writeFeature( hid, 0x12, d);	
+	await BlissBox_writeFeature(  0x12, d);	
 }			
   async function BlissBox_restoreDefaults()
 {			
 	let def_data = [ 1, 0, 0, 0xff, 2, 0, 0, 0 ]; //2 restore defaults
-	await BlissBox_writeFeature( hid, 0x12, def_data);
+	await BlissBox_writeFeature(  0x12, def_data);
 }
 
 
-  async function BlissBox_readBlissBoxAdapterInfo( )
+async function BlissBox_readBlissBoxAdapterInfo( )
 {	
  
 	try
@@ -192,6 +231,7 @@ let bars = null;//interval for pressure bars
 		{
  			if ( bars == null )
 			{
+ 
 				bars = setInterval ( async () =>
 				{
 					if (! document.getElementById("BBpressurebox") ) return; 
@@ -209,6 +249,7 @@ let bars = null;//interval for pressure bars
 					catch (e) 
 					{
 						clearInterval(bars);
+						bars = null
 					}
 	 
 					
@@ -218,6 +259,7 @@ let bars = null;//interval for pressure bars
 		else 
 		{
 			clearInterval(bars);
+			bars = null
 		}
 
 		if ( BlissBox_lookUpName(bytes[0]) !=  currentController ) 
@@ -233,7 +275,6 @@ let bars = null;//interval for pressure bars
 			document.getElementById("BBpressurebox").classList.add("show");
 		}
 
- 
 		document.getElementById("controllerId").textContent = bytes[0];
 		document.getElementById("major").textContent = bytes[2];
 		document.getElementById("minor").textContent =  bytes[4]  ;
@@ -299,6 +340,7 @@ let bars = null;//interval for pressure bars
 				break;
 		}
 	});
-
-		
+ 	
 }	
+
+ 
