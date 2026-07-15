@@ -35,7 +35,7 @@
 	if (id == 28 ) return "NES_GUN" 	;
 	if (id == 29 ) return "virtualboy" 		  ;
 	if (id == 30 ) return "arkanoid" ;
-	if (id == 31 ) return "WII_CLASSIC"  ;
+	if (id == 31 ) return "wiicontroller"  ;
 	if (id == 32 ) return "WII_MPLUS"     ;
 	if (id == 33 ) return "CDI" 		;
 	if (id == 34 ) return "SAC" 		;
@@ -590,8 +590,8 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 			controllerSelect.value =  currentController = BlissBox_lookUpName(bytes[0]);
 			loadControllerLayout( currentController);
 		}
-		
-		if (bytes[0] == 121) 
+	 
+		if (bytes[0] == 121 || bytes[0] == 13) 
 		{ 
 			document.getElementById("hidpressurebox").classList.add("show");
 			document.getElementById("BBpressurebox").classList.add("show");

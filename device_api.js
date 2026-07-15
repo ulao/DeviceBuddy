@@ -43,7 +43,9 @@ const Controllers =
     { file:"xboxone",	   name:"Xbox One" } ,
     { file:"xbox360",	   name:"Xbox 360" } ,
 	{ file:"xboxog",	   name:"Xbox Original" }, 
-	{ file:"switch",	   name:"Nintendo Switch" } 
+	{ file:"switch",	   name:"Nintendo Switch" },
+	{ file:"wiicontroller",name:"Nintendo wii Controller" },
+	{ file:"wiichuck",	   name:"Nintendo wii Nunchuck" } 
 ];
 
 let currentController = "playstation"; 						//controller in use
@@ -58,7 +60,7 @@ let devices = [];											//connected devices
 let lastReport = "";										//log limiter
 let fillImg = new Image();	  fillImg.src = "plastic.jpg";	//fill image for layout
 const reportLines = [];										//log lines array
-const hid = new WebHIDDevice();								//handle to webhid
+let hid = null												//handle to backend
 const deviceListEl = document.getElementById("deviceList");	//html element
 const connBtn = document.getElementById("connBtn");         //html element
 const status = document.getElementById("status");           //html element
@@ -493,6 +495,16 @@ function doCasech(text)
 
 async  function init()
 {
+	hid = new WebHIDDevice(); //default
+	backendSelect.onchange = async()   => //change back end
+	{
+		usbBackend = backendSelect.value;	
+		if(usbBackend = "winhid")  hid = new WebHIDDevice();
+		if(usbBackend = "winusb")  hid = new WebUSBDevice();
+		 await cleanUpSelection(devices[0]);
+		await selectDevice();
+	};
+
 	for (const controller of Controllers)
 	{
 		const option = document.createElement("option");
@@ -788,9 +800,19 @@ function onInputReport(e)
 	if (isBlissBox && box?.classList.contains("show"))
 	{ 
 		const b = document.querySelectorAll(".hidbar");
-		b[0].style.setProperty("--level", Math.round(data[5] * 100 / 255));
-		b[1].style.setProperty("--level", Math.round(data[8] * 100 / 255));
-		b[2].style.setProperty("--level", Math.round(data[9] * 100 / 255));
+		//if() {}
+		if(currentController == "nunchuck")
+		{
+			b[0].style.setProperty("--level",0);
+			b[1].style.setProperty("--level", Math.round(data[6] * 100 / 255));
+			b[2].style.setProperty("--level", Math.round(data[7] * 100 / 255));
+		}
+		else
+		{
+			b[0].style.setProperty("--level", Math.round(data[5] * 100 / 255));
+			b[1].style.setProperty("--level", Math.round(data[8] * 100 / 255));
+			b[2].style.setProperty("--level", Math.round(data[9] * 100 / 255));
+		}
 		b[3].style.setProperty("--level", Math.round(data[10] * 100 / 255));
 	}
 }

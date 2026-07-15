@@ -15,7 +15,7 @@ class WebHIDDevice
     // Otherwise, show the browser's device picker.
     async connect(filters = [])
     {
-        let devices = await navigator.hid.getDevices(); // Check for previously authorized devices.
+        let devices = await WebUSBDevice.getDevices() // Check for previously authorized devices.
         if (!devices.length)        // No authorized devices? Ask the user to select one.
         {
             devices = await navigator.hid.requestDevice({ filters });

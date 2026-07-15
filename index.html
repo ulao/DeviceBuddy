@@ -60,12 +60,19 @@ Bliss-Box LLC reserves all legal rights and remedies. Bliss-Box® and the Bliss-
 						<input type="radio" name="mapperMode" id="mapperCustom" value="custom">
 						Custom
 					</label>
+					 
+
 				</div>
 
 				<div class="mapper-buttons">
 					<button id="btnDownload">template</button>
 					<button id="btnUpload">Upload</button>
 					<button id="btnClear">clear</button> 
+					Select your USB backend: 
+					<select id="backendSelect">
+						<option value="winhid">Windows HID (WebHID)</option>
+						<option value="winusb">WinUSB (WebUSB)</option>
+					</select>
 				</div>
 			</div>
 		</div> 
@@ -137,6 +144,7 @@ Bliss-Box LLC reserves all legal rights and remedies. Bliss-Box® and the Bliss-
 	<script type="module" src="main.js"></script>
 	--->
 	<script src="webhid.js"></script>
+	<script src="webusb.js"></script>
 	<script src="bliss_box_api.js"></script>
 	<script src="device_api.js"></script>
 </body>
