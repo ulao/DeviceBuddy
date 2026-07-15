@@ -80,7 +80,7 @@ async function sendManualReport()
 
 
 async function readFeature(value)
-{
+{ 
     const id = Number(document.getElementById("featId").value);
     const data = await hid.receiveFeature(id);
 

@@ -148,7 +148,7 @@ async function updateDevice(dev)
 
         if (type != 0) continue;
 
-        for (let i=0;i<len;i++)
+        for (let i=0;i<len;i++) 
             dataBuffer[addr+i] = parseInt(line.substr(9+i*2,2),16);
 
         if (startAddress > addr) startAddress = addr;
