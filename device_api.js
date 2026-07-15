@@ -111,7 +111,7 @@ async function selectDevice()
 			return;
  
 		}
- 
+  
 		let name =  Controllers.find(c => c.file === currentController)?.name;
 		//name patcher, 
 		console.log("Controller id: " + hid.vendorId + " | " + hid.productId); 

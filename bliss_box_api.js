@@ -607,7 +607,7 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 		document.querySelector("#dac .value").textContent = bytes[1] & 0x20 ? "ON" : "OFF";//Analog to D-pad Or Disable all combos(
 		document.querySelector("#apd .value").textContent = bytes[1] & 0x40 ? "ON" : "OFF";//Bit 6: Autopause Disab
 		document.querySelector("#dmo .value").textContent = bytes[1] & 0x80 ? "ON" : "OFF";//Bit 7: d-pad only mode
-	}
+	} 
 	catch (e) 
 	{ 
 		console.warn("Adapter read failed:", e);
