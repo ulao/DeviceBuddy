@@ -250,6 +250,18 @@
   box-shadow: 0 10px 40px rgba(0,0,0,0.6);
   width: 300px;
 }
+#BBUpdateProgress {
+	width: 100%;
+	height: 20px;
+	background: #333;
+	margin-top: 10px;
+}
+
+#BBUpdateProgressBar {
+	width: 0%;
+	height: 100%;
+	background: limegreen;
+}
 .BBPRESSURE-window {
   background: #111;
   border: 1px solid #444;

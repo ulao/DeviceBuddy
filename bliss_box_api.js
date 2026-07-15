@@ -92,10 +92,103 @@
 
 let bars = null;//interval for pressure bars
 
-function updateDevice (dev)
+async function GPA_CMD(dev, High, Low, Action1, action2, count, dataBuffer, startAddr)
 {
+    let report = new Uint8Array(64);
+    report.fill(0xff);
+    report[0] = 3;
+    report[1] = High;
+    report[2] = Low;
+    report[3] = Action1;
+    report[4] = action2;
+    report[5] = count;
+    for (let d = 7; d < count + 1; d++)
+	{
+		report[d-1] = dataBuffer[startAddr + d - 7];
+	}
+    await dev.sendReport(0, report);
+    return false;
+}
 
-} 
+
+async function updateDevice(dev)
+{
+    let player = 1;
+    console.log("Updating GPA player:", player);
+
+    if (!dev.opened) await dev.open();
+
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".hex";
+
+    const file = await new Promise(resolve =>
+    {
+        input.onchange = () => resolve(input.files[0]);
+        input.click();
+    });
+
+    if (!file) return false;
+
+    let dataBuffer = new Uint8Array(65792);
+    dataBuffer.fill(0xff);
+
+    let startAddress = dataBuffer.length;
+    let endAddress = 0;
+
+    let hexText = await file.text();
+
+    for (let line of hexText.split(/\r?\n/))
+    {
+        if (!line.startsWith(":")) continue;
+
+        let len = parseInt(line.substr(1,2),16);
+        let addr = parseInt(line.substr(3,4),16);
+        let type = parseInt(line.substr(7,2),16);
+
+        if (type != 0) continue;
+
+        for (let i=0;i<len;i++)
+            dataBuffer[addr+i] = parseInt(line.substr(9+i*2,2),16);
+
+        if (startAddress > addr) startAddress = addr;
+        if (endAddress < addr + len) endAddress = addr + len;
+    }
+    startAddress &= ~127;
+    endAddress = (endAddress + 127) & ~127;
+	await GPA_CMD(dev, 0, 0, 3, 17, 7, dataBuffer, 0);
+	let marker = 0;
+	while (startAddress < endAddress)
+	{
+	    let percent = (startAddress / endAddress) * 100;
+		document.getElementById("BBUpdateProgressBar").style.width = percent + "%";
+	
+		await GPA_CMD(dev, startAddress & 0xff, (startAddress >> 8) & 0xff, 1, 0, 64, dataBuffer, startAddress);
+		startAddress += 58;
+
+		await GPA_CMD(dev, startAddress & 0xff, (startAddress >> 8) & 0xff, 1, 0, 64, dataBuffer, startAddress);
+		startAddress += 58;
+
+		await GPA_CMD(dev, startAddress & 0xff, (startAddress >> 8) & 0xff, 1, 0, 18, dataBuffer, startAddress);
+		startAddress += 12;
+
+		await GPA_CMD(dev, marker & 0xff, (marker >> 8) & 0xff, 5, 17, 7, dataBuffer);
+		marker += 0x80;
+
+		await GPA_CMD(dev, marker & 0xff, (marker >> 8) & 0xff, 3, 17, 7, dataBuffer);
+	}
+
+
+    let reset = new Uint8Array(64);
+    reset.fill(0xff);
+    reset[0] = 5;
+
+    await dev.sendReport(0, reset);
+
+    console.log("GPA update complete");
+
+    return false;
+}
 
 function BlissBox_DeInit ()
 {
@@ -108,7 +201,7 @@ function BlissBox_DeInit ()
 async function BlissBox_Init ()
 {
 
-	document.getElementById("BBUPDATE").style.display = "show";
+ 
 	let restore = document.getElementById("BBUPDATE").onclick = async() =>
 	{
 		document.getElementById("BBUpdatePopup").style.display = "block";	 
@@ -125,9 +218,12 @@ async function BlissBox_Init ()
 			if (newDevice[0].vendorId == 0x16d0 && newDevice[0].productId == 0x04fb  ) document.getElementById("BBUpdate").textContent = "Update"; 
 			document.getElementById("BBUpdate").onclick =  async  () =>
 			{
-				updateDevice(newDevice[0]);
 				document.getElementById("BBUPDATE").onclick = restore;
-				document.getElementById("BBUPDATE").style.display = "block";
+				await updateDevice(newDevice[0])
+ 
+				document.getElementById("BBUpdateProgressBar").style.width = "100%";
+				document.getElementById("BBUpdatePopup").style.display = "none";
+
 			};
 		};
 	}
