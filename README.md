@@ -16,6 +16,10 @@ It is new, expect bugs, missing features, and things changing frequently.
 🌐 Online version:
 https://ulao.github.io/DeviceBuddy/
 
+Anyone interested in development can go to https://discord.gg/KvVWhwH3U and join the #DeviceBuddy discussion. 
+https://discord.gg/KvVWhwH3U
+or enter an issue on github.
+
 ---
 
 ## About
