@@ -6,7 +6,7 @@
 
 ---
 
-## 🚧 Project Status
+## 🚧 Project Status 🚧
 
 **DeviceBuddy is a work in progress.**
 
@@ -69,6 +69,9 @@ Current status:
 | Virtual Boy | ✅ |
 | Xbox One | ✅ |
 | Xbox 360 | ✅ |
+| Xbox OG | ✅ |
+| Switch0 | ✅ |
+
 
 ---
 
@@ -174,3 +177,8 @@ All rights reserved.
 ## Features
 
 <img src="https://github.com/user-attachments/assets/5c1ed7e5-baa7-4d83-977d-53e5877cd470">
+
+Bliss-Box LLC
+Bliss-Box.com
+
+
