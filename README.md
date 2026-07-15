@@ -1,60 +1,151 @@
 # DeviceBuddy
-Diag, display, and your ontroller anywhere. 
-<img width="275" height="199" alt="image" src="https://github.com/user-attachments/assets/89fe4f43-66c1-4b2c-a019-4cc2914b3423" />
 
-_____________________________________________________________________________________________________________
-If you came here, chances are you just stumbled on to this. Or maybe got a invite, its new, do not expect much!
-_____________________________________________________________________________________________________________
+**A universal controller diagnostic, display, and testing utility.**
 
+<img src="https://github.com/user-attachments/assets/89fe4f43-66c1-4b2c-a019-4cc2914b3423" width="275">
+
+---
+
+## 🚧 Project Status
+
+**DeviceBuddy is a work in progress.**
+
+If you found this project, you probably stumbled across it early.  
+It is new, expect bugs, missing features, and things changing frequently.
+
+🌐 Online version:
 https://ulao.github.io/DeviceBuddy/
 
+---
 
-DeviceBuddy is a W.I.P of a quick and handy device utility for controllers. I plan to replace all the crappy non flexable controller testers out there. This will not be an exclusive Bliss-Box tool. This one will support everything I can figure out and be configurable. 
+## About
 
-V 1.1: This is the Hello World version, expected to be full of bugs and errors. I have maybe parts of the Bliss-Box API ready, and tested a few controllers. Linux and Windows are working. 
+DeviceBuddy is a quick and flexible controller utility designed to replace the many limited controller testers currently available.
 
-Support added for most common controllers
-3DO
-Atari 2600
-Atari 5200
-Atari 7800
-Philips CD-i
-Sega Dreamcast
-Nintendo GameCube
-Sega Genesis
-Atari Jaguar
-Neo Geo
-Nintendo Entertainment System
-Nintendo 64
-Apple Pippin
-Sony PlayStation
-Sony PlayStation 4
-Sega Saturn
-Super Nintendo
-TurboGrafx-16
-Virtual Boy
-Attmark Pippin
-Xbox One
-Xbox 360
+The goal is to support as many controllers as possible while remaining configurable and expandable.
 
+This is **not an exclusive Bliss-Box tool**. Support will be added for any controller hardware that can be identified and communicated with.
 
-Windows Notes:
-if you download the source and want to run locally I got 3 browsers to work. They are chrom based 
- 
- chrome.exe --allow-file-access-from-files --disable-web-security --user-data-dir="C:\temp\chrome_dev"
- C:\Program Files\Opera\launcher.exe" --allow-file-access-from-files --disable-web-security --disable-site-isolation-trials --user-data-dir="C:\temp\opera_dev"
- "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --allow-file-access-from-files --disable-web-security --disable-site-isolation-trials --user-data-dir="C:\temp\edge_dev"
+---
 
-For  Linux users, web or stand alone you must find the name of the device or devies i.e "mcs-gamer-pro"edit this file:    sudo nano /etc/udev/rules.d/99-mcs-gamer-pro.rules
-add this line:    SUBSYSTEM=="hidraw", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="0d04", MODE="0666"
+## Current Version
 
-Or at least I did, and to make chrome work in standalone more, requires a shiton if figuring out.  And there are many ways to install chrome, so use chat GPT. 
-Linces: If you do not agree contact Bliss-Box directly to find a suitable solution for you use case. 
-Bliss-Box Device Buddy
+### V1.1 - Hello World Release
+
+This is the first public version.
+
+Current status:
+
+- Bliss-Box API support partially implemented
+- Tested with multiple controllers
+- Windows support
+- Linux support
+- WebHID based controller communication
+
+---
+
+## Supported Controllers
+
+| System | Support |
+|---|---|
+| 3DO | ✅ |
+| Atari 2600 | ✅ |
+| Atari 5200 | ✅ |
+| Atari 7800 | ✅ |
+| Philips CD-i | ✅ |
+| Sega Dreamcast | ✅ |
+| Nintendo GameCube | ✅ |
+| Sega Genesis | ✅ |
+| Atari Jaguar | ✅ |
+| Neo Geo | ✅ |
+| Nintendo Entertainment System | ✅ |
+| Nintendo 64 | ✅ |
+| Apple Pippin | ✅ |
+| Sony PlayStation | ✅ |
+| Sony PlayStation 4 | ✅ |
+| Sega Saturn | ✅ |
+| Super Nintendo | ✅ |
+| TurboGrafx-16 | ✅ |
+| Virtual Boy | ✅ |
+| Xbox One | ✅ |
+| Xbox 360 | ✅ |
+
+---
+
+# Windows Notes
+
+If you download the source and want to run DeviceBuddy locally, Chromium-based browsers are required.
+
+Tested browsers:
+
+- Chrome
+- Opera
+- Edge
+
+Launch with:
+
+### Chrome
+```cmd
+chrome.exe --allow-file-access-from-files --disable-web-security --user-data-dir="C:\temp\chrome_dev"
+```
+
+### Opera
+```cmd
+"C:\Program Files\Opera\launcher.exe" --allow-file-access-from-files --disable-web-security --disable-site-isolation-trials --user-data-dir="C:\temp\opera_dev"
+```
+
+### Edge
+```cmd
+"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --allow-file-access-from-files --disable-web-security --disable-site-isolation-trials --user-data-dir="C:\temp\edge_dev"
+```
+
+---
+
+# Linux Notes
+
+Linux users may need HID permissions.
+
+Find your device name:
+
+```
+mcs-gamer-pro
+```
+
+Create:
+
+```
+sudo nano /etc/udev/rules.d/99-mcs-gamer-pro.rules
+```
+
+Add:
+
+```text
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="0d04", MODE="0666"
+```
+
+For the updater:
+
+```text
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="04fb", MODE="0666"
+```
+
+Reload rules:
+
+```bash
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+```
+
+---
+
+# License
+
+This project is not open source.
+
 Copyright (c) 2026 Bliss-Box LLC
-https://bliss-box.com
 
-This code is NOT open source. Permission to use, modify, or redistribute this code is granted only if:
+Permission to use, modify, or redistribute this code is granted only if:
+
 - This copyright notice remains.
 - The Bliss-Box logo remains visible.
 - A visible link to https://bliss-box.com remains on the page.
@@ -62,23 +153,24 @@ This code is NOT open source. Permission to use, modify, or redistribute this co
 
 Bliss-Box® and the Bliss-Box logo are trademarks of Bliss-Box LLC.
 
-Copyright © 2026 Bliss-Box LLC. All rights reserved.
+All rights reserved.
 
-Permission to use, modify, or redistribute this code is granted only if this copyright notice,
-the Bliss-Box logo, and a visible link to https://bliss-box.com remain intact on all copies and derivative works.
-Any use that does not comply with these terms is unauthorized and may constitute copyright infringement. 
-Bliss-Box LLC reserves all legal rights and remedies. Bliss-Box® and the Bliss-Box logo are trademarks of Bliss-Box LLC.
- 
+---
 
+# Screenshots
 
-<img width="1343" height="943" alt="image" src="https://github.com/user-attachments/assets/f3785177-9d5e-40d9-b1cb-d2b50677a0b6" />
+## Controller Display
 
+<img src="https://github.com/user-attachments/assets/f3785177-9d5e-40d9-b1cb-d2b50677a0b6">
 
+## Diagnostics
 
-<img width="1334" height="876" alt="image" src="https://github.com/user-attachments/assets/4c20a887-5e0e-4eca-971b-b80b0652f784" />
+<img src="https://github.com/user-attachments/assets/4c20a887-5e0e-4eca-971b-b80b0652f784">
 
+## Mapping
 
-<img width="1318" height="889" alt="image" src="https://github.com/user-attachments/assets/51fd8bda-1023-496c-9be9-25700b5f8dd7" />
+<img src="https://github.com/user-attachments/assets/51fd8bda-1023-496c-9be9-25700b5f8dd7">
 
+## Features
 
-<img width="819" height="675" alt="image" src="https://github.com/user-attachments/assets/5c1ed7e5-baa7-4d83-977d-53e5877cd470" />
+<img src="https://github.com/user-attachments/assets/5c1ed7e5-baa7-4d83-977d-53e5877cd470">
