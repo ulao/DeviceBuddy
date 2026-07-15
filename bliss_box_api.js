@@ -613,7 +613,7 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 		console.warn("Adapter read failed:", e);
 	}
 	
-	document.querySelector(".BBbutton-grid").addEventListener("click", async  (e) => 
+	document.querySelector(".BBbutton-grid").onclick = async (e) =>
 	{
 		const btn = e.target.closest("button");
 		if (!btn) return;
@@ -675,7 +675,8 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 				BlissBox_getEEProm (hid);				
 				break;
 		}
-	});
+ 
+	};
  	
 }	
 
