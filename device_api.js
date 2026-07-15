@@ -45,7 +45,7 @@ const Controllers =
 	{ file:"xboxog",	   name:"Xbox Original" }, 
 	{ file:"switch",	   name:"Nintendo Switch" },
 	{ file:"wiicontroller",name:"Nintendo wii Controller" },
-	{ file:"wiichuck",	   name:"Nintendo wii Nunchuck" } 
+	{ file:"nunchuck",	   name:"Nintendo wii Nunchuck" } 
 ];
 
 let currentController = "playstation"; 						//controller in use
