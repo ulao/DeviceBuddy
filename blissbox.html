@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 Bliss-Box Device Buddy
 see Copyright in index.html
 https://bliss-box.com
@@ -44,7 +44,7 @@ https://bliss-box.com
 				<div class="BBbar" style="--level:00"></div>
 			</div><label>Extended Pressure</label>
 		</div>
-</div>
+	</div>
     <br>Modes:<br>
 
     <div class="modes" id="hsd">Hotswap Disabled <span class="value">OFF</span></div>
@@ -69,6 +69,28 @@ https://bliss-box.com
 		<button class="connBtn" data-action="pressure">Pressure</button>
 		<button class="connBtn" data-action="eeprom">EEPROM</button>
 	</div>
+	<!-- psx pressure POPUP -->
+	<div id="BBTalkPopup" style="display:none;">
+		<div class="BBTALK-window">
+		<button class="close" onclick="document.getElementById('BBTalkPopup').style.display='none'">X</button>
+		<div class="titlebar">Native Controller Communication</div>
+		<label>Here you can send native code to the controller. Type in a correctly assembled formatted string and hit send for the reply.  </label>
+		<BR><BR><BR><BR>
+		<input size="30" id="inputTalk" > </intpu>
+		<button id="BBTalkSend"> ⏎ </button>
+		</div>
+	</div>		
+	
+	<!-- BB update POPUP -->
+	<div id="BBUpdatePopup" style="display:none;">
+		<div class="BBUPDATE-window">
+		<button class="close" onclick="document.getElementById('BBUpdatePopup').style.display='none'">X</button>
+		<div class="titlebar">Bliss-Box Update</div>
+		To update the Bliss-Box you must press and hold down the reset button on the device. Once the button is pressed click the Pair button, and connect the 'unknown' device in the menu.
+		<button id="BBUpdate"> Update </button>
+		</div>
+	</div>	
+	
 	<!-- psx pressure POPUP -->
 	<div id="BBPressurePopup" style="display:none;">
 		<div class="BBPRESSURE-window">
@@ -154,36 +176,151 @@ https://bliss-box.com
 
 		</div>
 	</div>
-	
+	<!-- Range POPUP -->
+	<div id="BBRangePopup" style="display:none;">
+		<div class="BBRANGE-window">
+			<button class="close" onclick="document.getElementById('BBRangePopup').style.display='none'">X</button>
+			<div class="titlebar">Stick Range Setup</div>
+			   <div class="description">
+				Set the limit boxes below to reflect full range. For example: N64 controllers often only reaches to 80. So by entering
+				in ~ 80 in the boxes, it will use the full range.
+			</div>
+
+
+		<div class="BRANGEslider-row">
+
+			<div class="BRANGEslider-group">
+
+				<div class="BRANGEslider"></div>
+
+				<input
+					type="text"
+					id="txtLeftLimit"
+					value="-128">
+
+				<div class="BRANGEslider-label">
+					X Left Limit
+				</div>
+
+			</div>
+
+			<div class="BRANGEslider-group">
+
+				<div class="BRANGEslider"></div>
+
+				<input
+					type="text"
+					id="txtRightLimit"
+					value="128">
+
+				<div class="BRANGEslider-label">
+					X Right Limit
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="BRANGEbutton-column">
+
+			<button id="btnDefaultValues">
+				Load Default Values
+			</button>
+
+			<button id="btnCurrentValues">
+				Send  Current Values to Device
+			</button>
+
+		</div>
+
+		<div class="BRANGEsuggested-section">
+
+			<div class="BRANGEtitle">
+			<br><br>
+				Set Suggested Values<br>
+			</div>
+
+			<div class="BRANGEsuggested-buttons">
+
+				<button id="btnN64">N64</button>
+
+				<button id="btnGC">GC</button>
+
+				<button id="btnAtari">Atari</button>
+
+				<button id="btnWii">Wii</button>
+
+			</div>
+
+		</div>
+
+		<div class="BRANGEsupported-title">
+		<br><br><br>
+			You may choose which of the supported controllers are affected.
+		</div>
+
+		<div class="BRANGEcontroller-grid">
+
+			<label>
+				<input type="checkbox" id="chkN64" checked>
+				N64
+			</label>
+
+			<label>
+				<input type="checkbox" id="chkAtari5200" checked>
+				Atari 5200
+			</label>
+
+			<label>
+				<input type="checkbox" id="chkGameCube" checked>
+				Game Cube
+			</label>
+
+			<label>
+				<input type="checkbox" id="chkNunChuck" checked>
+				Nun Chuck
+			</label>
+
+		</div>
+
+		<div class="BRANGEbottom-button">
+
+			<button id="btnSetControllers">
+				Set Selected Controllers
+			</button>
+		</div>
+	  </div>
+	</div>
 	
 	<!-- EEPROM POPUP -->
 	<div id="BBeepromPopup" style="display:none;">
 	  <div class="BBEEPROM-window">
 		
 		 <button class="close" onclick="document.getElementById('BBeepromPopup').style.display='none'">X</button>
-		<div class="titlebar"> EEPROM Editor (Read Only View Style)</div>
+		<div class="titlebar"> EEPROM Editor (Read Only)</div>
 		<div class="BBeeprom-notice">
 		  EEPROM data from the Bliss-Box port. This screen is read-only.
 		</div>
 
 		<!-- Header row labels (optional visual guide) -->
 		<div class="BBeeprom-header-grid">
-		  <div>Version</div>
+		  <div> </div>
+		  <div>Version Major</div>
 		  <div>Player</div>
-		  <div>Force UDLR</div>
-		  <div>Combos</div>
-		  <div>AutoPause</div>
-		  <div>HotSwap</div>
+		  <div>Version Minor</div>		
+		  <div>Force</div>
+		  <div>UDLR</div>
+		  <div>Dis. all Combos</div>
+		  <div>AutoPause Disabled</div>
+		  <div>Hot swap Disabledy</div>
+		  <div>Hotkey</div>
 		  <div>Turbo</div>
-		  <div>Range</div>
-		  <div>Mask</div>
-		  <div>PSX</div>
-		  <div>Defaults</div>
-		  <div>Extra</div>
-		  <div>Extra</div>
-		  <div>Extra</div>
-		  <div>Extra</div>
-		  <div>Extra</div>
+		  <div>Product</div>
+		  <div>Range mask</div>
+		  <div>PSX Pressure 1</div>
+		  <div>PSX Pressure 2</div>
+		  <div>PSX Pressure 3</div>
+		  <div>PSX Pressure 4</div>
 		</div>
 
 		<!-- 48 BBhex inputs -->

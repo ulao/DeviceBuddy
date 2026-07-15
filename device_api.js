@@ -41,7 +41,9 @@ const Controllers =
     { file:"virtualboy",   name:"Virtual Boy" },
     { file:"atmark",	   name:"Attmark Pippin" } ,
     { file:"xboxone",	   name:"Xbox One" } ,
-    { file:"xbox360",	   name:"Xbox 360" } 
+    { file:"xbox360",	   name:"Xbox 360" } ,
+	{ file:"xboxog",	   name:"Xbox Original" }, 
+	{ file:"switch",	   name:"Nintendo Switch" } 
 ];
 
 let currentController = "playstation"; 						//controller in use
@@ -54,6 +56,7 @@ let BlissBoxAdapterTimer = null;							//how often we read Bliss-Box data.
 let isBlissBox = false;										//Bliss-Box flag
 let devices = [];											//connected devices
 let lastReport = "";										//log limmiter
+let fillImg = new Image();	  fillImg.src = "plastic.jpg";		//fill image for layout
 const reportLines = [];										//log lines array
 const hid = new WebHIDDevice();								//handel to webhid
 const deviceListEl = document.getElementById("deviceList");	//html element
@@ -100,40 +103,55 @@ async function selectDevice()
 		clearInterval(BlissBoxAdapterTimer);
         BlissBoxAdapterTimer = null;
 		document.getElementById("blissbox-container").innerHTML = "";
- 
-		if (hid.device == null)
+
+		if (hid.device.removed)
 		{
-			console.log("Device lost");
-			try
-			{
-				console.log("Trying to get it back");
-				await hid.open();
-			}
-			catch (e) 
-			{
-				console.log("failed, must repoair");
-				connBtn.onclick();
-				return;
-			}
+			console.log("Device lost"); 
+			connBtn.onclick();
+			return;
+ 
 		}
 		
-		let name = hid.productName;
+
+		let name = this.textContent;
 		//name patcher, 
 		console.log("Controller id: " + hid.vendorId + " | " + hid.productId); 
 		if (hid.vendorId == 0x054c && hid.productId == 0x05c4) currentController = name = "playstation4";
 		if (hid.vendorId == 0x054c && hid.productId == 0x0268) currentController = name = "playstation";
 		if (hid.vendorId == 0x045e && hid.productId == 0x02ff) currentController = name = "xboxone";
+		if (hid.vendorId == 0x0e6f && hid.productId == 0x0201) currentController = name = "xbox360";
+		if (hid.vendorId == 0x0e6f && hid.productId == 0x028E) currentController = name = "xbox360";
+		if (hid.vendorId == 0x045e && hid.productId == 0x0289) currentController = name = "xboxog";
+		if (hid.vendorId == 0x045e && hid.productId == 0x0285) currentController = name = "xboxog";
+		if (hid.vendorId == 0x045e && hid.productId == 0x0202) currentController = name = "xboxog";		
+		if (hid.vendorId === 0x0F0D)
+		{
+			switch(hid.productId)
+			{
+				case 0x00C1:
+				case 0x00C2:
+				case 0x00C4:
+				case 0x00C5:
+				case 0x00DC:
+				case 0x00DD:
+				case 0x00EE:
+				case 0x00F6:
+				case 0x00FE:
+					currentController = "switch";
+					break;
+			}
+		}		
  
+	 
         status.textContent = "Connected";
         status.style.color = "green";
-        devName.textContent = name;
- 
+        devName.textContent = name +" (0x" +hid.vendorId.toString(16) +" | 0x" +hid.productId.toString(16) +")"
         activeInputListener = onInputReport;
         hid.addInputListener(activeInputListener);
         await loadMapper();
+
         await loadControllerLayout(currentController);
         document.getElementById("selectOverlay")?.classList.add("hidden");
-
 
 		isBlissBox = (hid.vendorId === 0x16d0);
 		if (isBlissBox) BlissBox_Init( ); else BlissBox_DeInit( ); 
@@ -180,16 +198,9 @@ async function loadMapper()
 
 async function loadKnownDevices()
 {
+ 
     const list = await navigator.hid.getDevices();
-
-    devices = list.filter(dev =>
-    {
-        return dev.collections?.some(c =>
-            c.usagePage === 0x01 &&
-            (c.usage === 0x04 || c.usage === 0x05)
-        );
-    });
-
+    devices = list;   // no filter, keep everything
     renderDeviceList();
 }
 
@@ -222,7 +233,7 @@ async function startup()
     if (devices.length)
     {	 
 		await devices[0].open();
-		hid.device = devices[0];		
+		hid.device = devices[0];
         await selectDevice( );
     }
 
@@ -231,15 +242,22 @@ async function startup()
 	});
 
 	navigator.hid.addEventListener("disconnect", (event) =>
-	{ ;
+	{  
+  
 		if (hid.device && deviceKey(hid.device) === deviceKey(event.device))
-		{
+		{ 
 			clearInterval(BlissBoxAdapterTimer);
 			BlissBoxAdapterTimer = null;
-			hid.device = null;
+			const index = devices.findIndex(dev => dev === hid.device);
+			if (index !== -1)
+			{
+				devices[index].removed = true;
+				devices.splice(index, 1);
+			}
 		}
 	});
 
+ 
 	document.addEventListener("keydown", function(e)
 	{
 		if (e.code === "ScrollLock")
@@ -248,8 +266,7 @@ async function startup()
 		}
 	});
 	
-    updateStatusHint();
-
+ 
 }
 
 
@@ -261,7 +278,7 @@ async function loadControllerLayout(file)
 		return;
 	}	
     const myToken = ++layoutLoadToken;
-
+ 
     resetControllerUI();
 
     const url = "controllers/"+file+".layout";
@@ -288,6 +305,7 @@ async function loadControllerLayout(file)
 
     try
     {
+
         // Another load started while we were waiting.
         if (myToken !== layoutLoadToken)      return;
 
@@ -297,10 +315,9 @@ async function loadControllerLayout(file)
  
         controllerSelect.value = file;
 
-        controller._bg.style.backgroundImage = `url(controller_images/${file}.png)`;
+		makeControllerImage(file, fillImg);
 
         document.getElementById("selectOverlay")?.classList.add("hidden");
-
         setReadyState();
     }
     catch (e)
@@ -357,6 +374,55 @@ async  function cleanUpSelection( dev )
 	hid.device = dev;
 }
 
+
+
+function makeControllerImage (baseImage, fill)
+{
+	controller._bg.replaceChildren();
+
+	let canvas = document.createElement("canvas");
+	controller._bg.appendChild(canvas);
+	let ctx = canvas.getContext("2d", { willReadFrequently: true });
+	let controllerImg = new Image();
+ 
+	controllerImg.src = `controller_images/${baseImage}.png`;
+
+	Promise.all([
+		new Promise(resolve => { if (controllerImg.complete) resolve(); else controllerImg.onload = resolve; }),
+		new Promise(resolve =>	{ if (fill.complete) resolve(); else fill.onload = resolve;	})	]).then(() =>
+	{
+		canvas.style.position = "absolute";
+		canvas.style.left = "0px";
+		canvas.style.top = "0px";
+
+		canvas.width = controller.clientWidth;
+		canvas.height = controller.clientHeight;
+
+		ctx.drawImage(controllerImg, 0, 0, canvas.width, canvas.height );// Draw controller image first
+		let controllerData = ctx.getImageData( 0, 0, canvas.width, canvas.height);// Get controller pixels
+		ctx.drawImage( fill, 0, 0, canvas.width, canvas.height );// Draw texture
+		let textureData = ctx.getImageData( 0, 0, canvas.width, canvas.height );
+
+		// Replace black areas with texture
+		for (let i = 0; i < controllerData.data.length; i += 4)
+		{
+			let r = controllerData.data[i];
+			let g = controllerData.data[i + 1];
+			let b = controllerData.data[i + 2];
+
+			// black pixel
+			if (r < 50 && g < 50 && b < 50)
+			{
+				controllerData.data[i]     = textureData.data[i];
+				controllerData.data[i + 1] = textureData.data[i + 1];
+				controllerData.data[i + 2] = textureData.data[i + 2];
+			}
+		}
+
+		// Put final image back
+		ctx.putImageData(controllerData, 0, 0);
+	});
+}
 function isBootloader(d)
 {
     return d.vendorId === 0x04FB;
@@ -420,7 +486,7 @@ function doCasech(text)
     localStorage.setItem(key, text);
 }
 
-function init()
+async  function init()
 {
 	for (const controller of Controllers)
 	{
@@ -449,7 +515,7 @@ function init()
 				]
 			});
 
-			console.log("Selected:", newDevices);
+
 
 			if (!newDevices.length)
 				return;
@@ -464,6 +530,33 @@ function init()
 		{
 			console.error("HID connect failed:", e);
 		}
+	};
+
+	fillColor.onclick = () =>
+	{
+		const input = document.createElement("input");
+
+		input.type = "file";
+		input.accept = "image/*";
+
+		input.onchange = () =>
+		{
+			if (!input.files.length)
+				return;
+
+			const file = input.files[0];
+
+			fillImg.onload = () =>
+			{
+				console.log("New fill loaded");
+
+				makeControllerImage(currentController, fillImg);
+			};
+
+			fillImg.src = URL.createObjectURL(file);
+		};
+
+		input.click();
 	};
 
 	btnDownload.onclick =  async () =>   {
@@ -540,15 +633,20 @@ function renderDeviceList()
         return;
     }
 
-    for (const dev of devices)
-    {
+    for (let dev of devices)
+    { 
+ 
         const btn = document.createElement("button");
-        btn.textContent = dev.productName || "Unknown";
+        btn.textContent = dev.productName ;
+ 
+		if (!btn.textContent)  //xbox og did this... 
+		btn.textContent = "xboxog" ;
 
-       btn.onclick = async () => {
-								await cleanUpSelection(dev);
-								selectDevice();
-							};
+        btn.onclick = async () => 
+		{
+			await cleanUpSelection(dev);
+			selectDevice();
+		};
 
         deviceListEl.appendChild(btn);
     }
@@ -571,11 +669,11 @@ function updateStatusHint()
 
 function setReadyState()
 {
+ 
     if (!hid.device || controllerParts.length === 0) return;
-
+	
     const overlay = document.getElementById("selectOverlay");
     if (overlay) overlay.classList.add("hidden");
-
     status.textContent = "Ready";
     status.style.color = "green";
 }
@@ -718,6 +816,13 @@ function updateControllerState(data)
 			if ( currentMapper.analog[part.id].x )  part.xByte = currentMapper.analog[part.id].x ;  
 			if ( currentMapper.analog[part.id].y )  part.yByte = currentMapper.analog[part.id].y ;  
 		 
+		 
+		 	if ( currentController == "xboxog") 
+			{ 
+				data[part.xByte] += 128;
+				data[part.yByte] += 128;
+			}
+			
             const x = byteToAxis(data[part.xByte], part);
             const y = byteToAxis(data[part.yByte], part);
 			
@@ -1428,9 +1533,7 @@ function logInputReport(reportId, data)
 
     const time = new Date().toISOString().slice(11, 19);
 
-    reportLines.push(
-        `[${time}] RID 0x${reportId.toString(16).toUpperCase()}: ${hex}`
-    );
+    reportLines.push( `[${time}] ${reportId.toString(16)}: ${hex}`);
 
     // Keep only the newest 10 reports
     if (reportLines.length > 100)

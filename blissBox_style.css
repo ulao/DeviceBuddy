@@ -14,6 +14,12 @@
 	 margin-left: auto;
     font-family: ui-monospace, Consolas, monospace;
 }
+#controllerId,
+#major,
+#minor,
+#player {
+    color: limegreen;
+}
 .BBeeprom-row {
   display: flex;
   align-items: center;
@@ -59,27 +65,6 @@
     background: #8B689E;
     border-color: #6F6;
 }
-
-#BBPressurePopup,
-#BBeepromPopup {
-    position: fixed;
-    inset: 0;
-    z-index: 10;
-}
-
-.BBEEPROM-window {
-    width: 900px;
-    background: #111;
-    border: 1px solid #444;
-    color: #ddd;
-    font-family: monospace;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-}
 .close {
   position: absolute;
   top: 8px;
@@ -101,6 +86,31 @@
   color: #9ad;
 }
 
+#BBPressurePopup,
+#BBRangePopup,
+#BBTalkPopup,
+#BBUpdatePopup,
+#BBeepromPopup {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+}
+
+.BBEEPROM-window {
+    width: 900px;
+    background: #111;
+    border: 1px solid #444;
+    color: #ddd;
+    font-family: monospace;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+
 .BBeeprom-notice {
   font-size: 12px;
   opacity: 0.8;
@@ -109,7 +119,7 @@
 
 .BBeeprom-header-grid {
   display: grid;
-  grid-template-columns: repeat(16, 1fr);
+  grid-template-columns: repeat(17, 1fr);
   font-size: 10px;
   margin-bottom: 6px;
   color: #6cf;
@@ -148,48 +158,98 @@
 .BBadapterInfo {
     min-width: 180px;
 }
-
-.BBPressure {
+ 
+ 
+.BBRANGE-window {
+  background: #111;
+  border: 1px solid #444;
+  color: #ddd;
+  font-family: monospace;
+  position: fixed;
+  top: 50%;
+  left: 50%; 
+  transform: translate(-50%, -50%);
+  padding: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+.BRANGElimit-panel {
+    width: 360px;
+    margin: auto;
     display: flex;
-    height: 120px;
-    background: black;
-    align-items: flex-end;
-    gap: 3px;
-    padding: 5px;
-    border-radius: 8px;
+    flex-direction: column;
+    gap: 18px;
 }
 
-.BBPressureBox {
-    display: none;
+ 
+.BRANGEslider-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.BRANGEslider-group {
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.BBPressureBox.show {
+.BRANGEbutton-column {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
-.BBbar {
-    width: 8px;
-    height: calc(1px + (var(--level) * 0.98px));
-    background: #00ff00;
-    border-radius: 2px 2px 0 0;
-    transition: height 0.1s ease;
-}
-#controllerId,
-#major,
-#minor,
-#player {
-    color: limegreen;
-}
-#BBPressurePopup {
-    position: fixed;
-    inset: 0;
+.BRANGEsuggested-buttons {
     display: flex;
     justify-content: center;
-    align-items: center;
+    gap: 8px;
 }
 
+.BRANGEcontroller-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 40px;
+}
+.BRANGEtitle {
+    width: 100%;
+    text-align: center;
+    display: block;
+}
+.BRANGEbottom-button {
+    display: flex;
+    justify-content: center;
+}
+.BBRANGE-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.BBTALK-window {
+  background: #111;
+  border: 1px solid #444;
+  color: #ddd;
+  font-family: monospace;
+  position: fixed;
+  top: 50%;
+  left: 50%; 
+  transform: translate(-50%, -50%);
+  padding: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  width: 300px;
+}
+.BBUPDATE-window {
+  background: #111;
+  border: 1px solid #444;
+  color: #ddd;
+  font-family: monospace;
+  position: fixed;
+  top: 50%;
+  left: 50%; 
+  transform: translate(-50%, -50%);
+  padding: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  width: 300px;
+}
 .BBPRESSURE-window {
   background: #111;
   border: 1px solid #444;
@@ -231,3 +291,68 @@
     width: 72px;
     height: 24px;
 }
+.BBPressure {
+    display: flex;
+    height: 120px;
+    background: black;
+    align-items: flex-end;
+    gap: 3px;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.BBPressureBox {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.BBPressureBox.show {
+    display: flex;
+}
+
+.BBbar {
+    width: 8px;
+    height: calc(1px + (var(--level) * 0.98px));
+    background: #00ff00;
+    border-radius: 2px 2px 0 0;
+    transition: height 0.1s ease;
+}
+
+
+#BBPressurePopup {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#BBRangePopup {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#BBeepromPopup {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#BBTalkPopup {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#BBUpdatePopup {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

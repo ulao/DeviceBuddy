@@ -80,7 +80,10 @@ class WebHIDDevice
 
     removeInputListener(callback)    // Remove a previously registered input report listener.
     {
-        this.device.removeEventListener("inputreport", callback);
+		if (this.device && callback)
+		{
+			this.device.removeEventListener("inputreport", callback);
+		}
     }
 
  
