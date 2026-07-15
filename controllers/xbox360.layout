@@ -1,0 +1,167 @@
+﻿# Simple controller layout file.
+# Blocks are separated by a blank line.
+# x and y are the center of the shape inside the controller area.
+# byte indexes are zero-based: first stream byte is byte 0.
+
+
+# Analog sticks: up to 8.
+# xByte/yByte choose the stream bytes that move the stick.
+type: analog
+label:  
+id: LEFTSTICK
+x: 110
+y: 80
+xByte: 1
+yByte: 3
+side: left
+shapeType: circle2
+
+type: analog
+label:  
+id: RIGHTSTICK
+x: 250
+y: 140
+xByte: 5
+yByte: 7
+side: right
+shapeType: circle2
+
+
+# D-pad: max 1.
+# Leave byte/bit values off if you only want a static d-pad shape.
+type: dpad
+id: POV
+x: 160
+y: 140
+arrange: left
+byte: 11
+upData: 0x04
+uprightData: 0x08
+rightData: 0x0c
+downrightData: 0x10
+downData: 0x14
+downleftData: 0x18
+leftData: 0x1c
+leftupData: ox20
+shapeType: plus
+
+# Face buttons. Max buttons total is 24.
+# bit is a bit number, so bit 3 means mask 0x08.
+ 
+type: button
+label:
+id: BTN_START
+x: 230
+y: 85
+byte: 10
+bit: 7
+group: center
+shapeType: circle0
+
+
+type: button
+label: Y
+id: BTN_4
+x: 310
+y: 60
+byte: 10
+bit: 3
+group: face
+shapeType: circle1
+
+type: button
+label: X
+id: BTN_3
+x: 335
+y: 85
+byte: 10
+bit: 1
+group: face
+shapeType: circle1
+
+type: button
+label: B
+id: BTN_2
+x: 285
+y: 85
+byte: 10
+bit: 2
+group: face
+shapeType: circle1
+
+type: button
+label: A
+id: BTN_1
+x: 310
+y: 110
+byte: 10
+bit: 0
+group: face
+shapeType: circle1
+
+
+type: button
+label: L1
+id: BTN_L1
+x: 90
+y: 10
+byte: 10
+bit: 4
+group: top
+shapeType: rectangle2
+
+type: button
+label: R1
+id: BTN_R1
+x: 330
+y: 10
+byte: 10
+bit: 5
+group: top
+shapeType: rectangle2
+
+type: button
+label: 
+id: BTN_SELECT
+x: 190
+y: 85
+byte: 10
+bit: 6
+group: top
+shapeType: circle0
+
+type: trigger
+id:LEFTTRIGGER
+label:  
+x: 150
+y: 220
+byte: 9
+side: left
+shapeType: trianglel
+
+
+type: trigger
+type: trigger
+id:RIGHTTRIGGER
+label:  
+x: 270
+y: 220
+byte: 9
+side: right
+shapeType: triangler
+ 
+
+type: button
+id:BTN_L3
+label: L3
+byte: 11
+bit: 0
+target: leftStick
+
+type: button
+id:BTN_R3
+label: R3
+byte: 11
+bit: 1
+target: rightStick
+

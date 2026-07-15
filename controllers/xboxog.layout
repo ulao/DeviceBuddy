@@ -1,0 +1,191 @@
+﻿# Simple controller layout file.
+# Blocks are separated by a blank line.
+# x and y are the center of the shape inside the controller area.
+# byte indexes are zero-based: first stream byte is byte 0.
+
+
+# Analog sticks: up to 8.
+# xByte/yByte choose the stream bytes that move the stick.
+type: analog
+label:  
+id: LEFTSTICK
+x: 115
+y: 80
+xByte: 4
+yByte: 6
+side: left
+shapeType: circle2
+
+type: analog
+label:  
+id: RIGHTSTICK
+x: 290
+y: 160
+xByte: 10
+yByte: 12
+side: right
+shapeType: circle2
+
+
+# D-pad: max 1.
+# Leave byte/bit values off if you only want a static d-pad shape.
+type: dpad
+id: POV
+x: 135
+y: 160
+arrange: left
+byte: 21
+upData: 1
+uprightData: 9
+rightData: 8
+downrightData: 0x0a
+downData: 2
+downleftData: 6
+leftData: 4
+leftupData: 5
+shapeType: plus
+
+# Face buttons. Max buttons total is 24.
+# bit is a bit number, so bit 3 means mask 0x08.
+ 
+
+type: button
+label: 
+id: BTN_L2
+x: 300
+y: 50
+byte: 0
+bit: 5
+group: face
+shapeType: circle0
+
+type: button
+label: 
+id: BTN_R2
+x: 325
+y: 65
+byte: 0
+bit: 4
+group: face
+shapeType: circle0
+
+
+
+type: button
+label: Y
+id: BTN_4
+x: 315
+y: 85
+byte: 0
+bit: 3
+group: face
+shapeType: circle0
+
+type: button
+label: X
+id: BTN_3
+x: 290
+y: 75
+byte: 0
+bit: 2
+group: face
+shapeType: circle0
+
+type: button
+label: B
+id: BTN_2
+x: 315
+y: 120
+byte: 0
+bit: 1
+group: face
+shapeType: circle0
+
+type: button
+label: A
+id: BTN_1
+x: 290
+y: 105
+byte: 0
+bit: 0
+group: face
+shapeType: circle0
+
+
+type: button
+label: L1
+id: BTN_L1
+x: 90
+y: 10
+byte: 1
+bit: 2
+group: top
+shapeType: rectangle2
+
+type: button
+label: R1
+id: BTN_R1
+x: 330
+y: 10
+byte: 1
+bit: 3
+group: top
+shapeType: rectangle2
+
+type: button
+label: 
+id: BTN_SELECT
+x: 190
+y: 190
+byte: 21
+bit: 5
+group: top
+shapeType: circle0
+
+type: button
+label:
+id: BTN_START
+x: 230
+y: 190
+byte: 21
+bit: 4
+group: center
+shapeType: circle0
+
+
+
+type: trigger
+id:LEFTTRIGGER
+label:  
+x: 130
+y: 220
+byte: 29
+side: left
+shapeType: trianglel
+
+
+type: trigger
+type: trigger
+id:RIGHTTRIGGER
+label:  
+x: 290
+y: 220
+byte: 30
+side: right
+shapeType: triangler
+
+ 
+type: button
+id:BTN_L3
+label: L3
+byte: 21
+bit: 6
+target: leftStick
+
+type: button
+id:BTN_R3
+label: R3
+byte: 21
+bit: 7
+target: rightStick
+
