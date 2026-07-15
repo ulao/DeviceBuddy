@@ -1552,7 +1552,23 @@ function toHex(buffer)
 }
 
  
-if (navigator.userAgent.includes("Firefox"))
+if (!("hid" in navigator))
 {
-    alert("Firefox does not support WebHID. Please use Chrome, Edge, Opera, or another Chromium-based browser.");
+	const isAndroid = /Android/i.test(navigator.userAgent);
+
+	if (isAndroid)
+	{
+		alert(
+			"Device Buddy is not supported on Android browsers because of Android Security.\n\n" +
+			"Please use a Windows, Linux, or Mac computer with Chrome, Edge, or another Chromium-based browser."
+		);
+	}
+	else
+	{
+		alert(
+			"Device Buddy requires a Chromium-based browser with WebHID support.\n\n" +
+			"Please use Chrome, Edge, Opera, Brave, or Vivaldi."+
+			"None windows user may need to add rules."
+		);
+	}
 }
