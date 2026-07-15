@@ -172,7 +172,7 @@
   padding: 12px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.6);
 }
-.BRANGElimit-panel {
+.BBRANGElimit-panel {
     width: 360px;
     margin: auto;
     display: flex;
@@ -181,42 +181,42 @@
 }
 
  
-.BRANGEslider-row {
+.BBRANGEslider-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
 }
 
-.BRANGEslider-group {
+.BBRANGEslider-group {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.BRANGEbutton-column {
+.BBRANGEbutton-column {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
 }
 
-.BRANGEsuggested-buttons {
+.BBRANGEsuggested-buttons {
     display: flex;
     justify-content: center;
     gap: 8px;
 }
 
-.BRANGEcontroller-grid {
+.BBRANGEcontroller-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 6px 40px;
 }
-.BRANGEtitle {
+.BBRANGEtitle {
     width: 100%;
     text-align: center;
     display: block;
 }
-.BRANGEbottom-button {
+.BBRANGEbottom-button {
     display: flex;
     justify-content: center;
 }

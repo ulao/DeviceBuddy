@@ -16,16 +16,16 @@
 	if (id == 9  ) return "gamecube"      ;
 	if (id == 10 ) return "atmark" 		  ;
 	if (id == 11 ) return "jaguar" ;
-	if (id == 12 ) return "drivigncontroller" 	;
-	if (id == 13 ) return "nuncheck"  ;
-	if (id == 14 ) return "intellivition" 		  ;
+	if (id == 12 ) return "drivingcontroller" 	;
+	if (id == 13 ) return "nunchuck"  ;
+	if (id == 14 ) return "intellivision" 		  ;
 	if (id == 15 ) return "dreamcast" 	;
 	if (id == 16 ) return "dreamcast"	    ;
 	if (id == 17 ) return "nintendo"	          ;
 	if (id == 18 ) return "gaemcubewheel"	;
 	if (id == 19 ) return "nintendo64";
-	if (id == 20 ) return "genisis3" 		  ;
-	if (id == 21 ) return "genisis3" 		  ;
+	if (id == 20 ) return "genesis3" 		  ;
+	if (id == 21 ) return "genesis6" 		  ;
 	if (id == 22 ) return "mastersystem"	          ;
 	if (id == 23 ) return "TG16" 		;
 	if (id == 24 ) return "CD32"		;
@@ -310,7 +310,7 @@ async function BlissBox_Init ()
 		else 
 		{
 			logInputReport("Sent to Controller    ", bytes.slice(1));
-			logInputReport("Replay From Controller", reply.slice(3) );
+			logInputReport("Reply From Controller", reply.slice(3) );
 		}
 	};
 		
@@ -626,7 +626,7 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 				break;
 				
 			case "memcard":
-				alert("Unsupported at the moment as this is a bit of an everkill, use the API tool. ");
+				alert("Unsupported at the moment as this is a bit of an overkill, use the API tool. ");
 				break;
 
 			case "stick_range":

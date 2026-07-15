@@ -2,7 +2,7 @@
 //see Copyright in index.html
 //https://bliss-box.com
 
-//to use on stand a lone browsers
+//to use on standalone browsers
 // chrome.exe --allow-file-access-from-files --disable-web-security --user-data-dir="C:\temp\chrome_dev"
 //"C:\Program Files\Opera\launcher.exe" --allow-file-access-from-files --disable-web-security --disable-site-isolation-trials --user-data-dir="C:\temp\opera_dev"
 //"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --allow-file-access-from-files --disable-web-security --disable-site-isolation-trials --user-data-dir="C:\temp\edge_dev"
@@ -11,7 +11,7 @@
 //find the name of the device or devies i.e "mcs-gamer-pro"
 //edit this file:    sudo nano /etc/udev/rules.d/99-mcs-gamer-pro.rules
 //add this line:    SUBSYSTEM=="hidraw", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="0d04", MODE="0666"
-
+//and this line:    SUBSYSTEM=="hidraw", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="04fb", MODE="0666"
  
 document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -49,16 +49,16 @@ const Controllers =
 let currentController = "playstation"; 						//controller in use
 let currentMapper = null;			   						//current loaded mapper
 let controllerBody = null; 			   						//id for the controller html object
-let activeInputListener = null;								//listner for hid
-let layoutLoadToken = 0;									//duplicit loader preventor. 
-let controllerParts = [];									//parts of the controlelr view
+let activeInputListener = null;								//listener for hid
+let layoutLoadToken = 0;									//duplicate loader preventer
+let controllerParts = [];									//parts of the controller view
 let BlissBoxAdapterTimer = null;							//how often we read Bliss-Box data. 
 let isBlissBox = false;										//Bliss-Box flag
 let devices = [];											//connected devices
-let lastReport = "";										//log limmiter
-let fillImg = new Image();	  fillImg.src = "plastic.jpg";		//fill image for layout
+let lastReport = "";										//log limiter
+let fillImg = new Image();	  fillImg.src = "plastic.jpg";	//fill image for layout
 const reportLines = [];										//log lines array
-const hid = new WebHIDDevice();								//handel to webhid
+const hid = new WebHIDDevice();								//handle to webhid
 const deviceListEl = document.getElementById("deviceList");	//html element
 const connBtn = document.getElementById("connBtn");         //html element
 const status = document.getElementById("status");           //html element
@@ -274,7 +274,7 @@ async function loadControllerLayout(file)
 {
 	if (file == undefined)
 	{
-		console.log("thats not right");
+		console.log("that's not right");
 		return;
 	}	
     const myToken = ++layoutLoadToken;
@@ -297,7 +297,7 @@ async function loadControllerLayout(file)
     {
         alert(
             `Unable to load controller layout.\n\n` +
-            `Add the Missing file:\n${url}`  
+            `Add the missing file:\n${url}`  
         );
 
         return;
@@ -639,7 +639,7 @@ function renderDeviceList()
         const btn = document.createElement("button");
         btn.textContent = dev.productName ;
  
-		if (!btn.textContent)  //xbox og did this... 
+		if (!btn.textContent)  //Xbox OG did this... 
 		btn.textContent = "xboxog" ;
 
         btn.onclick = async () => 
@@ -811,7 +811,7 @@ function updateControllerState(data)
     {
         if (part.type === "analog")
         {	
-			//swapp for mapper. 
+			//swap for mapper. 
  
 			if ( currentMapper.analog[part.id].x )  part.xByte = currentMapper.analog[part.id].x ;  
 			if ( currentMapper.analog[part.id].y )  part.yByte = currentMapper.analog[part.id].y ;  
@@ -1350,7 +1350,7 @@ function normalizePart(block, index)
  
     if (!["analog", "button", "dpad", "trigger"].includes(type))
         return null;
-	if (block.id == undefined && block.type != undefined) alert("Laoyout " + currentController + " is missing its ID for: " +  block.type  );
+	if (block.id == undefined && block.type != undefined) alert("Layout " + currentController + " is missing its ID for: " +  block.type  );
     const part = {
         type,
         id: textValue(block.id),
@@ -1358,11 +1358,6 @@ function normalizePart(block, index)
         x: numberValue(block.x, defaultX(block, type)),
         y: numberValue(block.y, defaultY(block, type))
     };
-	
-
-	
-	
- 
 	
     if (type === "analog")
     {

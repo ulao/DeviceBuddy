@@ -292,13 +292,13 @@ button {
     border-radius: 50%;
     border: 4px solid black;
 	background: radial-gradient(
-			circle at 35% 35%,
-			#888 0%,
-			#555 45%,
-			#222 100%
-		);
-	}
+		circle at 35% 35%,
+		#888 0%,
+		#555 45%,
+		#222 100%
+	);
 }
+
 .shape-square {
     border-radius: 0;
 }
