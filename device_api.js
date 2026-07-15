@@ -1552,23 +1552,29 @@ function toHex(buffer)
 }
 
  
-if (!("hid" in navigator))
+function checkDeviceBuddySupport()
 {
-	const isAndroid = /Android/i.test(navigator.userAgent);
+    const isAndroid = /Android/i.test(navigator.userAgent);
 
-	if (isAndroid)
-	{
-		alert(
-			"Device Buddy is not supported on Android browsers because of Android Security.\n\n" +
-			"Please use a Windows, Linux, or Mac computer with Chrome, Edge, or another Chromium-based browser."
-		);
-	}
-	else
-	{
-		alert(
-			"Device Buddy requires a Chromium-based browser with WebHID support.\n\n" +
-			"Please use Chrome, Edge, Opera, Brave, or Vivaldi."+
-			"None windows user may need to add rules."
-		);
-	}
+    if (isAndroid)
+    {
+        alert(
+            "Device Buddy is not supported on Android browsers.\n\n" +
+            "Please use Windows, Linux, or macOS with Chrome or Edge."
+        );
+        return false;
+    }
+
+    if (!navigator.hid)
+    {
+        alert(
+            "Device Buddy requires WebHID support.\n\n" +
+            "Please use Chrome, Edge, Opera, Brave, or Vivaldi."
+        );
+        return false;
+    }
+
+    return true;
 }
+
+checkDeviceBuddySupport();
