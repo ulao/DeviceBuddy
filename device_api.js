@@ -111,9 +111,8 @@ async function selectDevice()
 			return;
  
 		}
-		
-
-		let name = this.textContent;
+ 
+		let name =  Controllers.find(c => c.file === currentController)?.name;
 		//name patcher, 
 		console.log("Controller id: " + hid.vendorId + " | " + hid.productId); 
 		if (hid.vendorId == 0x054c && hid.productId == 0x05c4) currentController = name = "playstation4";
@@ -258,6 +257,12 @@ async function startup()
 	});
 
  
+ 
+	document.getElementById("overlay").onclick = () =>
+	{
+		document.body.classList.toggle("overlayMode");
+	};
+	
 	document.addEventListener("keydown", function(e)
 	{
 		if (e.code === "ScrollLock")
