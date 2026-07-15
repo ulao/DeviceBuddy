@@ -1,0 +1,39 @@
+﻿# Simple controller layout file.
+# Blocks are separated by a blank line.
+# x and y are the center of the shape inside the controller area.
+# byte indexes are zero-based: first stream byte is byte 0.
+
+# Analog sticks: up to 8.
+# xByte/yByte choose the stream bytes that move the stick.
+type: analog
+label:  
+id:LEFTSTICK
+x: 90
+y: 90
+xByte: 3
+yByte: 4
+side: left
+shapeType: circle2
+
+ 
+type: button
+id:BTN_2
+label: c
+x: 40
+y: 190
+byte: 0
+bit: 1
+group: face
+shapeType: circle1
+ 
+
+type: button
+label: z
+id:BTN_1
+x: 70
+y: 210
+byte: 0
+bit: 0
+group: face
+shapeType: circle1
+ 
