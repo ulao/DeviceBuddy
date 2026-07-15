@@ -1551,3 +1551,8 @@ function toHex(buffer)
         .join(" ");
 }
 
+ 
+if (navigator.userAgent.includes("Firefox"))
+{
+    alert("Firefox does not support WebHID. Please use Chrome, Edge, Opera, or another Chromium-based browser.");
+}
