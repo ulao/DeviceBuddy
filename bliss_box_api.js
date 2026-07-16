@@ -58,7 +58,7 @@
 	if (id == 127) return "PSX_JOGCON"	  ;
 	if (id == 52 ) return "FC_NES" 		  ;
 	if (id == 53 ) return "FC_ARKANOID" ;
-	if (id == 54 ) return "TG16_6BUTTON";
+	if (id == 54 ) return "PCEngine";
 	if (id == 55 ) return "WII_DRUM"     ;
 	if (id == 56 ) return "ARCADE"		  ;
 	if (id == 57 ) return "SUPERGUN"	;

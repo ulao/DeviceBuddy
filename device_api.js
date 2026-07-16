@@ -67,7 +67,9 @@ const connBtn = document.getElementById("connBtn");         //html element
 const status = document.getElementById("status");           //html element
 const devName = document.getElementById("devName");         //html element
 const controller = document.getElementById("controller");   //html element
- 
+let EDGE_SIZE = 20;
+let EDGE_DARK = .65;
+		
 init();
 
 async function sendManualReport()
@@ -382,9 +384,7 @@ async  function cleanUpSelection( dev )
 	hid.device = dev;
 }
 
-
-
-function makeControllerImage (baseImage, fill)
+function makeControllerImage(baseImage, fill)
 {
 	controller._bg.replaceChildren();
 
@@ -392,17 +392,14 @@ function makeControllerImage (baseImage, fill)
 	controller._bg.appendChild(canvas);
 	let ctx = canvas.getContext("2d", { willReadFrequently: true });
 	let controllerImg = new Image();
-	
-	controllerImg.onerror = () =>
-	{
-		alert(`Failed to load controller image:\ncontroller_images/${baseImage}.png`);
-	};
- 
+
+	controllerImg.onerror = () => { alert(`Failed to load controller image:\ncontroller_images/${baseImage}.png`); };
 	controllerImg.src = `controller_images/${baseImage}.png`;
 
 	Promise.all([
 		new Promise(resolve => { if (controllerImg.complete) resolve(); else controllerImg.onload = resolve; }),
-		new Promise(resolve =>	{ if (fill.complete) resolve(); else fill.onload = resolve;	})	]).then(() =>
+		new Promise(resolve => { if (fill.complete) resolve(); else fill.onload = resolve; })
+	]).then(() =>
 	{
 		canvas.style.position = "absolute";
 		canvas.style.left = "0px";
@@ -411,31 +408,97 @@ function makeControllerImage (baseImage, fill)
 		canvas.width = controller.clientWidth;
 		canvas.height = controller.clientHeight;
 
-		ctx.drawImage(controllerImg, 0, 0, canvas.width, canvas.height );// Draw controller image first
-		let controllerData = ctx.getImageData( 0, 0, canvas.width, canvas.height);// Get controller pixels
-		ctx.drawImage( fill, 0, 0, canvas.width, canvas.height );// Draw texture
-		let textureData = ctx.getImageData( 0, 0, canvas.width, canvas.height );
+		ctx.drawImage(controllerImg, 0, 0, canvas.width, canvas.height);
+
+		let controllerData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+		let mask = new Uint8ClampedArray(controllerData.data);
+
+		ctx.drawImage(fill, 0, 0, canvas.width, canvas.height);
+		let textureData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
 
 		// Replace black areas with texture
 		for (let i = 0; i < controllerData.data.length; i += 4)
 		{
-			let r = controllerData.data[i];
-			let g = controllerData.data[i + 1];
-			let b = controllerData.data[i + 2];
-
-			// black pixel
-			if (r < 50 && g < 50 && b < 50)
+			if (mask[i] < 50 && mask[i + 1] < 50 && mask[i + 2] < 50)
 			{
-				controllerData.data[i]     = textureData.data[i];
+				controllerData.data[i] = textureData.data[i];
 				controllerData.data[i + 1] = textureData.data[i + 1];
 				controllerData.data[i + 2] = textureData.data[i + 2];
 			}
 		}
 
-		// Put final image back
+		let w = canvas.width;
+		let h = canvas.height;
+		let distance = new Uint16Array(w * h);
+		distance.fill(999);
+
+
+		// Find outside pixels
+		for (let y = 0; y < h; y++)
+		{
+			for (let x = 0; x < w; x++)
+			{
+				let i = (y * w + x) * 4;
+
+				if (mask[i] > 200 && mask[i+1] > 200 && mask[i+2] > 200)
+					distance[y * w + x] = 0;
+			}
+		}
+
+
+		// Forward pass
+		for (let y = 1; y < h; y++)
+		{
+			for (let x = 1; x < w; x++)
+			{
+				let p = y * w + x;
+				distance[p] = Math.min(distance[p], distance[p-1] + 1, distance[p-w] + 1);
+			}
+		}
+
+
+		// Backward pass
+		for (let y = h - 2; y >= 0; y--)
+		{
+			for (let x = w - 2; x >= 0; x--)
+			{
+				let p = y * w + x;
+				distance[p] = Math.min(distance[p], distance[p+1] + 1, distance[p+w] + 1);
+			}
+		}
+
+		// Apply rounded edge shading
+		for (let y = 0; y < h; y++)
+		{
+			for (let x = 0; x < w; x++)
+			{
+				let p = y * w + x;
+				let i = p * 4;
+
+				if (!(mask[i] < 50 && mask[i+1] < 50 && mask[i+2] < 50))
+					continue;
+
+				let d = distance[p];
+
+				if (d < EDGE_SIZE)
+				{
+					let t = d / EDGE_SIZE;
+					let shade = EDGE_DARK + (1 - EDGE_DARK) * Math.pow(t, 3);
+
+					controllerData.data[i] *= shade;
+					controllerData.data[i+1] *= shade;
+					controllerData.data[i+2] *= shade;
+				}
+			}
+		}
+
+
 		ctx.putImageData(controllerData, 0, 0);
 	});
 }
+
+
 function isBootloader(d)
 {
     return d.vendorId === 0x04FB;
@@ -522,7 +585,19 @@ async  function init()
 	}
 	controllerSelect.value = currentController;
 	loadControllerLayout(currentController);
-		
+	
+	document.getElementById("edge").onkeyup   = (event) =>
+	{
+		EDGE_SIZE = Number(document.getElementById("edge").value);
+		loadControllerLayout(currentController);
+	}
+	
+	document.getElementById("dark").onkeyup   = (event) =>
+	{
+		EDGE_DARK = Number(document.getElementById("dark").value);
+		loadControllerLayout(currentController);
+	}
+	
 	connBtn.onclick = async () =>
 	{
 		try
