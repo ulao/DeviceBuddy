@@ -1,6 +1,6 @@
 # DeviceBuddy
 
-**A universal controller diagnostic, display, and testing utility.**
+**A universal controller diagnostic, display, and testing utility.**  The next-generation GamePad Viewer built on WebHID and WebUSB.
 
 <img src="https://github.com/user-attachments/assets/89fe4f43-66c1-4b2c-a019-4cc2914b3423" width="275">
 
@@ -11,14 +11,14 @@
 **DeviceBuddy is a work in progress.**
 
 If you found this project, you probably stumbled across it early.  
-It is new, expect bugs, missing features, and things changing frequently.
+It is new, so expect bugs, missing features, and frequent changes, missing features, and things changing frequently.
 
 🌐 Online version:
 https://ulao.github.io/DeviceBuddy/
 
 Anyone interested in development can go to https://discord.gg/KvVWhwH3U and join the #DeviceBuddy discussion. 
 https://discord.gg/KvVWhwH3U
-or enter an issue on github.
+or enter an issue on GitHub.
 
 ---
 
@@ -74,7 +74,7 @@ Current status:
 | Xbox One | ✅ |
 | Xbox 360 | ✅ |
 | Xbox OG | ✅ |
-| Switch0 | ✅ |
+| Switch | ✅ |
 
 
 ---
@@ -126,11 +126,12 @@ sudo nano /etc/udev/rules.d/99-mcs-gamer-pro.rules
 
 Add:
 
+exmaple Bliss-Box port 1
 ```text
 SUBSYSTEM=="hidraw", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="0d04", MODE="0666"
 ```
 
-For the updater:
+example Bliss-Box bootloader updater:
 
 ```text
 SUBSYSTEM=="hidraw", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="04fb", MODE="0666"
@@ -144,6 +145,33 @@ sudo udevadm trigger
 ```
 
 ---
+
+# OBS overlay
+Within the app you can press Scroll Lock to hide everything except the controller. You can also choose your own controller fill color.
+
+In OBS, use Window Capture for the browser window.
+
+<img width="250" height="52" alt="image" src="https://github.com/user-attachments/assets/f69e79c2-7edd-4b21-b91a-d5a6658e0e6a" />
+
+
+To crop, hold Alt while dragging the edges of the source to crop the image.
+
+<img width="264" height="214" alt="image" src="https://github.com/user-attachments/assets/3792ce6d-9ec0-4768-be74-fb1c241746c6" />
+
+Right-click your Window Capture source in OBS and choose Filters
+.Click the + button under Effect Filters (on the bottom left).
+Select Color Key (do not choose Chroma Key) and name it.
+Choose Custom Color from the Key Color Type.
+Set the Key Color Type to Custom Color
+.Click Select Color, choose pure White, and click OK.
+If done correctly, you'll have a controller overlay.
+
+<img width="690" height="730" alt="image" src="https://github.com/user-attachments/assets/df62e294-a54b-4c15-9622-c50f7baeee4b" />
+
+if done right you will have a comtroller overlay
+
+<img width="465" height="265" alt="image" src="https://github.com/user-attachments/assets/c3df7bbd-0f1a-4737-9292-5180e2623e8f" />
+
 
 # License
 
@@ -183,6 +211,6 @@ All rights reserved.
 <img src="https://github.com/user-attachments/assets/5c1ed7e5-baa7-4d83-977d-53e5877cd470">
 
 Bliss-Box LLC
-Bliss-Box.com
+Bliss-Box.com](https://bliss-box.com)
 
 
