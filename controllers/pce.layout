@@ -1,109 +1,110 @@
-﻿# Simple controller layout file.
+# Simple controller layout file.
 # Blocks are separated by a blank line.
 # x and y are the center of the shape inside the controller area.
 # byte indexes are zero-based: first stream byte is byte 0.
 
+name: Bliss-Box Test Controller
+width: 420
+height: 260
  
+
 # D-pad: max 1.
 # Leave byte/bit values off if you only want a static d-pad shape.
 type: dpad
 id:POV
-x: 100
-y: 135
+x: 80
+y: 150
 arrange: left
 byte: 11
-upData: 0
-uprightData: 1
-rightData: 2
-downrightData: 3
-downData: 4
-downleftData: 5
-leftData: 6
-leftupData: 7
+upData: 2
+uprightData: 3
+rightData: 4
+downrightData: 5
+downData: 6
+downleftData: 7
+leftData: 0
+leftupData: 1
 shapeType: plus
 
 # Face buttons. Max buttons total is 24.
 # bit is a bit number, so bit 3 means mask 0x08.
 type: button
-id:BTN_4
-label: Y
+id: BTN_1
+label: II
 x: 320
-y: 95
-byte: 0
-bit: 3
-group: face
-shapeType: circle1
-
-type: button
-id:BTN_2
-label: A
-x: 350
-y: 130
-byte: 0
-bit: 1
-group: face
-shapeType: circle1
-
-type: button
-id:BTN_3
-label: X
-x: 290
-y: 130
-byte: 0
-bit: 2
-group: face
-shapeType: circle1
-
-type: button
-label: B
-id:BTN_1
-x: 320
-y: 160
+y: 150
 byte: 0
 bit: 0
 group: face
 shapeType: circle1
 
 type: button
+id: BTN_2
+label: I
+x: 365
+y: 150
+byte: 0
+bit: 1
+group: face
+shapeType: circle1
+
+type: button
+id: BTN_L1
+label: III
+x: 280
+y: 170
+byte: 0
+bit: 6
+group: face
+shapeType: circle1 
+
+ 
+type: button
+id: BTN_1
+label: V
+x: 300
+y: 110
+byte: 0
+bit: 0
+group: face
+shapeType: circle1
+
+type: button
+id: BTN_2
+label: IV
+x: 345
+y: 110
+byte: 0
+bit: 1
+group: face
+shapeType: circle1
+
+type: button
+id: BTN_L1
+label: VI
+x: 265
+y: 130
+byte: 0
+bit: 6
+group: face
+shapeType: circle1 
+
+type: button
 id:BTN_SELECT
 label: 
-x: 185
-y: 135
+x: 180
+y: 170
 byte: 0
 bit: 4
 group: center
-shapeType: rectanglea
+shapeType: rectangle1
 
 type: button
 label: 
 id:BTN_START
-x: 240
-y: 135
+x: 230
+y: 170
 byte: 0
 bit: 5
 group: center
-shapeType: rectanglea
- 
- 
-type: button
-label: L1
-id:BTN_L1
-x: 90
-y: 35
-byte: 0
-bit: 6
-group: top
-shapeType: rectangle2
-
-type: button
-label: R1
-id:BTN_R1
-x: 330
-y: 35
-byte: 0
-bit: 7
-group: top
-shapeType: rectangle2
-
- 
-
+shapeType: rectangle1

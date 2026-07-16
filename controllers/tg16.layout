@@ -6,15 +6,14 @@
 name: Bliss-Box Test Controller
 width: 420
 height: 260
-
  
 
 # D-pad: max 1.
 # Leave byte/bit values off if you only want a static d-pad shape.
 type: dpad
 id:POV
-x: 95
-y: 135
+x: 60
+y: 160
 arrange: left
 byte: 11
 upData: 2
@@ -31,8 +30,8 @@ shapeType: plus
 # bit is a bit number, so bit 3 means mask 0x08.
 type: button
 id: BTN_1
-label: A
-x: 285
+label: II
+x: 315
 y: 170
 byte: 0
 bit: 0
@@ -41,70 +40,31 @@ shapeType: circle1
 
 type: button
 id: BTN_2
-label: B
-x: 320
-y: 150
+label: I
+x: 365
+y: 170
 byte: 0
 bit: 1
 group: face
 shapeType: circle1
-
-type: button
-id: BTN_L1
-label: C
-x: 355
-y: 130
-byte: 0
-bit: 6
-group: face
-shapeType: circle1
+ 
  
 type: button
-id: BTN_3
-label: x
-x: 270
-y: 140
-byte: 0
-bit: 2
-group: face
-shapeType: circle0
-
-type: button
-id: BTN_4
-label: y
-x: 305
-y: 120
-byte: 0
-bit: 3
-group: face
-shapeType: circle0
-
-type: button
-id: BTN_R1
-label: z
-x: 340
-y: 100
-byte: 0
-bit: 7
-group: face
-shapeType: circle0
-
-type: button
+id:BTN_SELECT
 label: 
-id:BTN_START
-x: 210
-y: 150
+x: 180
+y: 170
 byte: 0
-bit: 5
+bit: 4
 group: center
 shapeType: rectangle1
 
 type: button
-label: Mode
-id:BTN_SELECT
-x: 330
-y: 50
+label: 
+id:BTN_START
+x: 240
+y: 170
 byte: 0
-bit: 4
+bit: 5
 group: center
-shapeType: rectangle2
+shapeType: rectangle1

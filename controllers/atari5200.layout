@@ -1,4 +1,4 @@
-# Simple controller layout file.
+﻿# Simple controller layout file.
 # Blocks are separated by a blank line.
 # x and y are the center of the shape inside the controller area.
 # byte indexes are zero-based: first stream byte is byte 0.
@@ -10,108 +10,218 @@ height: 260
 # Analog sticks: up to 8.
 # xByte/yByte choose the stream bytes that move the stick.
 type: analog
-id: stickL
+id: LEFTSTICK
 label:  
-x: 170
-y: 200
-xByte: 3
-yByte: 4
+x: 110
+y: 135
+xByte: 4
+yByte: 3
+invertX: 1
+invertY: 1
 side: left
 movementSize: 25
 shapeType: circle2
-
-type: analog
-id: stickR
-label:  
-x: 270
-y: 200
-xByte: 6
-yByte: 7
-side: right
-movementSize: 25
-shapeType: circle2
-
-# D-pad: max 1.
-# Leave byte/bit values off if you only want a static d-pad shape.
-type: dpad
-id: dpad
-x: 95
-y: 135
-arrange: left
-# byte: 0
-# upBit: 4
-# rightBit: 5
-# downBit: 6
-# leftBit: 7
-shapeType: plus
+ 
 
 # Face buttons. Max buttons total is 24.
 # bit is a bit number, so bit 3 means mask 0x08.
 type: button
-id: btnA
-label: A
-x: 334
-y: 106
+id: BTN_1
+label: 1
+x: 80
+y: 30
 byte: 0
-bit: 3
+bit: 0
 group: face
 shapeType: circle1
 
 type: button
-id: btnB
-label: B
-x: 364
-y: 136
+id: BTN_1
+label: 1
+x: 80
+y: 230
+byte: 0
+bit: 0
+group: face
+shapeType: circle1
+
+type: button
+id: BTN_2
+label: 2
+x: 40
+y: 30
 byte: 0
 bit: 1
 group: face
 shapeType: circle1
 
 type: button
-id: btnX
-label: X
-x: 304
-y: 136
+id: BTN_2
+label: 2
+x: 40
+y: 230
 byte: 0
-bit: 2
+bit: 1
 group: face
 shapeType: circle1
 
 type: button
-id: btnY
-label: Y
-x: 334
-y: 166
-byte: 0
+label: 1
+id: BTN_L2
+x: 260
+y: 160
+byte: 1
 bit: 0
 group: face
-shapeType: circle1
+shapeType: circle0
 
-# Examples you can copy when needed:
-#
-# type: button
-# id: btnL1
-# label: L1
-# x: 95
-# y: 55
-# byte: 1
-# bit: 0
-# group: back
-#
-# type: button
-# id: start
-# label: Start
-# x: 235
-# y: 108
-# byte: 1
-# bit: 2
-# group: middle
-#
-# type: button
-# id: turbo
-# label: Turbo
-# x: 385
-# y: 60
-# byte: 2
-# bit: 1
-# group: special
+
+type: button
+label: 2
+id: BTN_R2
+x: 260
+y: 130
+byte: 1
+bit: 1
+group: face
+shapeType: circle0
+
+
+type: button
+label: 3
+id: BTN_MISC2
+x: 260
+y: 100
+byte: 1
+bit: 2
+group: face
+shapeType: circle0
+
+
+type: button
+label: 4
+id: BTN_MISC3
+x: 290
+y: 160
+byte: 1
+bit: 3
+group: face
+shapeType: circle0
+
+
+type: button
+label: 5
+id: BTN_MISC4
+x: 290
+y: 130
+byte: 1
+bit: 4
+group: face
+shapeType: circle0
+
+
+type: button
+label: 6
+id: BTN_MISC5
+x: 290
+y: 100
+byte: 1
+bit: 5
+group: face
+shapeType: circle0
+
+type: button
+label: 7
+id: BTN_L3
+x: 320
+y: 160
+byte: 1
+bit: 6
+group: face
+shapeType: circle0
+
+
+type: button
+label: 8
+id: BTN_R3
+x: 320
+y: 130
+byte: 1
+bit: 7
+group: face
+shapeType: circle0
+
+
+type: button
+label: 9
+id: BTN_MISC5
+x: 320
+y: 100
+byte: 2
+bit: 0
+group: face
+shapeType: circle0
+
+type: button
+label: *
+id: BTN_MISC6
+x: 350
+y: 160
+byte: 2
+bit: 1
+group: face
+shapeType: circle0
+
+
+type: button
+label: 0
+id: BTN_HOME
+x: 350
+y: 130
+byte: 2
+bit: 2
+group: face
+shapeType: circle0
+
+
+type: button
+label: ♯
+id: BTN_MISC7
+x: 350
+y: 100
+byte: 2
+bit: 3
+group: face
+shapeType: circle0
+  
+type: button
+label: s
+id: BTN_SELECT
+x: 30
+y: 180
+byte: 0
+bit: 5
+group: face
+shapeType: circle0
+
+
+type: button
+label: p
+id: BTN_START
+x: 30
+y: 130
+byte: 0
+bit: 4
+group: face
+shapeType: circle0
+
+
+type: button
+label: r
+id: BTN_3
+x: 30
+y: 80
+byte: 0
+bit: 2
+group: face
+shapeType: circle0

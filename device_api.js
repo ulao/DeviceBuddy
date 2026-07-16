@@ -37,7 +37,8 @@ const Controllers =
     { file:"saturn", 	   name:"Sega Saturn" },
     { file:"saturnanalog", name:"Sega Saturn 3d Stick" },
     { file:"supernintendo",name:"Super Nintendo" },
-    { file:"turbografx16", name:"TurboGrafx-16" },
+    { file:"tg16", name:"TurboGrafx-16" },
+    { file:"pce			", name:"PCEngine" },
     { file:"virtualboy",   name:"Virtual Boy" },
     { file:"atmark",	   name:"Attmark Pippin" } ,
     { file:"xboxone",	   name:"Xbox One" } ,
@@ -391,6 +392,11 @@ function makeControllerImage (baseImage, fill)
 	controller._bg.appendChild(canvas);
 	let ctx = canvas.getContext("2d", { willReadFrequently: true });
 	let controllerImg = new Image();
+	
+	controllerImg.onerror = () =>
+	{
+		alert(`Failed to load controller image:\ncontroller_images/${baseImage}.png`);
+	};
  
 	controllerImg.src = `controller_images/${baseImage}.png`;
 
@@ -833,13 +839,15 @@ function onButtonUp(part)
 
 function updateControllerState(data)
 {
-	 if (!controllerParts?.length || !currentMapper?.analog)    return;
-    for (const part of controllerParts)
+	if (!controllerParts?.length || !currentMapper?.analog)    return;
+
+	for (const part of controllerParts)
     {
         if (part.type === "analog")
         {	
 			//swap for mapper. 
- 
+			if ( currentMapper.analog[part.id] == undefined) alert("Check layout file, told to look for: "+ part.id);
+			
 			if ( currentMapper.analog[part.id].x )  part.xByte = currentMapper.analog[part.id].x ;  
 			if ( currentMapper.analog[part.id].y )  part.yByte = currentMapper.analog[part.id].y ;  
 		 
@@ -859,13 +867,14 @@ function updateControllerState(data)
         }
 		if (part.type === "trigger")
         {	
- 
+			if ( currentMapper.trigger[part.id] == undefined) alert("Check layout file, told to look for: "+ part.id);
 			if ( currentMapper.trigger[part.id].byte )  part.xByte = currentMapper.trigger[part.id].byte ;  
     
             rotate(part.el,   data[part.byte] );
         }
         else if (part.type === "button")
 		{
+			if ( currentMapper.button[part.id] == undefined) alert("Check layout file, told to look for: "+ part.id);
 			if ( currentMapper.button[part.id].byte  )   part.byte = currentMapper.button[part.id].byte ; 
 			if ( currentMapper.button[part.id].bit  )    part.bit = currentMapper.button[part.id].bit ;   
  
@@ -876,7 +885,7 @@ function updateControllerState(data)
 		}
         else if (part.type === "dpad")
         {
-	
+			if ( currentMapper.POV[part.id] == undefined) alert("Check layout file, told to look for: "+ part.id);
 			if ( Number (currentMapper.POV[part.id].byte ))
 			{ 
 				part.byte = Number (currentMapper.POV[part.id].byte );
@@ -1091,7 +1100,8 @@ function shapeSize(shapeType)
 
 		case "rectanglea":
             return { width: 30, height: 10 };
-			
+		case "rectangleb":
+            return { width: 30, height: 10 };			
         case "rectangle1":
             return { width: 30, height: 10 };
 		 
@@ -1306,6 +1316,9 @@ function applyShapeType(el, part)
             break;
 		case "rectanglea":
             el.classList.add("shape-rectanglea");
+            break;
+		case "rectangleb":
+            el.classList.add("shape-rectangleb");
             break;
 		case "rectangle1":
             el.classList.add("shape-rectangle1");

@@ -307,6 +307,10 @@ button {
     border-radius: 6px;
 	 transform: rotate(-45deg);
 }
+.shape-rectangleb {
+    border-radius: 6px;
+	 transform: rotate(-25deg);
+}
 .shape-rectangle1 {
     border-radius: 6px;
 }

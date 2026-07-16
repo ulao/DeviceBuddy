@@ -7,63 +7,42 @@ name: Bliss-Box Test Controller
 width: 420
 height: 260
 
-# Analog sticks: up to 8.
-# xByte/yByte choose the stream bytes that move the stick.
-type: analog
-id: stickL
-label:  
-x: 170
-y: 200
-xByte: 3
-yByte: 4
-side: left
-movementSize: 25
-shapeType: circle2
-
-type: analog
-id: stickR
-label:  
-x: 270
-y: 200
-xByte: 6
-yByte: 7
-side: right
-movementSize: 25
-shapeType: circle2
+ 
 
 # D-pad: max 1.
 # Leave byte/bit values off if you only want a static d-pad shape.
 type: dpad
-x: 85
-y: 95
+id:POV
+x: 95
+y: 135
 arrange: left
-byte: 4
-upData: 0
-uprightData: 1
-rightData: 2
-downrightData: 3
-downData: 4
-downleftData: 5
-leftData: 6
-leftupData: 7
+byte: 11
+upData: 2
+uprightData: 3
+rightData: 4
+downrightData: 5
+downData: 6
+downleftData: 7
+leftData: 0
+leftupData: 1
 shapeType: plus
 
 # Face buttons. Max buttons total is 24.
 # bit is a bit number, so bit 3 means mask 0x08.
 type: button
-id: btnA
+id: BTN_1
 label: A
-x: 334
-y: 106
+x: 285
+y: 150
 byte: 0
-bit: 3
+bit: 0
 group: face
 shapeType: circle1
 
 type: button
-id: btnB
+id: BTN_2
 label: B
-x: 364
+x: 320
 y: 136
 byte: 0
 bit: 1
@@ -71,50 +50,22 @@ group: face
 shapeType: circle1
 
 type: button
-id: btnX
+id: BTN_3
 label: X
-x: 304
-y: 136
+x: 360
+y: 120
 byte: 0
-bit: 2
+bit: 6
 group: face
 shapeType: circle1
-
+ 
+ 
 type: button
-id: btnY
-label: Y
-x: 334
-y: 166
+label: 
+id:BTN_START
+x: 300
+y: 80
 byte: 0
-bit: 0
-group: face
-shapeType: circle1
-
-# Examples you can copy when needed:
-#
-# type: button
-# id: btnL1
-# label: L1
-# x: 95
-# y: 55
-# byte: 1
-# bit: 0
-# group: back
-#
-# type: button
-# id: start
-# label: Start
-# x: 235
-# y: 108
-# byte: 1
-# bit: 2
-# group: middle
-#
-# type: button
-# id: turbo
-# label: Turbo
-# x: 385
-# y: 60
-# byte: 2
-# bit: 1
-# group: special
+bit: 5
+group: center
+shapeType: rectangleb

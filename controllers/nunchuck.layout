@@ -10,8 +10,10 @@ label:
 id:LEFTSTICK
 x: 90
 y: 90
-xByte: 3
-yByte: 4
+xByte: 4
+yByte: 3
+inverX: 1
+invertY: 1
 side: left
 shapeType: circle2
 
