@@ -126,11 +126,12 @@ sudo nano /etc/udev/rules.d/99-mcs-gamer-pro.rules
 
 Add:
 
+exmaple Bliss-Box port 1
 ```text
 SUBSYSTEM=="hidraw", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="0d04", MODE="0666"
 ```
 
-For the updater:
+example Bliss-Box bootloader updater:
 
 ```text
 SUBSYSTEM=="hidraw", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="04fb", MODE="0666"
