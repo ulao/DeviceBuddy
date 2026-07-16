@@ -149,10 +149,12 @@ sudo udevadm trigger
 with in the app you na hit scrollock to clear all but the controller. Also you can choose your own fill for the controller. 
 
 in OBS use the window capture for the browser
+
 <img width="250" height="52" alt="image" src="https://github.com/user-attachments/assets/f69e79c2-7edd-4b21-b91a-d5a6658e0e6a" />
 
 
 To crop press alt and move the crop tool to quare off the image
+
 <img width="264" height="214" alt="image" src="https://github.com/user-attachments/assets/3792ce6d-9ec0-4768-be74-fb1c241746c6" />
 
 Right-click your Window Capture source in OBS and choose Filters
@@ -166,6 +168,7 @@ When done right the back groudn will vanish.
 <img width="690" height="730" alt="image" src="https://github.com/user-attachments/assets/df62e294-a54b-4c15-9622-c50f7baeee4b" />
 
 if done right you will have a comtroller overlay
+
 <img width="465" height="265" alt="image" src="https://github.com/user-attachments/assets/c3df7bbd-0f1a-4737-9292-5180e2623e8f" />
 
 
