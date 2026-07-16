@@ -1,6 +1,6 @@
 # DeviceBuddy
 
-**A universal controller diagnostic, display, and testing utility.**  The new GamePad Viewer based on webHID adn webUSB
+**A universal controller diagnostic, display, and testing utility.**  The next-generation GamePad Viewer built on WebHID and WebUSB.
 
 <img src="https://github.com/user-attachments/assets/89fe4f43-66c1-4b2c-a019-4cc2914b3423" width="275">
 
@@ -11,14 +11,14 @@
 **DeviceBuddy is a work in progress.**
 
 If you found this project, you probably stumbled across it early.  
-It is new, expect bugs, missing features, and things changing frequently.
+It is new, so expect bugs, missing features, and frequent changes, missing features, and things changing frequently.
 
 🌐 Online version:
 https://ulao.github.io/DeviceBuddy/
 
 Anyone interested in development can go to https://discord.gg/KvVWhwH3U and join the #DeviceBuddy discussion. 
 https://discord.gg/KvVWhwH3U
-or enter an issue on github.
+or enter an issue on GitHub.
 
 ---
 
@@ -74,7 +74,7 @@ Current status:
 | Xbox One | ✅ |
 | Xbox 360 | ✅ |
 | Xbox OG | ✅ |
-| Switch0 | ✅ |
+| Switch | ✅ |
 
 
 ---
@@ -146,24 +146,24 @@ sudo udevadm trigger
 ---
 
 # OBS overlay
-with in the app you na hit scrollock to clear all but the controller. Also you can choose your own fill for the controller. 
+Within the app you can press Scroll Lock to hide everything except the controller. You can also choose your own controller fill color.
 
-in OBS use the window capture for the browser
+In OBS, use Window Capture for the browser window.
 
 <img width="250" height="52" alt="image" src="https://github.com/user-attachments/assets/f69e79c2-7edd-4b21-b91a-d5a6658e0e6a" />
 
 
-To crop press alt and move the crop tool to quare off the image
+To crop, hold Alt while dragging the edges of the source to crop the image.
 
 <img width="264" height="214" alt="image" src="https://github.com/user-attachments/assets/3792ce6d-9ec0-4768-be74-fb1c241746c6" />
 
 Right-click your Window Capture source in OBS and choose Filters
 .Click the + button under Effect Filters (on the bottom left).
 Select Color Key (do not choose Chroma Key) and name it.
-choose custom color from the lkey color type
+Choose Custom Color from the Key Color Type.
 Set the Key Color Type to Custom Color
 .Click Select Color, choose pure White, and click OK.
-When done right the back groudn will vanish.
+If done correctly, you'll have a controller overlay.
 
 <img width="690" height="730" alt="image" src="https://github.com/user-attachments/assets/df62e294-a54b-4c15-9622-c50f7baeee4b" />
 
@@ -210,6 +210,6 @@ All rights reserved.
 <img src="https://github.com/user-attachments/assets/5c1ed7e5-baa7-4d83-977d-53e5877cd470">
 
 Bliss-Box LLC
-Bliss-Box.com
+Bliss-Box.com](https://bliss-box.com)
 
 
