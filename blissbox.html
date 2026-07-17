@@ -75,8 +75,16 @@ https://bliss-box.com
 		<button class="close" onclick="document.getElementById('BBTalkPopup').style.display='none'">X</button>
 		<div class="titlebar">Native Controller Communication</div>
 		<label>Here you can send native code to the controller. Type in a correctly assembled, formatted string and hit send for the reply.  </label>
-		<BR><BR><BR><BR>
-		<input size="30" id="inputTalk" > 
+		<BR>
+		<BR> PSX example: <span style="color:#00ff66;">0x01,0x42,0x00,0x00,0x00,0x00,0x00,0x00,0x00</span>
+		<BR> N64 example: <span style="color:#00ff66;">0x00</span>
+		<BR> GC example : <span style="color:#00ff66;">0x40,0x03,0x00</span>
+		<BR> DC example : <span style="color:#00ff66;">0x02,0x00,0x01,0x0E,0x00,0x01,0x00,0x00,0x001,0x032,0x0f0,0x010</span>
+
+ 
+		
+		<BR><BR><BR>
+		<input size="60" id="inputTalk" > 
 		<button id="BBTalkSend"> ⏎ </button>
 		</div>
 	</div>		

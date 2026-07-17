@@ -1,56 +1,165 @@
-.label {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+/* ==========================================================
+   1. Typography
+   ========================================================== */
+
+.label,
+.modes {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+                 "Liberation Mono", "Courier New", monospace;
     font-weight: 700;
 }
+
 .modes {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-weight: 700;
-	display: flex;
+    display: flex;
     align-items: center;
 }
+
 .value {
     color: #00ff66;
     font-weight: 700;
-	 margin-left: auto;
-    font-family: ui-monospace, Consolas, monospace;
+    margin-left: auto;
+    font-family: "OCR A Extended", "Lucida Console", monospace;
 }
+
 #controllerId,
 #major,
 #minor,
 #player {
     color: limegreen;
 }
-.BBeeprom-row {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
+
+
+/* ==========================================================
+   2. Common Layout
+   ========================================================== */
+
+.BBeeprom-row,
+.BBPRESSURE-row,
+.BBadapterRow {
+    display: flex;
+    align-items: center;
 }
 
-.BBeeprom-label {
-  width: 120px;
-  text-align: right;
-  margin-right: 10px;
-  font-size: 12px;
-  color: #aaa;
+.BBeeprom-row,
+.BBPRESSURE-row {
+    margin-bottom: 8px;
 }
+
+.BBadapterRow {
+    gap: 20px;
+}
+
+.BBadapterInfo {
+    min-width: 180px;
+}
+
+
+/* ==========================================================
+   3. Windows & Popups
+   ========================================================== */
+
+/* Popup overlay */
+
+#BBPressurePopup,
+#BBRangePopup,
+#BBTalkPopup,
+#BBUpdatePopup,
+#BBeepromPopup {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+
+/* Shared window */
+
+.BBPRESSURE-window,
+.BBRANGE-window,
+.BBTALK-window,
+.BBUPDATE-window,
+.BBEEPROM-window {
+	background: #121416;
+	border: #3a4148;
+	color: #d8dee5;
+    font-family: monospace;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+
+/* Window sizes */
+
+.BBEEPROM-window {
+    width: 900px;
+}
+
+.BBTALK-window {
+    width: 550px;
+    left: 60%;
+}
+
+.BBUPDATE-window {
+    width: 300px;
+}
+
+
+/* Title bars */
+
+.titlebar,
+.BBRANGE-title,
+.BBPRESSURE-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.titlebar {
+	background: #1f3a52;
+	color: #e8f1ff;
+}
+
+
+/* Close button */
+
+.close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    background: #933;
+    color: white;
+}
+
+
+/* ==========================================================
+   4. Common Controls
+   ========================================================== */
+
 .BBbutton-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px 14px;
-
-    width: 340px;        /* controls layout width */
+    width: 340px;
     margin: 10px 0;
 }
 
 .BBbutton-grid button {
     width: 100%;
     padding: 10px 12px;
-
     border-radius: 6px;
     border: 1px solid #444;
     background: #222;
     color: #fff;
-
     font-size: 14px;
     cursor: pointer;
     transition: 0.15s;
@@ -65,113 +174,64 @@
     background: #8B689E;
     border-color: #6F6;
 }
-.close {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 28px;
-  height: 28px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  background: #333;
-  color: white;
-}
 
- 
-.titlebar {
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: #9ad;
-}
 
-#BBPressurePopup,
-#BBRangePopup,
-#BBTalkPopup,
-#BBUpdatePopup,
-#BBeepromPopup {
-    position: fixed;
-    inset: 0;
-    z-index: 10;
-}
+/* ==========================================================
+   5. EEPROM Window
+   ========================================================== */
 
-.BBEEPROM-window {
-    width: 900px;
-    background: #111;
-    border: 1px solid #444;
-    color: #ddd;
-    font-family: monospace;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 12px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+.BBeeprom-label {
+    width: 120px;
+    text-align: right;
+    margin-right: 10px;
+    font-size: 12px;
+    color: #aaa;
 }
-
 
 .BBeeprom-notice {
-  font-size: 12px;
-  opacity: 0.8;
-  margin-bottom: 10px;
+    font-size: 12px;
+    opacity: 0.8;
+    margin-bottom: 10px;
 }
 
 .BBeeprom-header-grid {
-  display: grid;
-  grid-template-columns: repeat(17, 1fr);
-  font-size: 10px;
-  margin-bottom: 6px;
-  color: #6cf;
+    display: grid;
+    grid-template-columns: repeat(17, 1fr);
+    font-size: 10px;
+    margin-bottom: 6px;
+    color: #6cf;
 }
 
 .BBeeprom-grid {
-  display: grid;
-  grid-template-columns: repeat(16, 1fr);
-  column-gap: 4px;
-  row-gap: 4px;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    column-gap: 4px;
+    row-gap: 4px;
 }
 
 .BBeeprom-grid input.hex:nth-child(16) {
-  margin-bottom: 12px;
+    margin-bottom: 12px;
 }
 
 .BBhex {
-  width: 100%;
-  font-size: 11px;
-  text-align: center;
-  background: #000;
-  color: #0f0;
-  border: 1px solid #333;
-  padding: 2px;
+    width: 100%;
+    font-size: 11px;
+    text-align: center;
+    background: #000;
+    color: #0f0;
+    border: 1px solid #333;
+    padding: 2px;
 }
- .alt-map {
+
+.alt-map {
     padding-left: 8px;
 }
 
-.BBadapterRow {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
 
-.BBadapterInfo {
-    min-width: 180px;
-}
- 
- 
-.BBRANGE-window {
-  background: #111;
-  border: 1px solid #444;
-  color: #ddd;
-  font-family: monospace;
-  position: fixed;
-  top: 50%;
-  left: 50%; 
-  transform: translate(-50%, -50%);
-  padding: 12px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-}
+/* ==========================================================
+   6. Range Window
+   ========================================================== */
+
 .BBRANGElimit-panel {
     width: 360px;
     margin: auto;
@@ -180,23 +240,20 @@
     gap: 18px;
 }
 
- 
 .BBRANGEslider-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
 }
 
-.BBRANGEslider-group {
+.BBRANGEslider-group,
+.BBRANGEbutton-column {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .BBRANGEbutton-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     gap: 10px;
 }
 
@@ -211,81 +268,22 @@
     grid-template-columns: 1fr 1fr;
     gap: 6px 40px;
 }
+
 .BBRANGEtitle {
     width: 100%;
     text-align: center;
     display: block;
 }
+
 .BBRANGEbottom-button {
     display: flex;
     justify-content: center;
 }
-.BBRANGE-title {
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-.BBTALK-window {
-  background: #111;
-  border: 1px solid #444;
-  color: #ddd;
-  font-family: monospace;
-  position: fixed;
-  top: 50%;
-  left: 50%; 
-  transform: translate(-50%, -50%);
-  padding: 12px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  width: 300px;
-}
-.BBUPDATE-window {
-  background: #111;
-  border: 1px solid #444;
-  color: #ddd;
-  font-family: monospace;
-  position: fixed;
-  top: 50%;
-  left: 50%; 
-  transform: translate(-50%, -50%);
-  padding: 12px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  width: 300px;
-}
-#BBUpdateProgress {
-	width: 100%;
-	height: 20px;
-	background: #333;
-	margin-top: 10px;
-}
 
-#BBUpdateProgressBar {
-	width: 0%;
-	height: 100%;
-	background: limegreen;
-}
-.BBPRESSURE-window {
-  background: #111;
-  border: 1px solid #444;
-  color: #ddd;
-  font-family: monospace;
-  position: fixed;
-  top: 50%;
-  left: 50%; 
-  transform: translate(-50%, -50%);
-  padding: 12px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-}
 
-.BBPRESSURE-title {
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.BBPRESSURE-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
+/* ==========================================================
+   7. Pressure Window
+   ========================================================== */
 
 .BBPRESSURE-row label {
     width: 260px;
@@ -303,6 +301,10 @@
     width: 72px;
     height: 24px;
 }
+
+
+/* Pressure graph */
+
 .BBPressure {
     display: flex;
     height: 120px;
@@ -332,39 +334,26 @@
 }
 
 
-#BBPressurePopup {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-#BBRangePopup {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-#BBeepromPopup {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-#BBTalkPopup {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-#BBUpdatePopup {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* ==========================================================
+   8. Update Window
+   ========================================================== */
+
+#BBUpdateProgress {
+    width: 100%;
+    height: 20px;
+    background: #333;
+    margin-top: 10px;
 }
 
+#BBUpdateProgressBar {
+    width: 0%;
+    height: 100%;
+    background: limegreen;
+}
+
+
+/* ==========================================================
+   9. Talk Window
+   ========================================================== */
+
+/* Uses shared window styling */

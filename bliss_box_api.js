@@ -590,12 +590,16 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 			controllerSelect.value =  currentController = BlissBox_lookUpName(bytes[0]);
 			loadControllerLayout( currentController);
 		}
-	 
+
+ 
+		document.getElementById("hidpressurebox").classList.remove("show");
+		document.getElementById("BBpressurebox").classList.remove("show");
+			
 		if (bytes[0] == 121 || bytes[0] == 13) 
 		{ 
 			document.getElementById("hidpressurebox").classList.add("show");
 			document.getElementById("BBpressurebox").classList.add("show");
-		}
+		} 
 
 		document.getElementById("controllerId").textContent = bytes[0];
 		document.getElementById("major").textContent = bytes[2];
@@ -668,7 +672,8 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 				break;
 
 			case "pressure":
-				if ( document.getElementById("controllerId").innerText != "121" ) BlissBox_getPressure ();
+ 
+				if ( document.getElementById("controllerId").innerText == "121" ) BlissBox_getPressure ();
 				break;
 
 			case "eeprom":

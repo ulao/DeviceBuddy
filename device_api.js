@@ -97,14 +97,7 @@ async function selectDevice()
 {
     try
     {
-		const hidBox = document.getElementById("hidpressurebox");
-		if (hidBox) {
-			hidBox.classList.remove("show");
-		}
-		const bbBox = document.getElementById("BBpressurebox");
-		if (bbBox) {
-			bbBox.classList.remove("show");
-		}		
+ 	
 		clearInterval(BlissBoxAdapterTimer);
         BlissBoxAdapterTimer = null;
 		document.getElementById("blissbox-container").innerHTML = "";
@@ -875,26 +868,28 @@ function onInputReport(e)
     let data = new Uint8Array(e.data.buffer, e.data.byteOffset, e.data.byteLength);
     logInputReport(e.reportId, data);
     updateControllerState(data);
-	
+ 
 	//special pressure data
 	const box = document.getElementById("hidpressurebox");
+	 
 	if (isBlissBox && box?.classList.contains("show"))
-	{ 
+	{  
 		const b = document.querySelectorAll(".hidbar");
-		//if() {}
 		if(currentController == "nunchuck")
 		{
 			b[0].style.setProperty("--level",0);
 			b[1].style.setProperty("--level", Math.round(data[6] * 100 / 255));
 			b[2].style.setProperty("--level", Math.round(data[7] * 100 / 255));
+			b[3].style.setProperty("--level", Math.round(data[10] * 100 / 255))
 		}
-		else
-		{
+		if(currentController == "playstation")
+		{console.log(3);
 			b[0].style.setProperty("--level", Math.round(data[5] * 100 / 255));
 			b[1].style.setProperty("--level", Math.round(data[8] * 100 / 255));
 			b[2].style.setProperty("--level", Math.round(data[9] * 100 / 255));
+			b[3].style.setProperty("--level", Math.round(data[10] * 100 / 255));
 		}
-		b[3].style.setProperty("--level", Math.round(data[10] * 100 / 255));
+ 
 	}
 }
  
