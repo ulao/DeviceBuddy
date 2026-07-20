@@ -17,7 +17,6 @@ It is new, so expect bugs, missing features, and frequent changes, missing featu
 https://ulao.github.io/DeviceBuddy/
 
 Anyone interested in development can go to https://discord.gg/KvVWhwH3U and join the #DeviceBuddy discussion. 
-https://discord.gg/KvVWhwH3U
 or enter an issue on GitHub.
 
 ---
@@ -40,11 +39,11 @@ This is the first public version.
 
 Current status:
 
-- Bliss-Box API support partially implemented
+- Bliss-Box API support is implemented, including device flashing. 
 - Tested with multiple controllers
 - Windows support
 - Linux support
-- WebHID based controller communication
+- WebHID/WebHID controller communication
 
 ---
 
@@ -59,15 +58,17 @@ Current status:
 | Philips CD-i | ✅ |
 | Sega Dreamcast | ✅ |
 | Nintendo GameCube | ✅ |
-| Sega Genesis | ✅ |
+| Sega Genesis 3/6 | ✅ |
 | Atari Jaguar | ✅ |
 | Neo Geo | ✅ |
 | Nintendo Entertainment System | ✅ |
 | Nintendo 64 | ✅ |
+| Nintendo wii chuck | ✅ |
+| Nintendo wii classic controller | ✅ |
 | Apple Pippin | ✅ |
 | Sony PlayStation | ✅ |
 | Sony PlayStation 4 | ✅ |
-| Sega Saturn | ✅ |
+| Sega Saturn /3d | ✅ |
 | Super Nintendo | ✅ |
 | TurboGrafx-16 | ✅ |
 | Virtual Boy | ✅ |
