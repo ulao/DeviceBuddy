@@ -17,7 +17,6 @@ It is new, so expect bugs, missing features, and frequent changes, missing featu
 https://ulao.github.io/DeviceBuddy/
 
 Anyone interested in development can go to https://discord.gg/KvVWhwH3U and join the #DeviceBuddy discussion. 
-https://discord.gg/KvVWhwH3U
 or enter an issue on GitHub.
 
 ---
@@ -40,11 +39,11 @@ This is the first public version.
 
 Current status:
 
-- Bliss-Box API support partially implemented
+- Bliss-Box API support is implemented, including device flashing. 
 - Tested with multiple controllers
 - Windows support
 - Linux support
-- WebHID based controller communication
+- WebHID/WebHID controller communication
 
 ---
 
@@ -59,15 +58,17 @@ Current status:
 | Philips CD-i | ✅ |
 | Sega Dreamcast | ✅ |
 | Nintendo GameCube | ✅ |
-| Sega Genesis | ✅ |
+| Sega Genesis 3/6 | ✅ |
 | Atari Jaguar | ✅ |
 | Neo Geo | ✅ |
 | Nintendo Entertainment System | ✅ |
 | Nintendo 64 | ✅ |
+| Nintendo wii chuck | ✅ |
+| Nintendo wii classic controller | ✅ |
 | Apple Pippin | ✅ |
 | Sony PlayStation | ✅ |
 | Sony PlayStation 4 | ✅ |
-| Sega Saturn | ✅ |
+| Sega Saturn /3d | ✅ |
 | Super Nintendo | ✅ |
 | TurboGrafx-16 | ✅ |
 | Virtual Boy | ✅ |
@@ -194,21 +195,33 @@ All rights reserved.
 
 # Screenshots
 
-## Controller Display
+## Controller Display with fill options
 
-<img src="https://github.com/user-attachments/assets/f3785177-9d5e-40d9-b1cb-d2b50677a0b6">
+<img width="1178" height="1024" alt="image" src="https://github.com/user-attachments/assets/b5a3be4b-01cb-471c-96c4-f603973a04e6" />
+<img width="446" height="259" alt="image" src="https://github.com/user-attachments/assets/2f08272b-1dea-4030-81c0-4ccb8ddb1a14" />
+<img width="430" height="269" alt="image" src="https://github.com/user-attachments/assets/98c84ea2-c38c-4557-a87d-9683aab58dcf" />
+
 
 ## Diagnostics
 
 <img src="https://github.com/user-attachments/assets/4c20a887-5e0e-4eca-971b-b80b0652f784">
+<img width="938" height="600" alt="image" src="https://github.com/user-attachments/assets/a448c8a6-c063-46a6-a875-ad03b4801a54" />
+
 
 ## Mapping
 
 <img src="https://github.com/user-attachments/assets/51fd8bda-1023-496c-9be9-25700b5f8dd7">
+<img width="633" height="663" alt="image" src="https://github.com/user-attachments/assets/5a9c8ffb-2234-4b5b-9561-80b075914e4a" />
+<img width="392" height="596" alt="image" src="https://github.com/user-attachments/assets/6e561d3c-0b93-4f68-8022-082ea25e1ac7" />
+
+
 
 ## Features
 
 <img src="https://github.com/user-attachments/assets/5c1ed7e5-baa7-4d83-977d-53e5877cd470">
+<img width="947" height="276" alt="image" src="https://github.com/user-attachments/assets/a1a1d9f7-14e3-432a-9594-d12ce6db9087" />
+<img width="633" height="444" alt="image" src="https://github.com/user-attachments/assets/bd0057c9-c4ec-4f54-8f4a-58cb73556eca" />
+<img width="383" height="226" alt="image" src="https://github.com/user-attachments/assets/a4772a71-a79b-46c0-b118-f832b54b083a" />
 
 Bliss-Box LLC
 Bliss-Box.com](https://bliss-box.com)
