@@ -1,4 +1,4 @@
-﻿# Simple controller layout file.
+﻿﻿# Simple controller layout file.
 # Blocks are separated by a blank line.
 # x and y are the center of the shape inside the controller area.
 # byte indexes are zero-based: first stream byte is byte 0.
@@ -169,5 +169,3 @@ id:BTN_R3
 byte: 1
 bit: 7
 target: rightStick
-
-

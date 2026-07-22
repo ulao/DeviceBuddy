@@ -13,11 +13,10 @@ type: analog
 id: LEFTSTICK
 label:  
 x: 110
-y: 135
+y: 125
 xByte: 4
 yByte: 3
-invertX: 1
-invertY: 1
+inverty: true
 side: left
 movementSize: 25
 shapeType: circle2

@@ -18,11 +18,11 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 const Controllers =
 [
-    { file:"3do",		   name:"3DO" },
+    { file:"3do",	   name:"3DO" },
     { file:"atari2600",	   name:"Atari 2600" },
     { file:"atari5200",	   name:"Atari 5200" },
     { file:"atari7800",	   name:"Atari 7800" },
-    { file:"cdi",		   name:"Philips CD-i" },
+    { file:"cdi",	   name:"Philips CD-i" },
     { file:"dreamcast",	   name:"Sega Dreamcast" },
     { file:"gamecube",	   name:"Nintendo GameCube" },
     { file:"genesis3",	   name:"Sega Genesis (3 Button)" },
@@ -31,22 +31,25 @@ const Controllers =
     { file:"neogeo",	   name:"Neo Geo" },
     { file:"nintendo",	   name:"Nintendo Entertainment System" },
     { file:"nintendo64",   name:"Nintendo 64" },
-    { file:"pippin", 	   name:"Apple Pippin" },
+    { file:"pippin", 	   name:"Attmark Pippin" },
     { file:"playstation",  name:"Sony PlayStation" },
     { file:"playstation4", name:"Sony PlayStation 4" },
     { file:"saturn", 	   name:"Sega Saturn" },
     { file:"saturnanalog", name:"Sega Saturn 3d Stick" },
     { file:"supernintendo",name:"Super Nintendo" },
-    { file:"tg16", name:"TurboGrafx-16" },
-    { file:"pce			", name:"PCEngine" },
+    { file:"tg16",	   name:"TurboGrafx-16" },
+    { file:"pce", 	   name:"PCEngine" },
     { file:"virtualboy",   name:"Virtual Boy" },
-    { file:"atmark",	   name:"Attmark Pippin" } ,
     { file:"xboxone",	   name:"Xbox One" } ,
     { file:"xbox360",	   name:"Xbox 360" } ,
-	{ file:"xboxog",	   name:"Xbox Original" }, 
-	{ file:"switch",	   name:"Nintendo Switch" },
-	{ file:"wiicontroller",name:"Nintendo wii Controller" },
-	{ file:"nunchuck",	   name:"Nintendo wii Nunchuck" } 
+    { file:"xboxog",	   name:"Xbox Original" }, 
+    { file:"switch",	   name:"Nintendo Switch" },
+    { file:"wiicontroller",name:"Nintendo wii Controller" },
+    { file:"nunchuck",	   name:"Nintendo wii Nunchuck" },
+    { file:"hpd",	   name:"Sega Paddle" },
+    { file:"vaus",	   name:"Nintendo VAUS paddle" },
+    { file:"ataripaddles",  name:"Atari Paddles" },
+    { file:"geminipaddle", name:"Gemini Paddle" }     
 ];
 
 let currentController = "playstation"; 						//controller in use
@@ -145,8 +148,7 @@ async function selectDevice()
         devName.textContent = name +" (0x" +hid.vendorId.toString(16) +" | 0x" +hid.productId.toString(16) +")"
         activeInputListener = onInputReport;
         hid.addInputListener(activeInputListener);
-        await loadMapper();
-
+        await loadMapper(); 
         await loadControllerLayout(currentController);
         document.getElementById("selectOverlay")?.classList.add("hidden");
 
@@ -275,6 +277,7 @@ async function startup()
 
 async function loadControllerLayout(file)
 {
+ 
 	if (file == undefined)
 	{
 		console.log("that's not right");
@@ -296,14 +299,17 @@ async function loadControllerLayout(file)
         if (!response.ok) throw new Error();
         text = await response.text();
     }
-    catch
+    catch(e)
     {
-        alert(
-            `Unable to load controller layout.\n\n` +
-            `Add the missing file:\n${url}`  
-        );
+ 
+			alert(
+				`Unable to load controller layout.\n\n` +
+				`${url}\n\n` +
+				`${e}`
+			); 
+			console.error(e);
 
-        return;
+			return;
     }
 
     try
@@ -313,7 +319,7 @@ async function loadControllerLayout(file)
         if (myToken !== layoutLoadToken)      return;
 
         const config = parseControllerText(text);
-
+ 
         buildController(config);
  
         controllerSelect.value = file;
@@ -339,7 +345,7 @@ async function loadControllerLayout(file)
 		document.getElementById("mapperCustom").checked = true;
 		currentMapper = parseMapper(cached);
 	} else document.getElementById("mapperDefault").checked = true;
-		
+ 
 }
 
 
@@ -577,6 +583,7 @@ async  function init()
 		controllerSelect.appendChild(option);
 	}
 	controllerSelect.value = currentController;
+ 	 
 	loadControllerLayout(currentController);
 	
 	document.getElementById("edge").onkeyup   = (event) =>
@@ -672,7 +679,6 @@ async  function init()
 			
 	controllerSelect.addEventListener("change", (e) =>
 	{
-
 		loadControllerLayout(e.target.value);
 	});
 	
@@ -871,24 +877,25 @@ function onInputReport(e)
  
 	//special pressure data
 	const box = document.getElementById("hidpressurebox");
-	 
+ 
 	if (isBlissBox && box?.classList.contains("show"))
 	{  
+ 
 		const b = document.querySelectorAll(".hidbar");
-		if(currentController == "nunchuck")
+		if(controllerSelect.value  == "nunchuck")
 		{
 			b[0].style.setProperty("--level",0);
 			b[1].style.setProperty("--level", Math.round(data[6] * 100 / 255));
 			b[2].style.setProperty("--level", Math.round(data[7] * 100 / 255));
 			b[3].style.setProperty("--level", Math.round(data[10] * 100 / 255))
 		}
-		if(currentController == "playstation")
-		{console.log(3);
+		else if(controllerSelect.value  == "playstation")
+		{ 
 			b[0].style.setProperty("--level", Math.round(data[5] * 100 / 255));
 			b[1].style.setProperty("--level", Math.round(data[8] * 100 / 255));
 			b[2].style.setProperty("--level", Math.round(data[9] * 100 / 255));
 			b[3].style.setProperty("--level", Math.round(data[10] * 100 / 255));
-		}
+		} else box.classList.remove("show");
  
 	}
 }
@@ -913,6 +920,24 @@ function updateControllerState(data)
 
 	for (const part of controllerParts)
     {
+		if (part.type === "dial")
+        {	
+			//swap for mapper. 
+			if ( currentMapper.analog[part.id] == undefined) alert("Check layout file, told to look for: "+ part.id);
+			if ( currentMapper.analog[part.id] )  part.Byte = currentMapper.analog[part.id] ;  
+
+			let value = data[part.byte];
+			rotate(part.el, value, false);
+
+			if (controllerSelect.value  == "ataripaddles")     part.el.style.setProperty("--angle", `${Math.round((value / 255) * 360)}deg`);
+			else 
+			{
+				let angle = 270 + Math.round((value / 255) * 360);
+				part.el.style.setProperty("--angle", `${angle}deg`);
+			}
+				
+        }
+		
         if (part.type === "analog")
         {	
 			//swap for mapper. 
@@ -930,9 +955,7 @@ function updateControllerState(data)
 			
             const x = byteToAxis(data[part.xByte], part);
             const y = byteToAxis(data[part.yByte], part);
-			
-			
-			
+
             moveStick(part.el, part.invertX ? -x : x, part.invertY ? -y : y );
         }
 		if (part.type === "trigger")
@@ -940,7 +963,7 @@ function updateControllerState(data)
 			if ( currentMapper.trigger[part.id] == undefined) alert("Check layout file, told to look for: "+ part.id);
 			if ( currentMapper.trigger[part.id].byte )  part.xByte = currentMapper.trigger[part.id].byte ;  
     
-            rotate(part.el,   data[part.byte] );
+            rotate(part.el,   data[part.byte], true );
         }
         else if (part.type === "button")
 		{
@@ -1044,11 +1067,10 @@ function applyDpadState(part, state)
             break;
     }
 }
+
 function buildController(config)
 { 
-	
-    const counts = { analog: 0, button: 0, dpad: 0, trigger: 0 };
-
+    const counts = { analog: 0, button: 0, dpad: 0, trigger: 0, dial: 0 };
 
     controllerParts = [];
     controller.innerHTML = "";
@@ -1082,7 +1104,9 @@ function buildController(config)
     for (const part of config.parts)
     {
         if (part.type === "analog" && counts.analog++ < 8)
-            buildAnalog(part);
+           buildAnalog(part);
+		else if (part.type === "dial" && counts.dial++ < 2)
+           buildDial(part);
 
         else if (part.type === "button" && counts.button++ < 24)
             buildButton(part);
@@ -1092,10 +1116,34 @@ function buildController(config)
 			
 		else if (part.type === "trigger" && counts.trigger++ < 2)
             buildTrigger(part);
+	
     }
+		
 }
 
 
+function buildDial(part)
+{
+    const el = document.createElement("div");
+
+    const size = shapeSize(part.shapeType);
+
+    el.id = part.id;
+    el.className = `stick side-${part.side}`;
+
+    applyShapeType(el, part);
+
+    el.textContent = part.label;
+
+    placeCenter(el, part.x, part.y, size.width, size.height);
+
+    controllerBody.appendChild(el);
+
+    const obj = { ...part, el };
+
+    controllerParts.push(obj);
+
+}
  
 function buildAnalog(part)
 {
@@ -1115,6 +1163,7 @@ function buildAnalog(part)
     controllerBody.appendChild(el);
 
     const obj = { ...part, el };
+
 
 	if (part.side === "left" && part.type === "analog")   controller.leftStickEl = el; 
 	if (part.side === "right" && part.type === "analog")  controller.rightStickEl = el;
@@ -1153,6 +1202,15 @@ function shapeSize(shapeType)
 {
     switch(shapeType.toLowerCase())
     {
+		case "dial1":
+            return { width: 40, height: 40 };
+			
+		case "dial2":
+            return { width: 60, height: 60 };
+			
+		case "dial3":
+            return { width: 80, height: 80 };		
+			
         case "circle0":
             return { width: 20, height: 20 };
 			
@@ -1170,8 +1228,10 @@ function shapeSize(shapeType)
 
 		case "rectanglea":
             return { width: 30, height: 10 };
+			
 		case "rectangleb":
             return { width: 30, height: 10 };			
+			
         case "rectangle1":
             return { width: 30, height: 10 };
 		 
@@ -1239,14 +1299,16 @@ function buildButton(part)
 	let targetEl = el;
 
 
+ 
 	if (part.label === "R3")
 	{
 		el.style.display = "none";
 		targetEl = controller.rightStickEl;
 	}
-
+ 	
 	if (part.label === "L3")
 	{
+ 
 		el.style.display = "none";
 		targetEl = controller.leftStickEl;
 	}
@@ -1254,6 +1316,10 @@ function buildButton(part)
 	controllerBody.appendChild(el);
 
     controllerParts.push({ ...part,  el: targetEl });
+	
+
+				
+
 }
 
 function buildDpad(part)
@@ -1310,6 +1376,7 @@ function parseControllerText(text)
 
     for (const block of blocks)
     {
+	
         const type = textValue(block.type).toLowerCase();
         if (!type || type === "controller")
         {
@@ -1318,7 +1385,7 @@ function parseControllerText(text)
             config.height = numberValue(block.height, config.height);
             continue;
         }
-
+ 
         const part = normalizePart(block, config.parts.length + 1);
 
         if (part)
@@ -1369,6 +1436,15 @@ function applyShapeType(el, part)
 {
     switch(part.shapeType.toLowerCase())
     {
+		case "dial1":
+            el.classList.add("shape-dial1");
+		    break;
+		case "dial2":
+            el.classList.add("shape-dial2");
+		    break;
+		case "dial3":
+            el.classList.add("shape-dial3");	
+            break;			
 		case "circle0":
             el.classList.add("shape-circle0");
             break;
@@ -1458,7 +1534,7 @@ function normalizePart(block, index)
 {
     const type = textValue(block.type).toLowerCase();
  
-    if (!["analog", "button", "dpad", "trigger"].includes(type))
+    if (!["analog", "dial", "button", "dpad", "trigger"].includes(type))
         return null;
 	if (block.id == undefined && block.type != undefined) alert("Layout " + currentController + " is missing its ID for: " +  block.type  );
     const part = {
@@ -1478,7 +1554,13 @@ function normalizePart(block, index)
         part.invertX = booleanValue(block.invertx, false);
         part.invertY = booleanValue(block.inverty, false);
     }
-	 if (type === "trigger")
+    if (type === "dial")
+    {
+        part.shapeType = textValue(block.shapetype) || "dial1";
+        part.side = textValue(block.side) || "left";
+        part.byte = numberValue(block.byte ?? block.byte, 0);
+    }
+	if (type === "trigger")
     {
         part.shapeType = textValue(block.shapetype) || "trianglel";
         part.side = textValue(block.side) || "left";
@@ -1529,16 +1611,15 @@ function moveStick(el, x, y)
 {
     el.style.transform = `translate(${x * 11}px, ${y * 11}px)`;
 }
-function rotate(el,a)
+function rotate(el,a,click)
 {
- 
-	if(a>50) el.classList.add("active" ); else el.classList.remove("active" );
+	if(a>50 && click) el.classList.add("active" ); else el.classList.remove("active" );
     el.style.setProperty("--angle", `${Math.round((a / 255) * 100)}%`);
 }
 function setActive(el, pressed)
 {
-    
     el.classList.toggle("active", pressed);
+
 }
 
 function placeCenter(el, x, y, width, height)

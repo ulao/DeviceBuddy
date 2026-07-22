@@ -298,11 +298,40 @@ button {
 		#222 100%
 	);
 }
+.shape-dial1,
+.shape-dial2,
+.shape-dial3 {
+    border-radius: 50%;
+    position: relative;
+    background: radial-gradient(
+        circle at 35% 35%,
+        #888 0%,
+        #555 45%,
+        #222 100%
+    );
+    border: 4px solid black;
+}
+.shape-dial1::before,
+.shape-dial2::before,
+.shape-dial3::before {
+    content: "";
+    position: absolute;
 
+    top: 15%;
+    left: 50%;
+
+    width: 3px;
+    height: 30%;
+
+    background: white;
+    border-radius: 2px;
+
+    transform-origin: 50% 100%;
+    transform: translateX(-50%) rotate(var(--angle));
+}
 .shape-square {
     border-radius: 0;
 }
-
 .shape-rectanglea {
     border-radius: 6px;
 	 transform: rotate(-45deg);

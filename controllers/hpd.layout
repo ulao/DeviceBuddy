@@ -5,33 +5,19 @@
 
 # Analog sticks: up to 8.
 # xByte/yByte choose the stream bytes that move the stick.
-type: analog
+type: dial
 label:  
-id:LEFTSTICK
-x: 90
-y: 90
-xByte: 4
-yByte: 3
-inverty: true
+id:DIAL
+x: 100
+y: 125
+Byte: 10
 side: left
-shapeType: circle2
-
+shapeType: dial1
  
 type: button
-id:BTN_2
-label: c
-x: 40
-y: 190
-byte: 0
-bit: 1
-group: face
-shapeType: circle1
- 
-
-type: button
-label: z
+label: 
 id:BTN_1
-x: 70
+x: 123
 y: 210
 byte: 0
 bit: 0

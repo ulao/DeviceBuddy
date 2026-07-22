@@ -11,10 +11,10 @@
 	if (id == 4  ) return "A7800"         ;
 	if (id == 5  ) return "vectrex"           ;
 	if (id == 6  ) return "atari5200"         ;
-	if (id == 7  ) return "HPD"		      ;
+	if (id == 7  ) return "hpd"		      ;
 	if (id == 8  ) return "saturnanalog" ;
 	if (id == 9  ) return "gamecube"      ;
-	if (id == 10 ) return "atmark" 		  ;
+	if (id == 10 ) return "vaus" 		  ;
 	if (id == 11 ) return "jaguar" ;
 	if (id == 12 ) return "drivingcontroller" 	;
 	if (id == 13 ) return "nunchuck"  ;
@@ -45,7 +45,7 @@
 	if (id == 38 ) return "GRAVIS_EX" 	  ;
 	if (id == 39 ) return "MSSW" 		;
 	if (id == 40 ) return "HAMMERHEAD"	  ;
-	if (id == 41 ) return "PADDLES" 	;
+	if (id == 41 ) return "ataripaddles" 	;
 	if (id == 42 ) return "BALLY" 		  ;
 	if (id == 43 ) return "ATARI_KEYPAD" ;
 	if (id == 45 ) return "SPEEK" 		  ;
@@ -65,7 +65,7 @@
 	if (id == 58 ) return "SATURN_GUN"	  ;
 	if (id == 59 ) return "SMS_GUN"		  ;
 	if (id == 60 ) return "DC_GUN"		  ;
-	if (id == 61 ) return "PADDLES_GEMINI";
+	if (id == 61 ) return "geminipaddles";
 	if (id == 62)  return "DC_PAD_RF"  	  ;
 	if (id == 63 ) return "FC_POWERPAD"  ;
 	if (id == 64 ) return "ATARI_TB" 	;
@@ -586,7 +586,6 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 
 		if ( BlissBox_lookUpName(bytes[0]) !=  currentController ) 
 		{
-		
 			controllerSelect.value =  currentController = BlissBox_lookUpName(bytes[0]);
 			loadControllerLayout( currentController);
 		}

@@ -5,34 +5,38 @@
 
 # Analog sticks: up to 8.
 # xByte/yByte choose the stream bytes that move the stick.
-type: analog
+type: dial
 label:  
-id:LEFTSTICK
-x: 90
-y: 90
-xByte: 4
-yByte: 3
-inverty: true
+id:DIAL
+x: 300
+y: 125
+Byte: 10
 side: left
-shapeType: circle2
-
+shapeType: dial3
  
-type: button
-id:BTN_2
-label: c
-x: 40
-y: 190
-byte: 0
-bit: 1
-group: face
-shapeType: circle1
- 
+# D-pad: max 1.
+# Leave byte/bit values off if you only want a static d-pad shape.
+type: dpad
+id:POV
+x: 90
+y: 40
+arrange: left
+byte: 11
+upData: 2
+uprightData: 3
+rightData: 4
+downrightData: 5
+downData: 6
+downleftData: 7
+leftData: 0
+leftupData: 1
+shapeType: plus
 
 type: button
-label: z
+label: 
 id:BTN_1
-x: 70
-y: 210
+x: 123
+y: 240
 byte: 0
 bit: 0
 group: face
