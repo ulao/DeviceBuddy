@@ -46,6 +46,16 @@ Current status:
 - WebHID/WebHID controller communication
 
 ---
+### Why WebHID or WebUSB and not Gamepad API ?
+The Gamepad API is great, and there are many excellent gamepad testers available that use it. Device Buddy takes a different approach.
+
+The Gamepad API is designed to expose standard controller inputs—buttons, analog sticks, but it doesn't provide access to advanced USB HID features such as control transfers, feature reports, or vendor-specific data. Because of these limitations, browser-based tools have traditionally been unable to fully configure, map, or communicate with advanced controller adapters.
+
+By using WebHID/WebUSB instead of the Gamepad API, Device Buddy can communicate directly with supported hardware. This makes it possible to perform advanced mapping, configure device settings, update firmware, and access features that were previously only available through desktop software.
+
+As a result, industry-leading adapters such as Bliss-Box and Raphnet can now be fully configured and managed directly from a web browser—no software installation required.
+
+---
 
 ## Supported Controllers
 
@@ -322,6 +332,16 @@ New controller support and firmware updates continue to expand what the hardware
 ## ✔ Designed by gamers
 
 Every product is created by someone who actually uses classic gaming hardware—not just someone selling adapters.
+
+---
+
+## ✔ Do what the controller can
+
+At Bliss-Box, we believe you should be able to use your controller to its full potential. Whenever possible, we push beyond the standard limitations to support advanced features such as pressure-sensitive buttons, gyroscopes, LCD displays, memory card access, and much more.
+
+Take a look at the source code behind Device Buddy to see what's possible with the API. Its straightforward interface makes it easy to access powerful controller features that are typically unavailable through conventional gamepad APIs.
+
+Our goal is simple: give developers and gamers complete access to their hardware so they can enjoy the best possible gaming experience.
 
 ---
 
