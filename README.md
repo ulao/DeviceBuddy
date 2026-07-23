@@ -223,6 +223,124 @@ All rights reserved.
 <img width="633" height="444" alt="image" src="https://github.com/user-attachments/assets/bd0057c9-c4ec-4f54-8f4a-58cb73556eca" />
 <img width="383" height="226" alt="image" src="https://github.com/user-attachments/assets/a4772a71-a79b-46c0-b118-f832b54b083a" />
 
+
+# 🎮 What is Bliss-Box?
+
+**Bliss-Box makes old and new game hardware work together.**
+
+Whether it's a controller from the 1980s, or an arcade stick you built yourself, Bliss-Box products let you connect the controller you love to the system you want to play.
+
+Instead of replacing your favorite controllers, **Bliss-Box gives them a new life.**
+
+---
+
+# 🚀 Three Ways Bliss-Box Makes Gaming Better
+
+## 🎮 Input Adapters
+
+### Use almost any controller on your PC.
+
+Plug classic console controllers, arcade sticks, fight sticks, racing wheels, and specialty controllers into a single USB adapter.
+
+- ✅ No soldering
+- ✅ No complicated setup
+- ✅ Just play
+- ✅ Lowest lag posible
+
+Perfect for:
+
+- Steam
+- RetroArch
+- MAME
+- FPGA systems
+- Emulators
+- Modern PC games
+
+---
+
+## 🔄 Bridge Adapters
+
+### Make controllers and consoles speak the same language.
+
+Bridge adapters translate one controller protocol into another in real time.
+
+For example, use a USB controller on hardware that normally doesn't support USB—or connect controllers between entirely different gaming ecosystems.
+
+> Think of it as a **universal interpreter for game controllers.**
+
+---
+
+## ⚡ Specialty Adapters
+
+### Do things other adapters simply can't.
+
+Products like the **Bliss-Box Air** and **Bliss-Box Blender** solve unique controller challenges that standard adapters ignore.
+
+Whether it's wireless connectivity, combining multiple controller technologies, or enabling specialized hardware, these devices are designed for gamers who want maximum flexibility.
+
+---
+
+# ⭐ Why Gamers Choose Bliss-Box
+
+## ✔ Use the controller you already love
+
+Keep using your favorite controller instead of buying a replacement.
+
+---
+
+## ✔ Huge controller compatibility
+
+Support for **100+ controller types** spanning decades of gaming history.
+
+---
+
+## ✔ Built for enthusiasts
+
+Ideal for:
+
+- Retro gamers
+- Arcade builders
+- Speedrunners
+- FPGA users
+- Collectors
+- Hardware developers
+
+---
+
+## ✔ Low latency
+
+Fast, responsive performance designed specifically for gaming—not generic USB conversion.
+
+---
+
+## ✔ Constantly evolving
+
+New controller support and firmware updates continue to expand what the hardware can do.
+
+---
+
+## ✔ Designed by gamers
+
+Every product is created by someone who actually uses classic gaming hardware—not just someone selling adapters.
+
+---
+
+# 🌟 The Bliss-Box Difference
+
+Many adapters solve only **one problem**:
+
+> *"This controller works on this console."*
+
+**Bliss-Box is different.**
+
+It is an entire ecosystem built around one idea:
+
+> ## **Every great controller deserves to work everywhere.**
+
+Whether you're preserving gaming history, building the ultimate arcade cabinet, speedrunning with original hardware, or simply playing with the controller that feels best in your hands, **Bliss-Box removes the barriers between generations of gaming.**
+
+
+
 Bliss-Box LLC
 Bliss-Box.com](https://bliss-box.com)
 
