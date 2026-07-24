@@ -8,7 +8,7 @@
 type: dial
 label:  
 id:DIAL
-x: 100
+x: 110
 y: 125
 Byte: 10
 side: left
@@ -19,7 +19,7 @@ shapeType: dial3
 type: dial
 label:  
 id:DIAL
-x: 310
+x: 330
 y: 40
 Byte: 9
 side: right

@@ -52,7 +52,7 @@ shapeType: circle1
 type: button
 id: BTN_3
 label: X
-x: 360
+x: 355
 y: 120
 byte: 0
 bit: 6

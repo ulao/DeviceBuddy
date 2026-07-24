@@ -32,6 +32,10 @@
 /* ==========================================================
    2. Common Layout
    ========================================================== */
+#trailCanvas {
+    background: black;
+    border: 1px solid #333;
+}
 
 .BBeeprom-row,
 .BBPRESSURE-row,
@@ -327,12 +331,13 @@
 
 .BBbar {
     width: 8px;
-    height: calc(1px + (var(--level) * 0.98px));
+    height: 250px;        
     background: #00ff00;
     border-radius: 2px 2px 0 0;
-    transition: height 0.1s ease;
-}
 
+    transform-origin: bottom;
+    transform: scaleY(var(--level));
+}
 
 /* ==========================================================
    8. Update Window

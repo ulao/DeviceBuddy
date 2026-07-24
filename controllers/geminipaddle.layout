@@ -10,7 +10,7 @@ label:
 id:DIAL
 x: 300
 y: 125
-Byte: 10
+Byte: 9
 side: left
 shapeType: dial3
  

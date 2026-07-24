@@ -46,7 +46,7 @@
 	if (id == 39 ) return "MSSW" 		;
 	if (id == 40 ) return "HAMMERHEAD"	  ;
 	if (id == 41 ) return "ataripaddles" 	;
-	if (id == 42 ) return "BALLY" 		  ;
+	if (id == 42 ) return "bally" 		  ;
 	if (id == 43 ) return "ATARI_KEYPAD" ;
 	if (id == 45 ) return "SPEEK" 		  ;
 	if (id == 46 ) return "PC_GAMEPAD"  ;
@@ -65,7 +65,7 @@
 	if (id == 58 ) return "SATURN_GUN"	  ;
 	if (id == 59 ) return "SMS_GUN"		  ;
 	if (id == 60 ) return "DC_GUN"		  ;
-	if (id == 61 ) return "geminipaddles";
+	if (id == 61 ) return "geminipaddle";
 	if (id == 62)  return "DC_PAD_RF"  	  ;
 	if (id == 63 ) return "FC_POWERPAD"  ;
 	if (id == 64 ) return "ATARI_TB" 	;
@@ -239,6 +239,17 @@ async function BlissBox_Init ()
 
     }, 500);
 	
+	document.getElementById("playerSet").onkeyup   = (event) =>
+	{ 
+		BlissBox_setPlayer();
+	}
+	
+	
+	document.getElementById("BBreset").onclick = async () =>
+	{
+		BlissBox_setReset();
+	}
+	
 	document.getElementById("BBTalkSend").onclick = async () =>
 	{
 		const sendLine = document.getElementById("inputTalk").value.split(",");
@@ -341,7 +352,7 @@ async function BlissBox_Init ()
 		value.textContent = (value.textContent === "ON") ? "OFF" : "ON";
 		BlissBox_setModes();
 	});
-
+	
 }
 async function BlissBox_writeFeature (id, data)  
 { 
@@ -395,8 +406,8 @@ async function BlissBox_getEEProm()
 }
 async function BlissBox_save()
 {
-	let save_data = [ 1, 0, 0, 0xff, 1, 0, 0, 0 ]; //1 for save, need to fill in first byte with the bits/
-	await BlissBox_writeFeature(  0x12, save_data);
+	let _data = [ 1, 0, 0, 0xff, 1, 0, 0, 0 ]; //1 for save, need to fill in first byte with the bits/
+	await BlissBox_writeFeature(  0x12, _data);
 }
 async function BlissBox_setModes( )
 {
@@ -406,9 +417,29 @@ async function BlissBox_setModes( )
 	if ( document.querySelector("#dac  .value").textContent == "ON" ) modes |= 0x20; else  modes &= ~0x20;
 	if ( document.querySelector("#apd  .value").textContent == "ON" ) modes |= 0x40; else  modes &= ~0x40;
  
-	let save_data = [ 1, 0, 0, modes, 0, 0, 0, 0 ]; //1 for save, need to fill in first byte with the bits/
-	await BlissBox_writeFeature(  0x12, save_data);
+	let _data = [ 0x01, 0, 0, modes, 0, 0, 0, 0 ]; //1 for save, need to fill in first byte with the bits/
+	await BlissBox_writeFeature(  0x12, _data);
 }
+
+async function BlissBox_setReset( )
+{
+	let _data = [ 0x10, 0, 0, 0, 0, 0, 0, 0 ]; //1 for save, need to fill in first byte with the bits/
+	await BlissBox_writeFeature(  0x12, _data); 
+}
+
+async function BlissBox_setPlayer( )
+{
+	let num =  Number(document.getElementById("playerSet").value);
+ 
+	if (num && num > 0 && num < 5)	
+	{
+		let _data = [ 0x08, 0, 0, 3+ num, 0, 0, 0, 0 ]; //1 for save, need to fill in first byte with the bits/
+		await BlissBox_writeFeature(  0x12, _data); 
+		 document.getElementById("playerSet").value = "sent"
+	}
+	else document.getElementById("playerSet").value = "ERR"
+}
+
 async function BlissBox_rumbleTest()
 {
 	let d = [ 4, 0, 0, 2, 255, 200, 0, 0 ]; //Rid, type, 0, 0,  command, amount, loop, padding
@@ -565,7 +596,8 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 						{
 							
 							const level = Math.round(p[b+1] * 100 / 255); // 0-255 -> 0-100
-							bar[b].style.setProperty("--level", level);
+							bar[b].style.setProperty("--level", level / 200);
+		 
 						}
 					}
 					catch (e) 
@@ -575,7 +607,7 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 					}
 	 
 					
-				}, 100);
+				}, 50);
 			}
 		} 
 		else 
@@ -593,6 +625,9 @@ async function BlissBox_readBlissBoxAdapterInfo( )
  
 		document.getElementById("hidpressurebox").classList.remove("show");
 		document.getElementById("BBpressurebox").classList.remove("show");
+		
+		if ( bytes[1] & 0x80  ) document.getElementById("trailCanvas").style.display = "none";
+		else document.getElementById("trailCanvas").style.display = "block";	
 			
 		if (bytes[0] == 121 || bytes[0] == 13) 
 		{ 

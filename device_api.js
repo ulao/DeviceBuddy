@@ -18,11 +18,11 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 const Controllers =
 [
-    { file:"3do",	   name:"3DO" },
+    { file:"3do",	   	   name:"3DO" },
     { file:"atari2600",	   name:"Atari 2600" },
     { file:"atari5200",	   name:"Atari 5200" },
     { file:"atari7800",	   name:"Atari 7800" },
-    { file:"cdi",	   name:"Philips CD-i" },
+    { file:"cdi",	   	   name:"Philips CD-i" },
     { file:"dreamcast",	   name:"Sega Dreamcast" },
     { file:"gamecube",	   name:"Nintendo GameCube" },
     { file:"genesis3",	   name:"Sega Genesis (3 Button)" },
@@ -37,8 +37,8 @@ const Controllers =
     { file:"saturn", 	   name:"Sega Saturn" },
     { file:"saturnanalog", name:"Sega Saturn 3d Stick" },
     { file:"supernintendo",name:"Super Nintendo" },
-    { file:"tg16",	   name:"TurboGrafx-16" },
-    { file:"pce", 	   name:"PCEngine" },
+    { file:"tg16",	   	   name:"TurboGrafx-16" },
+    { file:"pce", 	  	   name:"PCEngine" },
     { file:"virtualboy",   name:"Virtual Boy" },
     { file:"xboxone",	   name:"Xbox One" } ,
     { file:"xbox360",	   name:"Xbox 360" } ,
@@ -46,10 +46,22 @@ const Controllers =
     { file:"switch",	   name:"Nintendo Switch" },
     { file:"wiicontroller",name:"Nintendo wii Controller" },
     { file:"nunchuck",	   name:"Nintendo wii Nunchuck" },
-    { file:"hpd",	   name:"Sega Paddle" },
-    { file:"vaus",	   name:"Nintendo VAUS paddle" },
-    { file:"ataripaddles",  name:"Atari Paddles" },
-    { file:"geminipaddle", name:"Gemini Paddle" }     
+    { file:"hpd",	       name:"Sega Paddle" },
+    { file:"vaus",	       name:"Nintendo VAUS paddle" },
+    { file:"ataripaddles", name:"Atari Paddles" },
+    { file:"geminipaddle", name:"Gemini Paddle" } ,
+    { file:"bally", 	   name:"Bally Astrocade" }     
+];
+
+const tips = [
+	"First gen and second gen Bliss-Box adapter's support of 200 controllers",
+	"Second gen Bliss-Box adapters support Xinput                           ",
+	"Bliss-Box adapters support PS2 Pressure buttons                        ",
+	"The Bliss-Box Bridge allow you to use controllers on retro systems     ",
+	"Bliss-Box started in 2007                                              ",
+	"Bliss-Box formed a company in 2015                                     ",
+	"Bliss-Box make an wireless add-on                                      ",
+	"Bliss-Box adapter support Memory transfers to N64 pads                 "
 ];
 
 let currentController = "playstation"; 						//controller in use
@@ -72,7 +84,14 @@ const devName = document.getElementById("devName");         //html element
 const controller = document.getElementById("controller");   //html element
 let EDGE_SIZE = 20;
 let EDGE_DARK = .65;
-		
+
+let trailCanvas = null;//for analog trails
+let trailCtx = null;
+let leftTrail = [];
+let rightTrail = [];
+const trailLife = 1000; // milliseconds
+let trailTime = 0;
+
 init();
 
 async function sendManualReport()
@@ -121,6 +140,7 @@ async function selectDevice()
 		if (hid.vendorId == 0x045e && hid.productId == 0x02ff) currentController = name = "xboxone";
 		if (hid.vendorId == 0x0e6f && hid.productId == 0x0201) currentController = name = "xbox360";
 		if (hid.vendorId == 0x0e6f && hid.productId == 0x028E) currentController = name = "xbox360";
+		if (hid.vendorId == 0x045E && hid.productId == 0x028E) currentController = name = "xbox360";
 		if (hid.vendorId == 0x045e && hid.productId == 0x0289) currentController = name = "xboxog";
 		if (hid.vendorId == 0x045e && hid.productId == 0x0285) currentController = name = "xboxog";
 		if (hid.vendorId == 0x045e && hid.productId == 0x0202) currentController = name = "xboxog";		
@@ -687,10 +707,79 @@ async  function init()
 		startup();
 	});
 	loadKnownDevices(); 
+	
+	window.onload = function() 
+	{
+		document.getElementById("tip").textContent = "Did you know:  "+
+        tips[Math.floor(Math.random() * tips.length)] + " ? ";
+	};
+
+}
  
- 
+function drawTrails(leftHistory, rightHistory)
+{
+    // Clear canvas once
+    trailCtx.fillStyle = "black";
+    trailCtx.fillRect(0,0,trailCanvas.width,trailCanvas.height);
+
+
+    // Draw left stick
+    if (leftHistory.length > 1)
+    {
+        trailCtx.beginPath();
+
+        trailCtx.moveTo(leftHistory[0].x,leftHistory[0].y);
+
+        for (let i = 1; i < leftHistory.length; i++)
+        {
+            trailCtx.lineTo(leftHistory[i].x,leftHistory[i].y);
+        }
+
+        trailCtx.strokeStyle = "green";
+        trailCtx.lineWidth = 2;
+        trailCtx.lineCap = "round";
+        trailCtx.stroke();
+    }
+
+
+    // Draw right stick
+    if (rightHistory.length > 1)
+    {
+        trailCtx.beginPath();
+
+        trailCtx.moveTo(rightHistory[0].x,rightHistory[0].y);
+
+        for (let i = 1; i < rightHistory.length; i++)
+        {
+            trailCtx.lineTo(rightHistory[i].x,rightHistory[i].y);
+        }
+
+        trailCtx.strokeStyle = "red";
+        trailCtx.lineWidth = 2;
+        trailCtx.lineCap = "round";
+        trailCtx.stroke();
+    }
 }
 
+function updateTrail(x, y, history)
+{
+    // Convert byte values (0-255) to canvas coordinates
+    x = (x / 255) * trailCanvas.width;
+    y = (y / 255) * trailCanvas.height;
+
+    const now = performance.now();
+
+    // Add point
+    history.push({x: x,y: y,time: now});
+
+    // Remove old points
+    while (history.length && now - history[0].time > trailLife)
+    {
+        history.shift();
+    }
+}
+
+ 
 function showPopup(message)
 {
     const box = document.createElement("div");
@@ -878,9 +967,31 @@ function onInputReport(e)
 	//special pressure data
 	const box = document.getElementById("hidpressurebox");
  
-	if (isBlissBox && box?.classList.contains("show"))
+
+	 
+	if (isBlissBox )
 	{  
  
+		if (trailCanvas == null)
+		{
+
+			trailCanvas = document.getElementById("trailCanvas");//for analog trails
+			trailCtx = trailCanvas.getContext("2d");
+		} 
+		else 	
+		{
+			if (++trailTime >= 30)
+			{
+				trailTime = 0;
+
+				updateTrail(data[3], data[4], leftTrail);
+				updateTrail(data[6], data[7], rightTrail);
+
+				drawTrails(leftTrail, rightTrail);
+			}
+			
+		}
+		
 		const b = document.querySelectorAll(".hidbar");
 		if(controllerSelect.value  == "nunchuck")
 		{
@@ -929,10 +1040,15 @@ function updateControllerState(data)
 			let value = data[part.byte];
 			rotate(part.el, value, false);
 
-			if (controllerSelect.value  == "ataripaddles")     part.el.style.setProperty("--angle", `${Math.round((value / 255) * 360)}deg`);
+			if (controllerSelect.value  == "ataripaddles")     
+			{
+				//center of paddle points up.
+				let angle = 180 + Math.round((value / 255) * 360);
+				part.el.style.setProperty("--angle", `${angle}deg`);
+			}
 			else 
 			{
-				let angle = 270 + Math.round((value / 255) * 360);
+				let angle = 90 + Math.round((value / 255) * 360);
 				part.el.style.setProperty("--angle", `${angle}deg`);
 			}
 				
@@ -1719,7 +1835,7 @@ function logInputReport(reportId, data)
 
     const time = new Date().toISOString().slice(11, 19);
 
-    reportLines.push( `[${time}] ${reportId.toString(16)}: ${hex}`);
+    reportLines.push( `[${time}]   ${hex}`);
 
     // Keep only the newest 10 reports
     if (reportLines.length > 100)

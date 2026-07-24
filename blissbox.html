@@ -5,10 +5,11 @@ https://bliss-box.com
 --->
  
 <div class="BlissBox">
-    <h3>Bliss-Box API</h3>
-		
-	<div class="BBadapterRow">
 
+	<div style="display: flex; justify-content: space-between; align-items: center;">
+		<h3 style="margin: 0;">Bliss-Box API</h3>
+		<button   id ="BBreset" >Reset</button>
+	</div>
 		<div class="BBadapterInfo">
 			<label>Adapter Info:</label>
 
@@ -25,26 +26,33 @@ https://bliss-box.com
 			<div class="row">
 				<span class="label">Player #</span>
 				<span id="player">1</span>
+				Set to: <input size="1" id="playerSet" > Requires reset
+			</div>
+		</div>
+		<br>
+		<div style="display:flex; align-items:center; gap:10px;">
+			<canvas  id="trailCanvas" width="130" height="130"></canvas>
+
+			<div class="BBPressureBox" id="BBpressurebox">
+				<div class="BBPressure" id="BBpressure"> 
+					<div class="BBbar" style="--level:00"></div>
+					<div class="BBbar" style="--level:00"></div>
+					<div class="BBbar" style="--level:00"></div>
+					<div class="BBbar" style="--level:00"></div>
+					<div class="BBbar" style="--level:00"></div>
+					<div class="BBbar" style="--level:00"></div>
+					<div class="BBbar" style="--level:00"></div>
+					<div class="BBbar" style="--level:00"></div>
+					<div class="BBbar" style="--level:00"></div>
+					<div class="BBbar" style="--level:00"></div>
+					<div class="BBbar" style="--level:00"></div>
+					<div class="BBbar" style="--level:00"></div>
+				</div>
+				<label>Extended Pressure</label>
 			</div>
 		</div>
 
-		<div class="BBPressureBox"  id ="BBpressurebox" >
-			<div class="BBPressure" id ="BBpressure" > 
-				<div class="BBbar" style="--level:00"></div>
-				<div class="BBbar" style="--level:00"></div>
-				<div class="BBbar" style="--level:00"></div>
-				<div class="BBbar" style="--level:00"></div>
-				<div class="BBbar" style="--level:00"></div>
-				<div class="BBbar" style="--level:00"></div>
-				<div class="BBbar" style="--level:00"></div>
-				<div class="BBbar" style="--level:00"></div>
-				<div class="BBbar" style="--level:00"></div>
-				<div class="BBbar" style="--level:00"></div>
-				<div class="BBbar" style="--level:00"></div>
-				<div class="BBbar" style="--level:00"></div>
-			</div><label>Extended Pressure</label>
-		</div>
-	</div>
+	
     <br>Modes:<br>
 
     <div class="modes" id="hsd">Hotswap Disabled <span class="value">OFF</span></div>

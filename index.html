@@ -31,8 +31,8 @@ Bliss-Box LLC reserves all legal rights and remedies. Bliss-Box® and the Bliss-
 <body>
 
 	<div class="header">
-    	<img src="icon.png" >	
-	 
+    <img src="icon.png" >	
+	 <label id="tip"></label>
 	<a href="https://bliss-box.com">
     Powered By:
 	<img
@@ -50,7 +50,7 @@ Bliss-Box LLC reserves all legal rights and remedies. Bliss-Box® and the Bliss-
 
 			<div class="topbar-right">
 				<div class="mapper-row">
-					<span class="mapper-label">Mapper</span>
+					<span class="mapper-label">Mapper :</span>
 
 					<label>
 						<input type="radio" name="mapperMode" id="mapperDefault" value="default" checked>
@@ -77,26 +77,16 @@ Bliss-Box LLC reserves all legal rights and remedies. Bliss-Box® and the Bliss-
 				</div>
 			</div>
 		</div> 
-		<div class="statusRow">
-			<p id="statusLine">
-				<strong>Status:</strong>
-				<span id="status">Disconnected</span> 
-				&nbsp;|&nbsp;
-				<strong>Device:</strong>
-				<span id="devName">None</span>
-			</p>
- 
-			<p id="overlay">
-				Press ScrollLock or Click here, to toggle Overlay Mode <br>
-				(Removes all elemnts but the controller view).
-			</p>
-		</div>
-		DeviceBuddy v1.0 
+		<label DeviceBuddy v1.0 /> 
 		<button id="connBtn">Connect Device</button>
 		<button id="fillColor">Select fill for controller image</button>
-		Edge Fill<input type="text" id="edge" value="20">
-		Edge shadow<input type="text" id="dark" value=".65">
+		<label Edge Fill /><input type="text" id="edge" value="20"  size="3">
+		<label Edge shadow /><input type="text" id="dark" value=".65" size="3">
 		<button id="BBUPDATE">Update Bliss-Box Device</button>
+		 
+			<label id="overlay">
+				Press ScrollLock or Click here, to toggle Overlay Mode  
+			</label>
     <!-- Main Layout -->
     <div class="layout">
         <!-- Left Panel -->
@@ -109,6 +99,16 @@ Bliss-Box LLC reserves all legal rights and remedies. Bliss-Box® and the Bliss-
         </div>
         <!-- Center Panel -->
         <div class="panel center">
+			<div class="statusRow">
+				<p id="statusLine">
+					<strong>Status:</strong>
+					<span id="status">Disconnected</span> 
+					&nbsp;|&nbsp;
+					<strong>Device:</strong>
+					<span id="devName">None</span>
+				</p>
+		</div>
+		
             <div id="controllerContainer">
                 <div id="controller"></div>
                 <div id="selectOverlay">
