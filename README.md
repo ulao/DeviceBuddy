@@ -11,7 +11,7 @@
 **DeviceBuddy is a work in progress.**
 
 If you found this project, you probably stumbled across it early.  
-It is new, so expect bugs, missing features, and frequent changes, missing features, and things changing frequently.
+It is new, so expect bugs, missing features, and frequent changes.
 
 🌐 Online version:
 https://ulao.github.io/DeviceBuddy/
