@@ -65,28 +65,35 @@ As a result, industry-leading adapters such as Bliss-Box and Raphnet can now be 
 | Atari 2600 | ✅ |
 | Atari 5200 | ✅ |
 | Atari 7800 | ✅ |
+| Atari Paddles | ✅ |
+| Bally Astrocade | ✅ |
+| Gemini Paddle | ✅ |
 | Philips CD-i | ✅ |
 | Sega Dreamcast | ✅ |
 | Nintendo GameCube | ✅ |
-| Sega Genesis 3/6 | ✅ |
+| Sega Genesis (3 Button) | ✅ |
+| Sega Genesis (6 Button) | ✅ |
+| Sega Paddle | ✅ |
 | Atari Jaguar | ✅ |
 | Neo Geo | ✅ |
 | Nintendo Entertainment System | ✅ |
 | Nintendo 64 | ✅ |
-| Nintendo wii chuck | ✅ |
-| Nintendo wii classic controller | ✅ |
-| Apple Pippin | ✅ |
+| Nintendo VAUS Paddle | ✅ |
+| Nintendo Wii Controller | ✅ |
+| Nintendo Wii Nunchuck | ✅ |
+| Attmark Pippin | ✅ |
 | Sony PlayStation | ✅ |
 | Sony PlayStation 4 | ✅ |
-| Sega Saturn /3d | ✅ |
+| Sega Saturn | ✅ |
+| Sega Saturn 3D Stick | ✅ |
 | Super Nintendo | ✅ |
 | TurboGrafx-16 | ✅ |
+| PC Engine | ✅ |
 | Virtual Boy | ✅ |
 | Xbox One | ✅ |
 | Xbox 360 | ✅ |
-| Xbox OG | ✅ |
-| Switch | ✅ |
-
+| Xbox Original | ✅ |
+| Nintendo Switch | ✅ |
 
 ---
 
