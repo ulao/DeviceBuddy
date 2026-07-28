@@ -54,14 +54,14 @@ const Controllers =
 ];
 
 const tips = [
-	"First gen and second gen Bliss-Box adapter's support of 200 controllers",
-	"Second gen Bliss-Box adapters support Xinput                           ",
-	"Bliss-Box adapters support PS2 Pressure buttons                        ",
-	"The Bliss-Box Bridge allow you to use controllers on retro systems     ",
-	"Bliss-Box started in 2007                                              ",
-	"Bliss-Box formed a company in 2015                                     ",
-	"Bliss-Box make an wireless add-on                                      ",
-	"Bliss-Box adapter support Memory transfers to N64 pads                 "
+	"First gen and second gen Bliss-Box adapters support of 200 controllers",
+	"Second gen Bliss-Box adapters support Xinput ",
+	"Bliss-Box adapters support PS2 Pressure buttons ",
+	"The Bliss-Box Bridge allow you to use controllers on retro systems ",
+	"Bliss-Box started in 2007 ",
+	"Bliss-Box formed a company in 2015 ",
+	"Bliss-Box make an wireless add-on ",
+	"Bliss-Box adapters support Memory transfers to N64 pads "
 ];
 
 let currentController = "playstation"; 						//controller in use
@@ -122,7 +122,7 @@ async function selectDevice()
  	
 		clearInterval(BlissBoxAdapterTimer);
         BlissBoxAdapterTimer = null;
-		document.getElementById("blissbox-container").innerHTML = "";
+		document.getElementById("blissbox-container").innerHTML = "B<BR>L<BR>I<BR>S<BR>S<BR>B<BR>O<BR>X<BR><BR>A<BR>P<BR>I<BR>";
 
 		if (hid.device.removed)
 		{

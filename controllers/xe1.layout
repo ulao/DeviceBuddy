@@ -1,0 +1,131 @@
+# Simple controller layout file.
+# Blocks are separated by a blank line.
+# x and y are the center of the shape inside the controller area.
+# byte indexes are zero-based: first stream byte is byte 0.
+
+name: Bliss-Box Test Controller
+width: 420
+height: 260
+
+type: analog
+label:  
+id:LEFTSTICK
+x: 130
+y: 130
+xByte: 3
+yByte: 4
+side: left
+shapeType: circle2
+
+type: analog
+label:  
+id:RIGHTSTICK
+x: 290
+y: 130
+xByte: 6
+yByte: 7
+side: right
+shapeType: circle2
+
+# Face buttons. Max buttons total is 24.
+# bit is a bit number, so bit 3 means mask 0x08.
+type: button
+id: BTN_1
+label: B
+x: 250
+y: 100
+byte: 0
+bit: 0
+group: face
+shapeType: circle0
+
+type: button
+id: BTN_2
+label: A
+x: 280
+y: 80
+byte: 0
+bit: 1
+group: face
+shapeType: circle0
+ 
+type: button
+id: BTN_2
+label: 2
+x: 170
+y: 100
+byte: 0
+bit: 3
+group: face
+shapeType: circle0
+
+type: button
+id: BTN_3
+label: 1
+x: 140
+y: 80
+byte: 0
+bit: 2
+group: face
+shapeType: circle0
+
+type: button
+id: BTN_SELECT
+label: 
+x: 180
+y: 180
+byte: 0
+bit: 4
+group: face
+shapeType: circle0
+
+type: button
+id: BTN_START
+label: 
+x: 240
+y: 180
+byte: 0
+bit: 5
+group: face
+shapeType: circle0
+ 
+ 
+ type: button
+label: L2
+id:BTN_L2
+x: 90
+y: 10
+byte: 1
+bit: 0
+group: top
+shapeType: rectangle2
+
+type: button
+label: R2
+id:BTN_R2
+x: 330
+y: 10
+byte: 1
+bit: 1
+group: top
+shapeType: rectangle2
+
+type: button
+label: L1
+id:BTN_L1
+x: 90
+y: 35
+byte: 0
+bit: 6
+group: top
+shapeType: rectangle2
+
+type: button
+label: R1
+id:BTN_R1
+x: 330
+y: 35
+byte: 0
+bit: 7
+group: top
+shapeType: rectangle2

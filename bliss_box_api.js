@@ -66,7 +66,7 @@
 	if (id == 59 ) return "SMS_GUN"		  ;
 	if (id == 60 ) return "DC_GUN"		  ;
 	if (id == 61 ) return "geminipaddle";
-	if (id == 62)  return "DC_PAD_RF"  	  ;
+	if (id == 62 )  return "DC_PAD_RF"  	  ;
 	if (id == 63 ) return "FC_POWERPAD"  ;
 	if (id == 64 ) return "ATARI_TB" 	;
 	if (id == 65 ) return "playstation"	  ;
@@ -80,7 +80,7 @@
 	if (id == 74 ) return "DC_MARACA"	;
 	if (id == 75 ) return "PSX_GUITAR"  ;
 	if (id == 77 ) return "A7800FB"		  ;
-	if (id == 78 ) return "XE1_AP"		  ;
+	if (id == 78 ) return "XE1"		  ;
 	if (id == 79 ) return "COL_WHEEL"	;  
 	if (id == 83 ) return "playstation" ;
 	if (id == 115) return "playstation" ;
@@ -231,7 +231,7 @@ async function BlissBox_Init ()
 	
 	const html = await fetch("blissbox.html").then(r => r.text());
 	document.getElementById("blissbox-container").innerHTML = html;
- 
+
     BlissBoxAdapterTimer = setInterval(() => 
 	{
 		if (hid.device.removed) removeInterval( this );

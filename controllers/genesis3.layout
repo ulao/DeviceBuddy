@@ -17,14 +17,14 @@ x: 95
 y: 135
 arrange: left
 byte: 11
-upData: 2
-uprightData: 3
-rightData: 4
-downrightData: 5
-downData: 6
-downleftData: 7
-leftData: 0
-leftupData: 1
+upData: 0
+uprightData: 1
+rightData: 2
+downrightData: 3
+downData: 4
+downleftData: 5
+leftData: 6
+leftupData: 7
 shapeType: plus
 
 # Face buttons. Max buttons total is 24.
