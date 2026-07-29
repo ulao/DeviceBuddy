@@ -240,6 +240,9 @@ All rights reserved.
 <img width="633" height="444" alt="image" src="https://github.com/user-attachments/assets/bd0057c9-c4ec-4f54-8f4a-58cb73556eca" />
 <img width="383" height="226" alt="image" src="https://github.com/user-attachments/assets/a4772a71-a79b-46c0-b118-f832b54b083a" />
 
+** Overlays
+<img width="1225" height="788" alt="image" src="https://github.com/user-attachments/assets/1b0fffb7-599d-434f-969c-54c06898deff" />
+
 
 # 🎮 What is Bliss-Box?
 
