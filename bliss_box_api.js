@@ -60,7 +60,7 @@
 	if (id == 53 ) return "FC_ARKANOID" ;
 	if (id == 54 ) return "PCEngine";
 	if (id == 55 ) return "WII_DRUM"     ;
-	if (id == 56 ) return "ARCADE"		  ;
+	if (id == 56 ) return "vaus"		  ;
 	if (id == 57 ) return "SUPERGUN"	;
 	if (id == 58 ) return "SATURN_GUN"	  ;
 	if (id == 59 ) return "SMS_GUN"		  ;
