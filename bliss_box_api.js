@@ -14,7 +14,7 @@
 	if (id == 7  ) return "hpd"		      ;
 	if (id == 8  ) return "saturnanalog" ;
 	if (id == 9  ) return "gamecube"      ;
-	if (id == 10 ) return "vaus" 		  ;
+	if (id == 10 ) return "pippin" 		  ;
 	if (id == 11 ) return "jaguar" ;
 	if (id == 12 ) return "drivingcontroller" 	;
 	if (id == 13 ) return "nunchuck"  ;
@@ -34,7 +34,7 @@
 	if (id == 27 ) return "SNES"		  ;
 	if (id == 28 ) return "NES_GUN" 	;
 	if (id == 29 ) return "virtualboy" 		  ;
-	if (id == 30 ) return "arkanoid" ;
+	if (id == 30 ) return "vaus" ;
 	if (id == 31 ) return "wiicontroller"  ;
 	if (id == 32 ) return "WII_MPLUS"     ;
 	if (id == 33 ) return "CDI" 		;
@@ -60,13 +60,13 @@
 	if (id == 53 ) return "FC_ARKANOID" ;
 	if (id == 54 ) return "PCEngine";
 	if (id == 55 ) return "WII_DRUM"     ;
-	if (id == 56 ) return "vaus"		  ;
+	if (id == 56 ) return "ARCADE"		  ;
 	if (id == 57 ) return "SUPERGUN"	;
 	if (id == 58 ) return "SATURN_GUN"	  ;
 	if (id == 59 ) return "SMS_GUN"		  ;
 	if (id == 60 ) return "DC_GUN"		  ;
 	if (id == 61 ) return "geminipaddle";
-	if (id == 62 )  return "DC_PAD_RF"  	  ;
+	if (id == 62 ) return "DC_PAD_RF"  	  ;
 	if (id == 63 ) return "FC_POWERPAD"  ;
 	if (id == 64 ) return "ATARI_TB" 	;
 	if (id == 65 ) return "playstation"	  ;
