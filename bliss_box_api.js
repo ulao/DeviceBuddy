@@ -80,7 +80,7 @@
 	if (id == 74 ) return "DC_MARACA"	;
 	if (id == 75 ) return "PSX_GUITAR"  ;
 	if (id == 77 ) return "A7800FB"		  ;
-	if (id == 78 ) return "XE1"		  ;
+	if (id == 78 ) return "xe1"		  ;
 	if (id == 79 ) return "COL_WHEEL"	;  
 	if (id == 83 ) return "playstation" ;
 	if (id == 115) return "playstation" ;

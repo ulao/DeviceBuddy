@@ -50,11 +50,12 @@ const Controllers =
     { file:"vaus",	       name:"Nintendo VAUS paddle" },
     { file:"ataripaddles", name:"Atari Paddles" },
     { file:"geminipaddle", name:"Gemini Paddle" } ,
-    { file:"bally", 	   name:"Bally Astrocade" }     
+    { file:"bally", 	   name:"Bally Astrocade" }    ,
+    { file:"xe1", 	       name:"Sega Analog stick" }     
 ];
 
 const tips = [
-	"First gen and second gen Bliss-Box adapters support of 200 controllers",
+	"First gen and second gen Bliss-Box adapters support over 200 controllers",
 	"Second gen Bliss-Box adapters support Xinput ",
 	"Bliss-Box adapters support PS2 Pressure buttons ",
 	"The Bliss-Box Bridge allow you to use controllers on retro systems ",
