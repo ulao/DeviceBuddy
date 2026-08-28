@@ -34,6 +34,7 @@ const Controllers =
     { file:"pippin", 	   name:"Attmark Pippin" },
     { file:"playstation",  name:"Sony PlayStation" },
     { file:"playstation4", name:"Sony PlayStation 4" },
+    { file:"playstation5", name:"Sony PlayStation 5" },
     { file:"saturn", 	   name:"Sega Saturn" },
     { file:"saturnanalog", name:"Sega Saturn 3d Stick" },
     { file:"supernintendo",name:"Super Nintendo" },
@@ -136,6 +137,7 @@ async function selectDevice()
 		let name =  Controllers.find(c => c.file === currentController)?.name;
 		//name patcher, 
 		console.log("Controller id: " + hid.vendorId + " | " + hid.productId); 
+		if (hid.vendorId == 0x054c && hid.productId == 0x0ce6) currentController = name = "playstation5";	
 		if (hid.vendorId == 0x054c && hid.productId == 0x05c4) currentController = name = "playstation4";
 		if (hid.vendorId == 0x054c && hid.productId == 0x0268) currentController = name = "playstation";
 		if (hid.vendorId == 0x045e && hid.productId == 0x02ff) currentController = name = "xboxone";
