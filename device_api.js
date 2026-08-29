@@ -52,7 +52,8 @@ const Controllers =
     { file:"ataripaddles", name:"Atari Paddles" },
     { file:"geminipaddle", name:"Gemini Paddle" } ,
     { file:"bally", 	   name:"Bally Astrocade" }    ,
-    { file:"xe1", 	       name:"Sega Analog stick" }     
+    { file:"xe1", 	       name:"Sega Analog stick" }    , 
+    { file:"MF-gamecube",   name:"May Flash GC" }     
 ];
 
 const tips = [
@@ -93,6 +94,8 @@ let leftTrail = [];
 let rightTrail = [];
 const trailLife = 1000; // milliseconds
 let trailTime = 0;
+
+let forceRI = 0;
 
 init();
 
@@ -137,6 +140,7 @@ async function selectDevice()
 		let name =  Controllers.find(c => c.file === currentController)?.name;
 		//name patcher, 
 		console.log("Controller id: " + hid.vendorId + " | " + hid.productId); 
+		if (hid.vendorId == 0x0079 && hid.productId == 0x01846) {currentController = name = "MF-gamecube";	forceRI=1;}
 		if (hid.vendorId == 0x054c && hid.productId == 0x0ce6) currentController = name = "playstation5";	
 		if (hid.vendorId == 0x054c && hid.productId == 0x05c4) currentController = name = "playstation4";
 		if (hid.vendorId == 0x054c && hid.productId == 0x0268) currentController = name = "playstation";
@@ -965,12 +969,14 @@ function onInputReport(e)
     if (!hid.device) return;
     let data = new Uint8Array(e.data.buffer, e.data.byteOffset, e.data.byteLength);
     logInputReport(e.reportId, data);
-    updateControllerState(data);
+    
+	//for now tis is set during USB ID, can mode to layout if needed
+	if ( forceRI && forceRI == e.reportId) updateControllerState(data);
  
 	//special pressure data
 	const box = document.getElementById("hidpressurebox");
  
-
+	
 	 
 	if (isBlissBox )
 	{  
