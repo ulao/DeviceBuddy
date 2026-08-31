@@ -49,7 +49,7 @@
 	if (id == 42 ) return "bally" 		  ;
 	if (id == 43 ) return "ATARI_KEYPAD" ;
 	if (id == 45 ) return "SPEEK" 		  ;
-	if (id == 46 ) return "PC_GAMEPAD"  ;
+	if (id == 46 ) return "gameport"  ;
 	if (id == 47 ) return "SNESS_NTT"	;
 	if (id == 48 ) return "COL_FLASH_BACK";
 	if (id == 49 ) return "NEO" 		;

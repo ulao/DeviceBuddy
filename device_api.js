@@ -53,7 +53,8 @@ const Controllers =
     { file:"geminipaddle", name:"Gemini Paddle" } ,
     { file:"bally", 	   name:"Bally Astrocade" }    ,
     { file:"xe1", 	       name:"Sega Analog stick" }    , 
-    { file:"MF-gamecube",   name:"May Flash GC" }     
+    { file:"MF-gamecube",  name:"May Flash GC" } ,    
+	{ file:"gameport",     name:"Analog Game-Port" }     
 ];
 
 const tips = [
@@ -972,6 +973,8 @@ function onInputReport(e)
     
 	//for now tis is set during USB ID, can mode to layout if needed
 	if ( forceRI && forceRI == e.reportId) updateControllerState(data);
+	else updateControllerState(data);
+	
  
 	//special pressure data
 	const box = document.getElementById("hidpressurebox");
