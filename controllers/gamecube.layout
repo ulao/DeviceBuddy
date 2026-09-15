@@ -70,7 +70,7 @@ group: face
 shapeType: rectangle1
 
 type: button
-label: B
+label: A
 id: BTN_1
 x: 320
 y: 100
@@ -90,7 +90,7 @@ group: face
 shapeType: rectangle1
 
 type: button
-label: A
+label: B
 id: BTN_2
 x: 285
 y: 120
