@@ -482,26 +482,31 @@ async function BlissBox_range()
 	{
 		document.getElementById("txtLeftLimit").value = -128;
 		document.getElementById("txtRightLimit").value = 128;
+		document.getElementById("btnCurrentValues").click();
 	};
 	document.getElementById("btnN64").onclick = () =>
 	{
 		document.getElementById("txtRightLimit").value = 80;
 		document.getElementById("txtLeftLimit").value = -80;
+		document.getElementById("btnCurrentValues").click();
 	}
 	document.getElementById("btnGC").onclick = () =>
 	{
 		document.getElementById("txtRightLimit").value = 95;
 		document.getElementById("txtLeftLimit").value = -95;
+		document.getElementById("btnCurrentValues").click();
 	}
 	document.getElementById("btnAtari").onclick = () =>
 	{
 		document.getElementById("txtRightLimit").value = 98;
 		document.getElementById("txtLeftLimit").value = -98;
+		document.getElementById("btnCurrentValues").click();
 	}
 	document.getElementById("btnWii").onclick = () =>
 	{
 		document.getElementById("txtRightLimit").value= 95;
 		document.getElementById("txtLeftLimit").value = -95;
+		document.getElementById("btnCurrentValues").click();
 	}
 	document.getElementById("btnSetControllers").onclick = () =>
 	{
@@ -511,11 +516,11 @@ async function BlissBox_range()
 		if (document.getElementById("chkGameCube").checked) bit |= 4;
 		if (document.getElementById("chkAtari5200").checked) bit |= 8;
 		
-		let def_data = [ 6, 0, 0, bit, 0, 0, 0, 0 ]; //2 restore defaults
+		let def_data = [ 6, 0, 0, bit, 0, 0, 0, 0 ];
 		BlissBox_writeFeature(  0x12, def_data);
 		 
 	}
-	document.getElementById("btnCurrentValues").onclick = () =>
+	document.getElementById("btnCurrentValues").onclick = async () =>
 	{
 		const physicalMin = 0;
 		const physicalMax = 255;
@@ -549,8 +554,7 @@ async function BlissBox_range()
         data[4] = 2;//use case range
         data[5] = rangeData[1]; 
         data[6] = rangeData[2];  
-		  BlissBox_writeFeature(0x12, new Uint8Array(data));//send header
-		
+		await BlissBox_writeFeature(0x12, new Uint8Array(data));//send header
 		let c = 3;//Where data starts. 
 		let size = 0xFF;
 		let pos = 2;//First two have data 0,1, so pos is now 2
@@ -561,17 +565,16 @@ async function BlissBox_range()
 		{
 			data[2] = 0;data[3] = 0;data[4] = 0;data[5] = 0;data[6] = 0;//clear
 			if (s == (size-1) ) { data[1] = 0xff; } else {data[1] = pos; pos += 5; }
-			if (c < 257) data[2] = rangeData[c]; c++;
-			if (c < 257) data[3] = rangeData[c]; c++;
-			if (c < 257) data[4] = rangeData[c]; c++;
-			if (c < 257) data[5] = rangeData[c]; c++;
-			if (c < 257) data[6] = rangeData[c]; c++;
-			    BlissBox_writeFeature(0x12, new Uint8Array(data)); //loop while true as true means busy. 
+			if (c < 255) data[2] = rangeData[c]; c++;
+			if (c < 255) data[3] = rangeData[c]; c++;
+			if (c < 255) data[4] = rangeData[c]; c++;
+			if (c < 255) data[5] = rangeData[c]; c++;
+			if (c < 255) data[6] = rangeData[c]; c++;
+			await BlissBox_writeFeature(0x12, new Uint8Array(data)); //loop while true as true means busy. 		
 		}
 
 	};
-	
-	
+		
 }
 async function BlissBox_readBlissBoxAdapterInfo( )
 {	

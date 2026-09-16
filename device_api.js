@@ -988,7 +988,7 @@ function onInputReport(e)
 		{
 
 			trailCanvas = document.getElementById("trailCanvas");//for analog trails
-			trailCtx = trailCanvas.getContext("2d");
+			  if (trailCanvas != null)    trailCtx = trailCanvas.getContext("2d");
 		} 
 		else 	
 		{
