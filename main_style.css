@@ -137,6 +137,7 @@ h2 {
 .panel.center {
     flex: 1;
     min-width: 500px;
+	position: relative;  
 }
 
 /* DEVICE LIST */

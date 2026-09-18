@@ -365,9 +365,15 @@ async function BlissBox_readFeature(id)
     return new Uint8Array(data.buffer || data);
 }
 
+async function BlissBox_getLCD( )
+{
+   const data = await BlissBox_readFeature(  0x18);
+   return new Uint8Array(data.buffer || data);
+}
+
 async function BlissBox_getPressure( )
 {
-
+ 
 	const data = await BlissBox_readFeature(  0x17);
 	document.getElementById("pressureBtn1").selectedIndex = data[12]-1;
 	document.getElementById("pressureBtn2").selectedIndex = data[13]-1;
@@ -631,6 +637,56 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 		
 		if ( bytes[1] & 0x80  ) document.getElementById("trailCanvas").style.display = "none";
 		else document.getElementById("trailCanvas").style.display = "block";	
+		
+		if (document.getElementById("lcdCanvas"))//because its runtime  
+		{
+			document.getElementById("lcdCanvas").style.display = "none";	
+			if ( currentController == "dreamcast") 
+			{
+				document.getElementById("lcdCanvas").style.display = "block";
+
+				if ( currentControllerOLD != currentController )
+				{
+					currentControllerOLD = currentController;
+					
+					data = await BlissBox_getLCD();  
+
+					const lcdCanvas = document.getElementById("lcdCanvas");
+					const ctx = lcdCanvas.getContext("2d");
+
+					const LCD_WIDTH = 48;
+					const LCD_HEIGHT = 32;
+					const PIXEL_SIZE = 2;
+
+					ctx.clearRect(0, 0, lcdCanvas.width, lcdCanvas.height);
+					ctx.fillStyle = "green";   
+	 
+
+					for (let y = 0; y < LCD_HEIGHT; y++)
+					{
+						for (let x = 0; x < LCD_WIDTH; x++)
+						{
+							const pixelIndex = y * LCD_WIDTH + x;
+
+							const byteIndex = 1 + Math.floor(pixelIndex / 8);
+							const bitIndex = 7 - (pixelIndex % 8); 
+
+							const pixel = (data[byteIndex] >> bitIndex) & 1;
+
+							if (pixel)
+							{
+								ctx.fillRect(
+									x * PIXEL_SIZE,
+									y * PIXEL_SIZE,
+									PIXEL_SIZE,
+									PIXEL_SIZE
+								);
+							}
+						}
+					}
+				}
+			}
+		 }
 			
 		if (bytes[0] == 121 || bytes[0] == 13) 
 		{ 
@@ -709,8 +765,8 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 				break;
 
 			case "pressure":
- 
 				if ( document.getElementById("controllerId").innerText == "121" ) BlissBox_getPressure ();
+				else alert("Resered for PS2"); 
 				break;
 
 			case "eeprom":

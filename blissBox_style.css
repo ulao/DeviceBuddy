@@ -36,7 +36,18 @@
     background: black;
     border: 1px solid #333;
 }
+#lcdOverlay {
+    position: absolute;
+    top: 40px;
+	left: 165px;
+    z-index: 100;
+}
 
+#lcdCanvas {
+	display: none;   
+    background: black;
+    border: 1px solid #333;
+}
 .BBeeprom-row,
 .BBPRESSURE-row,
 .BBadapterRow {
@@ -86,7 +97,7 @@
 .BBUPDATE-window,
 .BBEEPROM-window {
 	background: #121416;
-	border: #3a4148;
+	 border: 1px solid #3a4148; 
 	color: #d8dee5;
     font-family: monospace;
     position: fixed;

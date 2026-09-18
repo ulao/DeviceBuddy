@@ -69,6 +69,7 @@ const tips = [
 ];
 
 let currentController = "playstation"; 						//controller in use
+let currentControllerOLD = "playstation"; 						//controller in use
 let currentMapper = null;			   						//current loaded mapper
 let controllerBody = null; 			   						//id for the controller html object
 let activeInputListener = null;								//listener for hid
@@ -190,6 +191,7 @@ async function selectDevice()
     }
 }
 
+	
 	
 async function loadMapper()
 {
@@ -417,6 +419,18 @@ function makeControllerImage(baseImage, fill)
 
 	let canvas = document.createElement("canvas");
 	controller._bg.appendChild(canvas);
+	
+	let lcdOverlay = document.createElement("div");
+	lcdOverlay.id = "lcdOverlay";
+
+	let lcdCanvas = document.createElement("canvas");
+	lcdCanvas.id = "lcdCanvas";
+	lcdCanvas.width = 96;
+	lcdCanvas.height = 64;
+
+	lcdOverlay.appendChild(lcdCanvas);
+	controller._bg.appendChild(lcdOverlay);
+
 	let ctx = canvas.getContext("2d", { willReadFrequently: true });
 	let controllerImg = new Image();
 
