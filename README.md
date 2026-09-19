@@ -243,7 +243,9 @@ All rights reserved.
 ## Automation 
 
 There is now beta automation script. You may create your own events and trigger them in an ATM file.
-Example:
+
+*** Example:
+
 ```
 when
 {
@@ -264,7 +266,7 @@ See the example.ATM file for more details. ( THIS IS BETA ) so let us know what 
 
 
 
-** Overlays
+## Overlays
 
 <img width="1225" height="788" alt="image" src="https://github.com/user-attachments/assets/1b0fffb7-599d-434f-969c-54c06898deff" />
 
