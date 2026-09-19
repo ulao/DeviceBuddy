@@ -1,8 +1,8 @@
 let autoVersion = null;
 let autoRules  = [];
 let counter=1;
-
-async function selectFile()
+ 
+ async function selectFile()
 {
     const input = document.createElement("input");
 
@@ -11,22 +11,37 @@ async function selectFile()
 
     return new Promise(resolve =>
     {
+        let finished = false;
+
+        const finish = value =>
+        {
+            if (finished) return;
+            finished = true;
+
+            input.remove();
+            resolve(value);
+        };
+
         input.onchange = async () =>
         {
             if (!input.files.length)
             {
-                resolve(null);
+                finish(null);
                 return;
             }
 
             const text = await input.files[0].text();
-            resolve(text);
+            finish(text);
+        };
+
+        input.oncancel = () =>
+        {
+            finish(null);
         };
 
         input.click();
     });
 }
-
 
 async function auto_Init()
 { 

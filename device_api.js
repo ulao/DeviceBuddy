@@ -1039,7 +1039,7 @@ function onInputReport(e)
 	let ATM_Initializing = false;
 	if (document.getElementById("automation").checked)
 	{
-	
+ 
 		if (ATM_File == null && !ATM_Initializing)
 		{ 
 			ATM_Initializing = true;
