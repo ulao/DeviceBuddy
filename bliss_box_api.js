@@ -517,7 +517,7 @@ async function sendAndCalcRange(min,max)
  
 		await BlissBox_writeFeature(0x12, new Uint8Array(data)); //loop while true as true means busy. 		
 		
-	} 
+	} alert(min)
 }
 	
 	

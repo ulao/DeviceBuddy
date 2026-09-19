@@ -14,3 +14,14 @@ do
 	;API_READ->0x11 
 	RANGE(-95,95)
 }
+when
+{
+	currentController = nintendo64
+	and
+	currentControllerOLD !=  nintendo64
+}
+
+do
+{
+	RANGE(-80,80)
+}
