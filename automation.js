@@ -204,6 +204,11 @@ async function auto_Run()
 					currentControllerOLD = currentController;  //set before await to prevent anther. 
 					await sendAndCalcRange(action.parms[0],action.parms[1]);
 				}
+				if (action.command === "RUMBLE")
+				{
+				alert(1);
+					BlissBox_rumbleTest();
+				}
 			}
 		}
 	}

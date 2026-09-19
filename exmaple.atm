@@ -5,7 +5,7 @@ when
 {
 	currentController = gamecube
 	and
-	currentControllerOLD !=  gamecube
+	currentControllerOLD !=  gamecube ;this prevent constant writing, so that it does so only on startup and chhange
 }
 
 do
@@ -13,15 +13,26 @@ do
 	;API_WRITE->0x11(0x01, 0x02, 0xFF)
 	;API_READ->0x11 
 	RANGE(-95,95)
+	;RUMBLE
 }
+
 when
 {
-	currentController = nintendo64
-	and
-	currentControllerOLD !=  nintendo64
+	;dummy
 }
 
 do
 {
-	RANGE(-80,80)
+	;dummy
 }
+
+when
+{
+	;dummy
+}
+
+do
+{
+	;dummy
+}
+
