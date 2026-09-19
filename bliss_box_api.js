@@ -685,8 +685,8 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 							if (pixel)
 							{
 								ctx.fillRect(
-									x * PIXEL_SIZE,
-									y * PIXEL_SIZE,
+									(LCD_WIDTH - 1 - x) * PIXEL_SIZE,   // <------
+									(LCD_HEIGHT - 1 - y) * PIXEL_SIZE, // <------
 									PIXEL_SIZE,
 									PIXEL_SIZE
 								);

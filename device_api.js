@@ -54,7 +54,8 @@ const Controllers =
     { file:"bally", 	   name:"Bally Astrocade" }    ,
     { file:"xe1", 	       name:"Sega Analog stick" }    , 
     { file:"MF-gamecube",  name:"May Flash GC" } ,    
-	{ file:"gameport",     name:"Analog Game-Port" }     
+	{ file:"gameport",     name:"Analog Game-Port" }  ,
+	{ file:"towns",    	   name:"FM TOWNS" }  	
 ];
 
 const tips = [

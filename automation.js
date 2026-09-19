@@ -1,6 +1,7 @@
 let autoVersion = null;
 let autoRules  = [];
 let counter=1;
+let previousController = ""
  
  async function selectFile()
 {
@@ -147,8 +148,7 @@ function auto_Parse(file) // parse the file and see what vars will be watched
 
 async function auto_Run()
 {
-	if  (counter)  { counter --;  return; }
-	
+ 
 	for (const rule of autoRules)
 	{
 		let result = true;
@@ -182,16 +182,30 @@ async function auto_Run()
 			if (logic === "and") result = result && conditionResult;
 
 			if (logic === "or") result = result || conditionResult;
+
 		}
 
+
+		
 		if (result)
 		{
 			for (const action of rule.do)
 			{
+				//because of all the awaits this need to be here. 
+				if ( previousController != currentController)  { previousController = currentController; }  
+
 				if (action.command === "API_WRITE")
 				{
-					let _data = action.parms;
+					let _data = new Uint8Array(200);
+					
+					_data[0] = 0x24;			
+					for (let i = 0; i < action.parms.length && i < 192; i++)
+					{
+						_data[2 + i] = action.parms[i];
+					}
 					await BlissBox_writeFeature(action.id, _data);
+					
+					currentControllerOLD = ""; //tells screen to update on DeviceBuddy
 				}
 
 				if (action.command === "API_READ")
@@ -200,13 +214,11 @@ async function auto_Run()
 				}
 
 				if (action.command === "RANGE")
-				{
-					currentControllerOLD = currentController;  //set before await to prevent anther. 
+				{				
 					await sendAndCalcRange(action.parms[0],action.parms[1]);
 				}
 				if (action.command === "RUMBLE")
 				{
-				alert(1);
 					BlissBox_rumbleTest();
 				}
 			}
