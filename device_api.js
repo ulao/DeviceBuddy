@@ -89,7 +89,7 @@ const devName = document.getElementById("devName");         //html element
 const controller = document.getElementById("controller");   //html element
 let EDGE_SIZE = 20;
 let EDGE_DARK = .65;
-
+let ATM_File = null;
 let trailCanvas = null;//for analog trails
 let trailCtx = null;
 let leftTrail = [];
@@ -1035,6 +1035,26 @@ function onInputReport(e)
 		} else box.classList.remove("show");
  
 	}
+	 
+	let ATM_Initializing = false;
+	if (document.getElementById("automation").checked)
+	{
+	
+		if (ATM_File == null && !ATM_Initializing)
+		{ 
+			ATM_Initializing = true;
+
+			auto_Init().then(result =>
+			{
+				ATM_File = result;
+				ATM_Initializing = false;
+			});
+		}
+		else
+		{
+			 auto_Run();
+		}
+	} else ATM_File = null;
 }
  
  

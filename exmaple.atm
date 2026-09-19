@@ -1,0 +1,16 @@
+; Automate code Version 1.0
+[1.0]
+
+when
+{
+	currentController = gamecube
+	and
+	currentControllerOLD !=  gamecube
+}
+
+do
+{
+	;API_WRITE->0x11(0x01, 0x02, 0xFF)
+	;API_READ->0x11 
+	RANGE(-95,95)
+}

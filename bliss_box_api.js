@@ -463,6 +463,64 @@ async function BlissBox_hotKey()
 }
 
 
+async function sendAndCalcRange(min,max)
+{
+
+	const physicalMin = 0;
+	const physicalMax = 255;
+	const userMin = min;
+	const userMax = max;
+	const rangeData = new Uint8Array(257);
+	rangeData[0] = 0xFF; //size
+	let count = 1; 
+	for (let division = 1; division < 257; division++) 
+	
+	{	
+		if (division === 128) rangeData[division] = 128;
+		if (division < userMin + 128) rangeData[division] = 0;	else if (division > userMax + 128) rangeData[division] = 255;
+		else 
+		{
+			let result = ((physicalMin - physicalMax) / (userMin - userMax) * count) - 1;
+			let test = Math.round(result);
+			if (test > 255) result = 255;
+			rangeData[division] = Math.trunc(result);
+			count++;
+		}
+	}
+ 
+	//fix data report
+	let data = new Uint8Array(8);
+	data[0] = 0x25;//command
+	data[1] = 0;// (1=pos,0 for header )
+	data[2] = 0; ;//size 
+	data[3] = 0xFF;//size
+	data[4] = 2;//use case range
+	data[5] = rangeData[1]; 
+	data[6] = rangeData[2];  
+	await BlissBox_writeFeature(0x12, new Uint8Array(data));//send header
+	let c = 3;//Where data starts. 
+	let size = 0xFF;
+	let pos = 2;//First two have data 0,1, so pos is now 2
+	size -= 2;//already sent 2
+	size += 1;//array starts at 0
+	size = Math.floor(size/ 5);//how many lines
+ 
+	for (let s = 0; s < size; s++)
+	{
+		data[2] = 0;data[3] = 0;data[4] = 0;data[5] = 0;data[6] = 0;//clear
+		if (s == (size-1) ) { data[1] = 0xff; } else {data[1] = pos; pos += 5; }
+		if (c < 255) data[2] = rangeData[c]; c++;
+		if (c < 255) data[3] = rangeData[c]; c++;
+		if (c < 255) data[4] = rangeData[c]; c++;
+		if (c < 255) data[5] = rangeData[c]; c++;
+		if (c < 255) data[6] = rangeData[c]; c++;
+ 
+		await BlissBox_writeFeature(0x12, new Uint8Array(data)); //loop while true as true means busy. 		
+		
+	} 
+}
+	
+	
 async function BlissBox_range()
 {		
 	const data = await BlissBox_readFeature(  0x17);
@@ -526,61 +584,13 @@ async function BlissBox_range()
 		BlissBox_writeFeature(  0x12, def_data);
 		 
 	}
+	
+	
 	document.getElementById("btnCurrentValues").onclick = async () =>
 	{
-		const physicalMin = 0;
-		const physicalMax = 255;
-		const userMin = Number(document.getElementById("txtLeftLimit").value);
-		const userMax = Number(document.getElementById("txtRightLimit").value);
-		const rangeData = new Uint8Array(257);
-		rangeData[0] = 0xFF; //size
-		let count = 1;
-		for (let division = 1; division < 257; division++) 
-		
-		{
-			if (division === 128) rangeData[division] = 128;
-			if (division < userMin + 128) rangeData[division] = 0;	else if (division > userMax + 128) rangeData[division] = 255;
-			else 
-			{
-				let result = ((physicalMin - physicalMax) / (userMin - userMax) * count) - 1;
-				let test = Math.round(result);
-				if (test > 255) result = 255;
-				rangeData[division] = Math.trunc(result);
-				count++;
-			}
-		}
- 
-	
-		//fix data report
-		let data = new Uint8Array(8);
-        data[0] = 0x25;//command
-        data[1] = 0;// (1=pos,0 for header )
-        data[2] = 0; ;//size 
-        data[3] = 0xFF;//size
-        data[4] = 2;//use case range
-        data[5] = rangeData[1]; 
-        data[6] = rangeData[2];  
-		await BlissBox_writeFeature(0x12, new Uint8Array(data));//send header
-		let c = 3;//Where data starts. 
-		let size = 0xFF;
-		let pos = 2;//First two have data 0,1, so pos is now 2
-		size -= 2;//already sent 2
-		size += 1;//array starts at 0
-		size = Math.floor(size/ 5);//how many lines
-		for (let s = 0; s < size; s++)
-		{
-			data[2] = 0;data[3] = 0;data[4] = 0;data[5] = 0;data[6] = 0;//clear
-			if (s == (size-1) ) { data[1] = 0xff; } else {data[1] = pos; pos += 5; }
-			if (c < 255) data[2] = rangeData[c]; c++;
-			if (c < 255) data[3] = rangeData[c]; c++;
-			if (c < 255) data[4] = rangeData[c]; c++;
-			if (c < 255) data[5] = rangeData[c]; c++;
-			if (c < 255) data[6] = rangeData[c]; c++;
-			await BlissBox_writeFeature(0x12, new Uint8Array(data)); //loop while true as true means busy. 		
-		}
-
+		sendAndCalcRange(Number(document.getElementById("txtLeftLimit").value),Number(document.getElementById("txtRightLimit").value));
 	};
-		
+	
 }
 async function BlissBox_readBlissBoxAdapterInfo( )
 {	
@@ -647,8 +657,7 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 
 				if ( currentControllerOLD != currentController )
 				{
-					currentControllerOLD = currentController;
-					
+					currentControllerOLD = currentController; 
 					data = await BlissBox_getLCD();  
 
 					const lcdCanvas = document.getElementById("lcdCanvas");
@@ -686,8 +695,10 @@ async function BlissBox_readBlissBoxAdapterInfo( )
 					}
 				}
 			}
-		 }
+		}
 			
+		
+							
 		if (bytes[0] == 121 || bytes[0] == 13) 
 		{ 
 			document.getElementById("hidpressurebox").classList.add("show");
