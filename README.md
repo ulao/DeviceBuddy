@@ -244,7 +244,7 @@ All rights reserved.
 
 There is now beta automation script. You may create your own events and trigger them in an ATM file.
 
-*** Example:
+ Example:
 
 ```
 when
