@@ -1048,6 +1048,7 @@ function onInputReport(e)
 			auto_Init().then(result =>
 			{
 				ATM_File = result;
+				previousController = ""; 
 				ATM_Initializing = false;
 			});
 		}

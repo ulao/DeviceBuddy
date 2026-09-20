@@ -198,7 +198,7 @@ async function auto_Run()
 				{
 					let _data = new Uint8Array(200);
 					
-					_data[0] = 0x24;			
+					_data[0] = action.parms[0];			
 					for (let i = 0; i < action.parms.length && i < 192; i++)
 					{
 						_data[2 + i] = action.parms[i];
@@ -206,6 +206,8 @@ async function auto_Run()
 					await BlissBox_writeFeature(action.id, _data);
 					
 					currentControllerOLD = ""; //tells screen to update on DeviceBuddy
+					
+					alert(1);
 				}
 
 				if (action.command === "API_READ")
