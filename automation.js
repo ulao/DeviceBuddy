@@ -111,6 +111,14 @@ function auto_Parse(file) // parse the file and see what vars will be watched
 
             let doDataWithoutJS = doData.replace(/DOJS\s*<<<([\s\S]*?)>>>/g, "");
 
+			if (doJSMatches.length)
+			{
+				if (!confirm("This ATM file contains executable JavaScript (DOJS).\n\nIf you got this file from another person, it may be unsafe.\n\nDo you want to continue?"))
+				{
+					return false;
+				}
+			}
+
             const lines = doDataWithoutJS.split("\n"); 
             for (let line of lines)
             {
