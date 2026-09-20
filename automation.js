@@ -105,7 +105,13 @@ function auto_Parse(file) // parse the file and see what vars will be watched
 
         if (doMatches[i])
         {
-            const lines = doMatches[i][1].split("\n");
+             const doData = doMatches[i][1];
+
+            const doJSMatches = [...doData.matchAll(/DOJS\s*<<<([\s\S]*?)>>>/g)]; 
+
+            let doDataWithoutJS = doData.replace(/DOJS\s*<<<([\s\S]*?)>>>/g, "");
+
+            const lines = doDataWithoutJS.split("\n"); 
             for (let line of lines)
             {
                 line = line.trim();
@@ -137,6 +143,16 @@ function auto_Parse(file) // parse the file and see what vars will be watched
                     });
                 }
             }
+			
+			for (const match of doJSMatches)  
+            {
+                autoDo.push({ 
+                    command: "DOJS", 
+                    id: undefined, 
+                    parms: [match[1].trim()]  
+                });
+            }
+			
         }
 
         autoRules.push({
@@ -221,6 +237,11 @@ async function auto_Run()
 				if (action.command === "RUMBLE")
 				{
 					BlissBox_rumbleTest();
+				}
+				
+				if (action.command === "DOJS")
+				{
+					 eval(action.parms[0]);
 				}
 			}
 		}
