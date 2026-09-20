@@ -206,8 +206,7 @@ async function auto_Run()
 					await BlissBox_writeFeature(action.id, _data);
 					
 					currentControllerOLD = ""; //tells screen to update on DeviceBuddy
-					
-					alert(1);
+ 
 				}
 
 				if (action.command === "API_READ")
