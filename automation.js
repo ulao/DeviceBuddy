@@ -1,3 +1,17 @@
+let LEFTSTICK  = 0;
+let RIGHTSTICK = 1;
+let POV        = 2;
+let START      = 3;
+let BTN_4      = 4;
+let BTN_1      = 5;
+let BTN_3      = 6;
+let BTN_2      = 7;
+let BTN_L1     = 8;
+let BTN_R1     = 9;
+let SELECT     = 10;
+let LEFTTRIGGER  = 11;
+let RIGHTTRIGGER = 12;
+
 let autoVersion = null;
 let autoRules  = [];
 let counter=1;
@@ -111,20 +125,20 @@ function auto_Parse(file) // parse the file and see what vars will be watched
 
             let doDataWithoutJS = doData.replace(/DOJS\s*<<<([\s\S]*?)>>>/g, "");
 
-			if (doJSMatches.length)
-			{
-				if (!confirm("This ATM file contains executable JavaScript (DOJS).\n\nIf you got this file from another person, it may be unsafe.\n\nDo you want to continue?"))
-				{
-					return false;
-				}
-			}
-
             const lines = doDataWithoutJS.split("\n"); 
             for (let line of lines)
             {
                 line = line.trim();
                 if (!line || line.startsWith(";")) continue; //comments
-                
+
+				if (doJSMatches.length)
+				{
+					if (!confirm("This ATM file contains executable JavaScript (DOJS).\n\nIf you got this file from another person, it may be unsafe.\n\nDo you want to continue?"))
+					{
+						return false;
+					}
+				}
+			
                 const match = line.match(/^([A-Za-z_]+)(?:->(0x[0-9A-Fa-f]+|\d+))?(?:\((.*?)\))?$/);
 
                 if (match)
@@ -175,7 +189,7 @@ async function auto_Run()
  
 	for (const rule of autoRules)
 	{
-		let result = true;
+		let result = null;
 		let logic = "and";
 		
 		for (const condition of rule.when)
@@ -188,9 +202,10 @@ async function auto_Run()
 
 			const actualValue = eval(condition.variable);
 			const wantedValue = condition.value;
-
+ 
 			let conditionResult = false;
-
+ 
+ 
 			if (condition.operator === "=") conditionResult = actualValue == wantedValue;
 
 			if (condition.operator === "!=") conditionResult = actualValue != wantedValue;
@@ -203,16 +218,19 @@ async function auto_Run()
 
 			if (condition.operator === "<=") conditionResult = actualValue <= wantedValue;
 
-			if (logic === "and") result = result && conditionResult;
-
-			if (logic === "or") result = result || conditionResult;
-
-		}
-
-
+			if (result === null) result = conditionResult;
+	 
+			else if (logic === "and") result = result && conditionResult;
+	 
+			else if (logic === "or") result = result || conditionResult;
+		 	
+	}
+ 
 		
 		if (result)
 		{
+	
+ 
 			for (const action of rule.do)
 			{
 				//because of all the awaits this need to be here. 

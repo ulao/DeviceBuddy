@@ -1075,6 +1075,7 @@ function onButtonUp(part)
 
 function updateControllerState(data)
 {
+ 
 	if (!controllerParts?.length || !currentMapper?.analog)    return;
 
 	for (const part of controllerParts)
