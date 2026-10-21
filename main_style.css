@@ -77,7 +77,8 @@ body {
     background: #fafafa;
     padding: 20px;
 	background-image: url("bg.png");
-    background-repeat: repeat;
+	background-position: center;
+    background-size: cover;   
 }
 
 h2 {

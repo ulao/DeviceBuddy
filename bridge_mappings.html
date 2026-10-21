@@ -1,0 +1,1439 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bliss-Box Controller Mapping</title>
+<style>
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  background:#eee;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#222;
+}
+
+.page {
+  width:1100px;
+  max-width:calc(100vw - 24px);
+  margin:24px auto;
+  background:#fff;
+  border:1px solid #aaa;
+}
+
+.header {
+  padding:18px 24px 20px;
+  border-bottom:3px solid #222;
+}
+
+.header-top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  margin-bottom:16px;
+}
+
+.header h1 {
+  margin:0;
+  font-size:24px;
+}
+
+.header-note {
+  margin:0;
+  color:#555;
+  font-size:14px;
+  text-align:right;
+}
+
+.controls {
+  display:grid;
+  grid-template-columns:300px 300px;
+  gap:24px;
+  justify-content:space-between;
+}
+
+.control label {
+  display:block;
+  margin-bottom:6px;
+  font-weight:bold;
+}
+
+select {
+  width:100%;
+  padding:9px 10px;
+  font-size:16px;
+  border:1px solid #777;
+  background:#fff;
+}
+
+.mapping {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:560px;
+}
+
+.panel {
+  position:relative;
+  padding:25px 20px;
+  overflow:hidden;
+}
+
+.panel + .panel {
+  border-left:2px solid #222;
+}
+
+.panel h2 {
+  margin:0;
+  text-align:center;
+  font-size:20px;
+}
+
+.device {
+  text-align:center;
+  margin-top:5px;
+  color:#666;
+  font-size:13px;
+}
+
+.stage {
+  position:relative;
+  width:460px;
+  height:440px;
+  max-width:100%;
+  margin:10px auto 0;
+}
+
+.controller-outline {
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  fill:#fafafa;
+  stroke:#777;
+  stroke-width:3;
+}
+
+.bar {
+  stroke:#111;
+  stroke-width:3;
+}
+
+.button {
+  stroke:#111;
+  stroke-width:3;
+}
+
+.button-label {
+  font-size:12px;
+  font-weight:bold;
+  text-anchor:middle;
+  dominant-baseline:middle;
+  pointer-events:none;
+}
+
+.annotation-line {
+  stroke:#444;
+  stroke-width:2;
+  stroke-dasharray:5 3;
+}
+
+.annotation-box {
+  fill:none;
+  stroke:#444;
+  stroke-width:2;
+  stroke-dasharray:5 3;
+}
+
+.annotation-text {
+  font-size:12px;
+  font-weight:bold;
+  fill:#222;
+}
+
+.mode {
+  position:absolute;
+  right:8px;
+  top:2px;
+  color:#b97855;
+  font-weight:bold;
+  font-size:13px;
+}
+
+.no-map {
+  padding:70px 20px;
+  text-align:center;
+  color:#777;
+}
+
+@media(max-width:750px) {
+  .header-top { align-items:flex-start; flex-direction:column; }
+  .header-note { text-align:left; }
+  .controls { grid-template-columns:1fr; }
+  .mapping { grid-template-columns:1fr; }
+  .panel + .panel { border-left:0; border-top:2px solid #222; }
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-top">
+      <h1>Bridge mapping simulator</h1>
+   
+    </div>
+
+    <div class="controls">
+      <div class="control">
+        <label for="consoleSelect">Console</label>
+        <select id="consoleSelect"></select>
+      </div>
+      <div class="control">
+        <label for="controllerSelect">Connected Controller</label>
+        <select id="controllerSelect"></select>
+      </div>
+    </div>
+	<br>
+   <p class="header-note">To change modes press (L + all face buttons + down/up)</p>
+	</div>
+
+  <div id="mapping" class="mapping">
+    <section class="panel">
+      <h2 id="consoleTitle"></h2>
+      <div class="device">Console controller</div>
+      <div id="consoleStage" class="stage"></div>
+    </section>
+
+    <section class="panel">
+      <h2 id="controllerTitle"></h2>
+      <div class="device">Connected controller</div>
+      <div id="controllerStage" class="stage"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+ 
+
+
+const C = {
+  green:  "#18a849",
+  blue:   "#354bd1",
+  lblue:   "#6878E5",
+  red:    "#ed1c24",
+  orange: "#f58220",
+  yellow: "#ffe000",
+  purple: "#9a4ca7",
+  pink:   "#F8BBD0",
+  lime:   "#b7e91b",
+  brown:  "#8B4513",
+  white:  "#ffffff"
+};
+
+// The N64 C buttons are shown as four small color-coded dots in the reference.
+const N64_C_COLORS = {
+  "C-UP": C.blue,
+  "C-DOWN": C.purple,
+  "C-LEFT": C.yellow,
+  "C-RIGHT": C.green
+};
+
+const BACKDROP_URLS = {
+  n64: "https://raw.githubusercontent.com/ulao/DeviceBuddy/main/controller_images/nintendo64.png",
+  gamecube: "https://raw.githubusercontent.com/ulao/DeviceBuddy/main/controller_images/gamecube.png",
+  diamond: "https://raw.githubusercontent.com/ulao/DeviceBuddy/main/controller_images/supernintendo.png",
+  sixButton: "https://raw.githubusercontent.com/ulao/DeviceBuddy/main/controller_images/genesis6.png",
+  sixButtonLR: "https://raw.githubusercontent.com/ulao/DeviceBuddy/main/controller_images/saturn.png",
+  threeButton:  "https://raw.githubusercontent.com/ulao/DeviceBuddy/main/controller_images/3do.png",
+  threeButtonLR:  "https://raw.githubusercontent.com/ulao/DeviceBuddy/main/controller_images/3do.png",
+  twoButton:  "https://raw.githubusercontent.com/ulao/DeviceBuddy/main/controller_images/nintendo.png",
+  tg16: "https://raw.githubusercontent.com/ulao/DeviceBuddy/main/controller_images/pce.png"
+};
+
+/*
+===============================================================================
+SEPARATE POSITION OVERRIDES
+===============================================================================
+
+These are intentionally separate. Edit the console controller positions in
+CONSOLE_POSITIONS and the connected controller positions in
+RIGHT_SIDE_POSITIONS is derived from CONSOLE_POSITIONS for the connected side.
+===============================================================================
+*/
+ 
+/*
+-------------------------------------------------------------------------------
+DRAWING CREATION LISTS
+===============================================================================
+
+Every visible control is created from these lists. Add, remove, or edit an
+object here. The console and connected-controller lists are independent.
+
+  id       label and mapping key
+  x, y     position in the 460 x 440 drawing area
+  r        base size
+  shape    circle, triangle, rectangle, trigger, or analog
+  color    default color; a mapping color overrides it when available
+  label    set false to hide text
+===============================================================================
+*/
+
+const CONSOLE_POSITIONS = {
+  n64: {
+    A:        { x:310, y:210, r:17, shape:"circle" , color:C.red},
+    B:        { x:280, y:180, r:17, shape:"circle" , color:C.orange},
+    START:    { x:230, y:205, r:15, shape:"circle" , color:C.white},
+    Z:        { x:350, y:320, r:18, shape:"trigger" , color:C.purple},
+    L:        { x:135, y:112, r:18, shape:"rectangle" , color:C.green},
+    R:        { x:330, y:112, r:18, shape:"rectangle" , color:C.blue},
+    "C-UP":   { x:330, y:155, r: 9, shape:"circle", label:false , color:C.lblue},
+    "C-LEFT": { x:312, y:175, r: 9, shape:"circle", label:false , color:C.yellow},
+    "C-RIGHT":{ x:348, y:178, r: 9, shape:"circle", label:false , color:C.lime},
+    "C-DOWN": { x:330, y:195, r: 9, shape:"circle", label:false , color:C.brown},
+    UP:       { x:125, y:175, r:11, shape:"triangle",  direction:"up", label:false , color:C.white},
+    DOWN:     { x:125, y:215, r:11, shape:"triangle",  direction:"down", label:false , color:C.white},
+    LEFT:     { x:105, y:195, r:11, shape:"triangle",  direction:"left", label:false , color:C.white},
+    RIGHT:    { x:145, y:195, r:11, shape:"triangle",  direction:"right", label:false , color:C.white}
+  },
+  gamecube: {
+    A:     { x:330, y:200, r:25, shape:"circle" , color:C.red},
+    B:     { x:300, y:225, r:17, shape:"circle" , color:C.orange},
+    X:     { x:365, y:170, r:17, shape:"circle" , color:C.yellow},
+    Y:     { x:300, y:170, r:17, shape:"circle" , color:C.brown},
+    START: { x:230, y:185, r:13, shape:"circle" , color:C.white},
+    L:     { x:115, y:105, r:18, shape:"rectangle" , color:C.green},
+    R:     { x:345, y:105, r:18, shape:"rectangle" , color:C.blue},
+    Z:     { x:330, y:330, r:13, shape:"trigger" , color:C.purple},
+    UP:    { x:125, y:160, r:11, shape:"triangle", direction:"up", label:false , color:C.white},
+    DOWN:  { x:125, y:210, r:11, shape:"triangle", direction:"down", label:false , color:C.white},
+    LEFT:  { x:100, y:185, r:11, shape:"triangle", direction:"left", label:false , color:C.white},
+    RIGHT: { x:150, y:185, r:11, shape:"triangle", direction:"right", label:false , color:C.white}
+  },
+  sixButton: {
+    X:     { x:280, y:190, r:22, shape:"circle" , color:C.green},
+    Y:     { x:320, y:190, r:22, shape:"circle" , color:C.yellow},
+    Z:     { x:360, y:190, r:22, shape:"circle" , color:C.purple},
+    A:     { x:280, y:235, r:22, shape:"circle" , color:C.red},
+    B:     { x:320, y:235, r:22, shape:"circle" , color:C.orange},
+    C:     { x:360, y:235, r:22, shape:"circle" , color:C.lblue},
+    MODE:  { x:180, y:225, r:13, shape:"rectangle" , color:C.white},
+    START: { x:225, y:225, r:13, shape:"rectangle" , color:C.white},
+    UP:    { x:105, y:210, r:11, shape:"triangle", direction:"up", label:false , color:C.white},
+    DOWN:  { x:105, y:260, r:11, shape:"triangle", direction:"down", label:false , color:C.white},
+    LEFT:  { x: 80, y:235, r:11, shape:"triangle", direction:"left", label:false , color:C.white},
+    RIGHT: { x:130, y:235, r:11, shape:"triangle", direction:"right", label:false , color:C.white}
+  },
+   sixButtonLR: {
+    X:     { x:280, y:190, r:22, shape:"circle" , color:C.green},
+    Y:     { x:320, y:190, r:22, shape:"circle" , color:C.yellow},
+    Z:     { x:360, y:190, r:22, shape:"circle" , color:C.brown},
+    A:     { x:280, y:235, r:22, shape:"circle" , color:C.red},
+    B:     { x:320, y:235, r:22, shape:"circle" , color:C.orange},
+    C:     { x:360, y:235, r:22, shape:"circle" , color:C.blue},
+    START: { x:225, y:225, r:13, shape:"rectangle" , color:C.white},
+    L:     { x:145, y:105, r:18, shape:"rectangle" , color:C.purple},
+    R:     { x:315, y:105, r:18, shape:"rectangle" , color:C.lblue},
+    UP:    { x:105, y:210, r:11, shape:"triangle", direction:"up", label:false , color:C.white},
+    DOWN:  { x:105, y:260, r:11, shape:"triangle", direction:"down", label:false , color:C.white},
+    LEFT:  { x: 80, y:235, r:11, shape:"triangle", direction:"left", label:false , color:C.white},
+    RIGHT: { x:130, y:235, r:11, shape:"triangle", direction:"right", label:false , color:C.white}
+  },
+  diamond: {
+    1:     { x:355, y:250, r:22, shape:"circle" , color:C.red}, 
+	2:     { x:385, y:220, r:22, shape:"circle" , color:C.orange},
+    3:     { x:325, y:220, r:22, shape:"circle" , color:C.green},
+    4:     { x:355, y:190, r:22, shape:"circle" , color:C.yellow},
+    SELECT:{ x:205, y:225, r:13, shape:"rectangle" , color:C.white},
+    START: { x:255, y:225, r:13, shape:"rectangle" , color:C.white},
+    UP:    { x:120, y:200, r:11, shape:"triangle", direction:"up", label:false , color:C.white},
+    DOWN:  { x:120, y:250, r:11, shape:"triangle", direction:"down", label:false , color:C.white},
+    LEFT:  { x: 95, y:225, r:11, shape:"triangle", direction:"left", label:false , color:C.white},
+    RIGHT: { x:145, y:225, r:11, shape:"triangle", direction:"right", label:false , color:C.white},
+    L:     { x:145, y:125, r:18, shape:"rectangle" , color:C.brown},
+    R:     { x:315, y:125, r:18, shape:"rectangle" , color:C.lime},
+    L2:     { x:105, y:125, r:18, shape:"rectangle" , color:C.purple},
+    R2:     { x:355, y:125, r:18, shape:"rectangle" , color:C.lblue},
+},
+  threeButton: {
+    A:     { x:280, y:225, r:25, shape:"circle" , color:C.red},
+    B:     { x:330, y:225, r:25, shape:"circle" , color:C.orange},
+    C:     { x:380, y:225, r:25, shape:"circle" , color:C.blue},
+    START: { x:230, y:225, r:13, shape:"rectangle" , color:C.white},
+    UP:    { x: 95, y:210, r:11, shape:"triangle", direction:"up", label:false , color:C.white},
+    DOWN:  { x: 95, y:260, r:11, shape:"triangle", direction:"down", label:false , color:C.white},
+    LEFT:  { x: 70, y:235, r:11, shape:"triangle", direction:"left", label:false , color:C.white},
+    RIGHT: { x:120, y:235, r:11, shape:"triangle", direction:"right", label:false , color:C.white}
+  },
+  threeButtonLR: {
+    A:     { x:280, y:225, r:25, shape:"circle" , color:C.red},
+    B:     { x:330, y:225, r:25, shape:"circle" , color:C.orange},
+    C:     { x:380, y:225, r:25, shape:"circle" , color:C.blue},
+    SELECT:{ x:180, y:225, r:13, shape:"rectangle" , color:C.white},
+    START: { x:230, y:225, r:13, shape:"rectangle" , color:C.white},
+    UP:    { x: 95, y:210, r:11, shape:"triangle", direction:"up", label:false , color:C.white},
+    DOWN:  { x: 95, y:260, r:11, shape:"triangle", direction:"down", label:false , color:C.white},
+    LEFT:  { x: 70, y:235, r:11, shape:"triangle", direction:"left", label:false , color:C.white},
+    RIGHT: { x:120, y:235, r:11, shape:"triangle", direction:"right", label:false , color:C.white},
+    L:     { x:145, y:125, r:18, shape:"rectangle" , color:C.brown},
+    R:     { x:315, y:125, r:18, shape:"rectangle" , color:C.lime}
+  },
+  twoButton: {
+    A:     { x:300, y:225, r:25, shape:"circle", color:C.red},
+    B:     { x:360, y:225, r:25, shape:"circle", color:C.orange},
+    SELECT:{ x:180, y:225, r:13, shape:"rectangle", color:C.purple},
+    START: { x:230, y:225, r:13, shape:"rectangle", color:C.purple},
+    UP:    { x: 95, y:210, r:11, shape:"triangle", direction:"up", label:false, color:C.white},
+    DOWN:  { x: 95, y:260, r:11, shape:"triangle", direction:"down", label:false, color:C.white},
+    LEFT:  { x: 70, y:235, r:11, shape:"triangle", direction:"left", label:false, color:C.white},
+    RIGHT: { x:120, y:235, r:11, shape:"triangle", direction:"right", label:false, color:C.white}
+  },
+  tg16: {
+    II:     { x:350, y:240, r:25, shape:"circle" ,  color:C.orange},
+    I:    { x:400, y:240, r:25, shape:"circle" ,  color:C.blue},
+    III:   { x:300, y:240, r:25, shape:"circle" ,  color:C.red},
+    V:    { x:350, y:200, r:25, shape:"circle" ,  color:C.green},
+    VI:     { x:400, y:200, r:25, shape:"circle" ,  color:C.yellow},
+    IV:    { x:300, y:200, r:25, shape:"circle" ,  color:C.brown},
+    SELECT:{ x:200, y:225, r:12, shape:"rectangle" , color:C.white},
+    RUN:   { x:250, y:225, r:12, shape:"rectangle" , color:C.white},
+    UP:    { x:105, y:210, r:11, shape:"triangle", direction:"up", label:false , color:C.white},
+    DOWN:  { x:105, y:260, r:11, shape:"triangle", direction:"down", label:false , color:C.white},
+    LEFT:  { x: 80, y:235, r:11, shape:"triangle", direction:"left", label:false , color:C.white},
+    RIGHT: { x:130, y:235, r:11, shape:"triangle", direction:"right", label:false , color:C.white}
+  }
+};
+
+
+
+const MAPPER = {
+  "n64_console": {
+    "sixButton1": { "A": C.orange, "B": C.red, "C": C.blue, "X": C.purple, "Y": C.white, "Z": C.green , "L": C.green, "R": C.blue, "MODE":C.purple},
+    "sixButton2": { "A": C.red, "B": C.brown, "C": C.lime, "X": C.orange, "Y": C.yellow, "Z": C.lblue , "L": C.green, "R": C.blue, "MODE":C.purple},
+    "sixButtonLR1": { "A": C.orange, "B": C.red, "C": C.brown, "X": C.purple, "Y": C.white, "Z": C.lblue , "L": C.green, "R": C.blue},
+    "sixButtonLR2": { "A": C.red, "B": C.brown, "C": C.lime, "X": C.orange, "Y": C.yellow, "Z": C.lblue , "L": C.green, "R": C.blue},
+    "diamond1": { "2": C.red, "1": C.orange, "4": C.purple, "3": C.white , "L": C.green, "R": C.blue, "SELECT": C.purple, "L2": C.yellow, "R2": C.brown},
+    "diamond2": { "2": C.brown, "1": C.red, "4": C.orange, "3": C.yellow, "L": C.green, "R": C.blue, "SELECT": C.purple, "L2": C.lblue, "R2": C.brown},
+    "gamecube": { "A": C.red, "B": C.orange, "L": C.green, "R": C.blue, "X": C.white, "Y": C.purple, "Z": C.purple },
+	"threeButton": { "A": C.orange, "B": C.red, "C": C.purple   },
+	"threeButtonLR": { "A": C.orange, "B": C.red, "C": C.brown, "L": C.green, "R": C.blue,"SELECT": C.purple   },
+	"tg16": { "I": C.red, "II": C.orange, "III": C.blue, "IV": C.green, "V": C.purple, "VI": C.white ,"SELECT": C.purple ,"RUN": C.white    },
+  },
+  "gamecube_console": {
+    "sixButton": { "A": C.orange, "B": C.red, "C": C.blue, "X": C.brown, "Y": C.yellow, "Z": C.green , "MODE":C.purple},
+    "sixButtonLR":{ "A": C.orange, "B": C.red, "C": C.white, "X": C.brown, "Y": C.yellow, "Z": C.purple , "L": C.green, "R": C.blue, "MODE":C.purple},
+    "diamond": { "2": C.red, "1": C.orange, "4": C.brown, "3": C.yellow , "L": C.green, "R": C.blue, "SELECT": C.purple, "L2": C.white, "R2": C.white},
+	"threeButton": { "A": C.orange, "B": C.red, "C": C.purple   },
+	"threeButtonLR": { "A": C.orange, "B": C.red, "C": C.white, "L": C.green, "R": C.blue,"SELECT": C.purple   },
+	"tg16": { "I": C.red, "II": C.orange, "III": C.blue, "IV": C.green, "V": C.brown, "VI": C.yellow ,"SELECT": C.purple ,"RUN": C.white    },
+    "n64": { "A": C.red, "B": C.orange, "L": C.green, "R": C.blue,  "Z": C.purple,  "C-UP": C.purple,"C-DOWN": C.yellow, "C-LEFT": C.brown, "C-RIGHT": C.white },
+  },
+  "diamond_console": {
+    "sixButtonLR": { "A": C.red, "B": C.orange, "C": C.lblue, "X": C.green, "Y": C.yellow, "Z": C.purple, "L": C.brown, "R": C.lime },
+    "sixButton": { "A": C.red, "B": C.orange, "C": C.lime, "X": C.green, "Y": C.yellow, "Z": C.brown },
+    "threeButton": { "A": C.green, "B": C.red, "C": C.orange, "L": C.brown, "R": C.lime, "L": C.brown, "R": C.lime },
+    "threeButtonLR": { "A": C.green, "B": C.red, "C": C.white, "L": C.brown, "R": C.lime },
+	"n64": { "A": C.green, "B": C.red, "L": C.yellow, "R": C.white,   "Z": C.white , "L": C.brown, "R": C.lime,  "C-DOWN": C.orange,"C-LEFT": C.yellow, "C-UP": C.purple,"C-RIGHT": C.lblue},
+    "gamecube": { "A": C.red, "B": C.green, "X": C.orange, "Y": C.yellow, "L": C.brown, "R": C.lime,   "Z": C.white },
+	"tg16": { "I": C.orange, "II": C.red, "III": C.lime, "IV": C.brown, "V": C.green, "VI": C.yellow ,"SELECT": C.white ,"RUN": C.white    },
+  },
+  "sixButton_console": {
+    "sixButtonLR":{ "A": C.red, "B": C.orange, "C": C.lblue,"X": C.green, "Y": C.yellow, "Z": C.purple, "MODE": C.white, "L": C.green, "R": C.yellow  },
+	"diamond": { "2": C.lblue, "1": C.orange, "4": C.red, "3": C.yellow , "L": C.green, "R": C.purple, "SELECT": C.white, "L2": C.white, "R2": C.white},
+    "threeButton": { "A": C.red, "B": C.orange, "C": C.lblue, "MODE": C.white },
+	"threeButtonLR": { "A": C.red, "B": C.orange, "C": C.lblue, "MODE": C.white, "L": C.green, "R": C.yellow  },
+    "n64": { "A": C.red, "B": C.green, "L": C.green, "R": C.yellow,  "Z": C.white , "C-UP": C.purple,"C-DOWN": C.orange, "C-LEFT": C.yellow, "C-RIGHT": C.lblue },
+    "gamecube": { "A": C.red, "B": C.orange, "X": C.lblue, "Y": C.yellow, "L": C.green, "R": C.purple,"Z": C.white },
+	"tg16": { "I": C.lblue, "II": C.orange, "III": C.red, "IV": C.green, "V": C.yellow, "VI": C.purple ,"SELECT": C.white ,"RUN": C.white    },
+  },
+  "sixButtonLR_console": {
+    "sixButton":{ "A": C.red, "B": C.orange, "C": C.blue,"X": C.green, "Y": C.yellow, "Z": C.brown, "MODE": C.white },
+	"diamond": { "2": C.blue, "1": C.orange, "4": C.red, "3": C.yellow , "L": C.green, "R": C.brown, "SELECT": C.white, "L2": C.purple, "R2": C.lbluew},
+    "threeButton": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white },
+	"threeButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white, "L": C.purple, "R": C.lblue  },
+    "n64": { "A": C.red, "B": C.green, "L": C.purple, "R": C.lblue,  "Z": C.white , "C-UP": C.brown,"C-DOWN": C.orange, "C-LEFT": C.yellow, "C-RIGHT": C.blue },
+    "gamecube": { "A": C.red, "B": C.orange, "X": C.blue, "Y": C.yellow, "L": C.green, "R": C.brown,"Z": C.white },
+	"tg16": { "I": C.blue, "II": C.orange, "III": C.red, "IV": C.green, "V": C.yellow, "VI": C.brown ,"SELECT": C.white ,"RUN": C.white    },
+  },
+  "threeButton_console": {
+    "sixButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.white, "Y": C.white, "Z": C.white , "L": C.white, "R": C.white},
+    "sixButton": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.white, "Y": C.white, "Z": C.white },
+	"diamond": { "2": C.blue, "1": C.orange, "4": C.white, "3": C.red , "L": C.white, "R": C.white, "SELECT": C.white, "L2": C.white, "R2": C.white},
+	"threeButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white, "L": C.white, "R": C.white  },
+    "n64": { "A": C.red, "B": C.white, "L": C.white, "R": C.white,  "Z": C.white , "C-UP": C.white,"C-DOWN": C.orange, "C-LEFT": C.white, "C-RIGHT": C.blue },
+    "gamecube": { "A": C.red, "B": C.orange, "X": C.blue, "Y": C.white, "L": C.white, "R": C.white,"Z": C.white },
+	"tg16": { "I": C.blue, "II": C.orange, "III": C.red, "IV": C.white, "V": C.white, "VI": C.white ,"SELECT": C.white ,"RUN": C.white    },
+ 
+  },
+  "threeButtonLR_console": {
+    "sixButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.brown, "Y": C.white, "Z": C.lime , "L": C.brown, "R": C.lime},
+    "sixButton": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.white, "Y": C.white, "Z": C.white },
+	"diamond": { "2": C.blue, "1": C.orange, "4": C.white, "3": C.red , "SELECT": C.white, "L": C.brown, "R": C.lime, "L2": C.brown, "R2": C.lime},
+	"threeButton": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white   },
+    "n64": { "A": C.red, "B": C.brown, "L": C.brown, "R": C.lime,  "Z": C.white , "C-UP": C.lime,"C-DOWN": C.orange, "C-LEFT": C.white, "C-RIGHT": C.blue },
+    "gamecube": { "A": C.red, "B": C.orange, "X": C.blue, "Y": C.white, "L": C.brown, "R": C.lime,"Z": C.white },
+	"tg16": { "I": C.blue, "II": C.orange, "III": C.red, "IV": C.brown, "V": C.white, "VI": C.lime ,"SELECT": C.white ,"RUN": C.white    },
+ 
+  },
+  "twoButton_console": {//todo
+    "sixButtonLR1": { "A": C.green, "B": C.red, "C": C.yellow, "X": C.blue, "Y": C.green, "Z": C.pink },
+    "sixButtonLR2": { "A": C.green, "B": C.red, "C": C.yellow, "X": C.blue, "Y": C.green, "Z": C.pink },
+    "diamond1": { "A": C.green, "B": C.red, "X": C.yellow, "Y": C.blue },
+    "diamond2": { "A": C.green, "B": C.red, "X": C.yellow, "Y": C.blue },
+    "threeButton": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white },
+    "n64": { "A": C.green, "B": C.red, "L": C.yellow, "R": C.white,  "Z": C.blue },
+    "gamecube": { "A": C.red, "B": C.orange, "X": C.yellow, "Y": C.white },
+  },
+  "tg16_console": {
+    "sixButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.brown, "Y": C.green, "Z": C.yellow , "L": C.red, "R": C.brown},
+    "sixButton": { "A": C.red, "B": C.orange, "C": C.blue,"X": C.brown, "Y": C.green, "Z": C.yellow },
+	"diamond": { "2": C.blue, "1": C.orange, "4": C.yellow, "3": C.green , "L": C.brown, "R": C.red, "SELECT": C.white, "L2": C.red, "R2": C.brown},
+    "threeButton": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white },
+	"threeButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white, "L": C.red, "R": C.brown  },
+    "n64": { "A": C.blue, "B": C.ornage, "L": C.brown, "R": C.red,  "Z": C.white , "C-UP": C.red,"C-DOWN": C.yellow, "C-LEFT": C.green, "C-RIGHT": C.brown },
+    "gamecube": { "A": C.orange, "B": C.red, "X": C.yellow, "Y": C.green, "L": C.brown, "R": C.red,"Z": C.white },
+
+  },
+};
+
+const ANNOTATIONS = {
+  "n64|diamond1": [
+    {
+      side: "controller",
+      button: "4",
+      targetY: 315,
+      lines: ["Press Y to use D-pad", "as C-buttons"]
+    }
+  ],
+   "sixButtonLR|gamecube": [
+    {
+      side: "controller",
+      button: "Z",
+      targetY: 90,
+      lines: ["toggle to make R/X trigger L/R"]
+    }
+    ],
+    "sixButtonLR|diamond": [
+    {
+      side: "controller",
+      button: "SELECT",
+      targetY: 115,
+      lines: ["toggle to make R/A trigger L/R"]
+    }
+    ],
+    "sixButtonLR|sixButton": [
+    {
+      side: "controller",
+      button: "MODE",
+      targetY: 115,
+      lines: ["toggle to make Z/C trigger L/R"]
+    }
+  ],
+  "n64|sixButtonLR1": [
+    {
+      side: "controller",
+      button: "Y",
+      targetY: 315,
+      lines: ["Press Y to use D-pad", "as C-buttons"]
+    }
+  ],
+   "n64|tg16": [
+    {
+      side: "controller",
+      button: "VI",
+      targetY: 315,
+      lines: ["Press Y to use D-pad", "as C-buttons"]
+    }
+  ],
+	"n64|sixButton1": [
+    {
+      side: "controller",
+      button: "Y",
+      targetY: 315,
+      lines: ["Press Y to use D-pad", "as C-buttons"]
+    }
+  ],
+  "threeButtonLR|sixButtonLR": [
+  {
+    side: "controller",
+    boxButtons: ["Y"],
+    targetX: 405,
+    targetY: 350,
+    lines: ["Triggers select"]
+  }
+  ],
+  "tg16|n64": [
+  {
+    side: "controller",
+    boxButtons: ["Z"],
+    targetX: 405,
+    targetY: 350,
+    lines: ["Triggers select"]
+  }
+  ],
+  "tg16|gamecube": [
+  {
+    side: "controller",
+    boxButtons: ["Z"],
+    targetX: 405,
+    targetY: 350,
+    lines: ["Triggers select"]
+  }
+  ],
+  "threeButtonLR|n64": [
+  {
+    side: "controller",
+    boxButtons: ["Z"],
+    targetX: 405,
+    targetY: 350,
+    lines: ["Triggers select"]
+  }
+  ],
+  "threeButtonLR|gamecube": [
+  {
+    side: "controller",
+    boxButtons: ["Z"],
+    targetX: 405,
+    targetY: 350,
+    lines: ["Triggers select"]
+  }
+  ],
+  "sixButton|n64": [
+  {
+    side: "controller",
+    boxButtons: ["Z"],
+    targetX: 405,
+    targetY: 350,
+    lines: ["Triggers Mode"]
+  }
+  ],
+  "sixButton|gamecube": [
+  {
+    side: "controller",
+    boxButtons: ["Z"],
+    targetX: 405,
+    targetY: 350,
+    lines: ["Triggers Mode"]
+  }
+  ],
+  "n64|sixButtonLR2": [
+    {
+      side: "controller",
+      boxButtons: ["A", "B", "X", "Y"],
+      targetX: 405,
+      targetY: 350,
+      lines: ["Triggers Z"]
+    }
+  ],
+  "n64|gamecube": [
+	{
+      side: "controller",
+      button: "X",
+      targetY: 305,
+      lines: ["Press Y to use D-pad", "as C-buttons \n Or use the right stick"]
+    }
+  ],
+  "diamond|gamecube": [
+    {
+      side: "controller",
+      button: "Z",
+      targetY: 315,
+      lines: ["Presses Select"]
+    }
+  ],
+  "diamond|n64": [
+    {
+      side: "controller",
+      button: "Z",
+      targetY: 315,
+      lines: ["Presses Select"]
+    }
+  ]
+};
+
+ 
+const RIGHT_SIDE_POSITIONS = Object.fromEntries(
+  Object.entries(CONSOLE_POSITIONS).map(([shapeName, buttons]) => {
+    return [shapeName, Object.fromEntries(
+      Object.entries(buttons).map(([id, button]) => [id, {
+        ...button,
+        x: button.x,
+        y: button.y 
+      }])
+    )];
+  })
+);
+
+/* CONTROLLER SHAPES
+
+These are reusable layouts. Adjust the x, y, and r values below to fine-tune
+button placement over the backdrop images.
+-------------------------------------------------------------------------------
+*/
+
+/*
+===============================================================================
+EASY BUTTON POSITION EDITING
+===============================================================================
+
+Edit the button objects inside each SHAPES section below.
+
+  id = the button name
+  x  = left/right position in the 460-wide drawing area
+  y  = up/down position in the 440-high drawing area
+  r  = base button size (the renderer scales round buttons slightly smaller)
+
+Example:
+  {id:"A", x:400, y:400, r:17}
+
+That puts controller A at x=400, y=400. The N64 A and B positions are the
+first two entries below. The outline/backdrop artwork is separate and does
+not control button placement.
+===============================================================================
+*/
+
+const SHAPES = {
+
+  n64: {
+    name:"N64",
+    outline:"n64",
+    backdrop:"n64",
+    buttons:[
+      {id:"A",      x:345,y:245,r:17}, 
+      {id:"B",      x:305,y:275,r:17}, 
+      {id:"START",  x:230,y:145,r:15},
+      {id:"STICK",  x:230,y:270,r:22},
+      {id:"Z",      x:150,y:320,r:18},
+      {id:"L",      x:105,y:82,r:18},
+      {id:"R",      x:355,y:82,r:18},
+      {id:"C-UP",   x:370,y:175,r:9},
+      {id:"C-LEFT", x:352,y:198,r:9},
+      {id:"C-RIGHT",x:388,y:198,r:9},
+      {id:"C-DOWN", x:370,y:221,r:9},
+      {id:"UP",     x:95,y:175,r:11},
+      {id:"DOWN",   x:95,y:215,r:11},
+      {id:"LEFT",   x:75,y:195,r:11},
+      {id:"RIGHT",  x:115,y:195,r:11}
+    ]
+  },
+
+  gamecube: {
+    name:"GameCube",
+    outline:"gamecube",
+    backdrop:"gamecube",
+    buttons:[
+      {id:"A",      x:330,y:220,r:25},
+      {id:"B",      x:285,y:255,r:17},
+      {id:"X",      x:285,y:180,r:17},
+      {id:"Y",      x:365,y:180,r:17},
+      {id:"START",  x:230,y:245,r:13},
+      {id:"L",      x:115,y:105,r:18},
+      {id:"R",      x:345,y:105,r:18},
+      {id:"Z",      x:350,y:130,r:13},
+      {id:"UP",     x:75,y:210,r:11},
+      {id:"DOWN",   x:75,y:260,r:11},
+      {id:"LEFT",   x:50,y:235,r:11},
+      {id:"RIGHT",  x:100,y:235,r:11}
+    ]
+  },
+
+  sixButtonLR: {
+    name:"6 Button LR",
+    outline:"six",
+    backdrop:"sixButtonLR",
+    buttons:[
+      {id:"A",x:280,y:235,r:22},
+      {id:"B",x:320,y:235,r:22},
+      {id:"C",x:360,y:235,r:22},
+      {id:"X",x:280,y:190,r:22},
+      {id:"Y",x:320,y:190,r:22},
+      {id:"Z",x:360,y:190,r:22},
+      {id:"START",x:205,y:225,r:13},
+      {id:"L",x:145,y:105,r:18},
+      {id:"R",x:315,y:105,r:18},
+      {id:"UP",x:75,y:210,r:11},
+      {id:"DOWN",x:75,y:260,r:11},
+      {id:"LEFT",x:50,y:235,r:11},
+      {id:"RIGHT",x:100,y:235,r:11}
+    ]
+  },
+
+  sixButton: {
+    name:"6 Button",
+    outline:"six",
+    backdrop:"sixButton",
+    buttons:[
+      {id:"A",x:280,y:235,r:22},
+      {id:"B",x:320,y:235,r:22},
+      {id:"C",x:360,y:235,r:22},
+      {id:"X",x:280,y:190,r:22},
+      {id:"Y",x:320,y:190,r:22},
+      {id:"Z",x:360,y:190,r:22},
+      {id:"START",x:205,y:225,r:13},
+      {id:"L",x:145,y:105,r:18},
+      {id:"R",x:315,y:105,r:18},
+      {id:"UP",x:75,y:210,r:11},
+      {id:"DOWN",x:75,y:260,r:11},
+      {id:"LEFT",x:50,y:235,r:11},
+      {id:"RIGHT",x:100,y:235,r:11}
+    ]
+  },
+
+ 
+  diamond: {
+    name:"Diamond",
+    outline:"diamond",
+    backdrop:"diamond",
+    buttons:[
+      {id:"A",x:355,y:190,r:22},
+      {id:"B",x:325,y:220,r:22},
+      {id:"X",x:295,y:190,r:22},
+      {id:"Y",x:325,y:160,r:22},
+      {id:"SELECT",x:205,y:245,r:13},
+      {id:"START",x:255,y:245,r:13},
+      {id:"UP",x:75,y:210,r:11},
+      {id:"DOWN",x:75,y:260,r:11},
+      {id:"LEFT",x:50,y:235,r:11},
+      {id:"RIGHT",x:100,y:235,r:11}
+    ]
+  },
+
+  threeButton: {
+    name:"3 Button",
+    outline:"three",
+    backdrop:"threeButton",
+    buttons:[
+      {id:"A",x:280,y:225,r:25},
+      {id:"B",x:320,y:225,r:25},
+      {id:"C",x:360,y:225,r:25},
+      {id:"START",x:230,y:225,r:13},
+      {id:"UP",x:75,y:210,r:11},
+      {id:"DOWN",x:75,y:260,r:11},
+      {id:"LEFT",x:50,y:235,r:11},
+      {id:"RIGHT",x:100,y:235,r:11}
+    ]
+  },
+
+    threeButtonLR: {
+    name:"3 Button",
+    outline:"three",
+    backdrop:"threeButton",
+    buttons:[
+      {id:"A",x:280,y:225,r:25},
+      {id:"B",x:320,y:225,r:25},
+      {id:"C",x:360,y:225,r:25},
+      {id:"SELECT",x:180,y:225,r:13},
+      {id:"START",x:230,y:225,r:13},
+      {id:"UP",x:75,y:210,r:11},
+      {id:"DOWN",x:75,y:260,r:11},
+      {id:"LEFT",x:50,y:235,r:11},
+      {id:"RIGHT",x:100,y:235,r:11},
+      {id:"L",x:145,y:105,r:18},
+      {id:"R",x:315,y:105,r:18}
+    ]
+  },
+  
+  twoButton: {
+    name:"2 Button",
+    outline:"two",
+    backdrop:"twoButton",
+    buttons:[
+      {id:"A",x:280,y:225,r:25},
+      {id:"B",x:320,y:225,r:25},
+      {id:"START",x:230,y:225,r:13},
+      {id:"UP",x:75,y:210,r:11},
+      {id:"DOWN",x:75,y:260,r:11},
+      {id:"LEFT",x:50,y:235,r:11},
+      {id:"RIGHT",x:100,y:235,r:11}
+    ]
+  },
+  
+  tg16: {
+    name:"TG16",
+    outline:"tg16",
+    backdrop:"tg16",
+    buttons:[
+      {id:"I",x:300,y:210,r:25},
+      {id:"II",x:350,y:210,r:25},
+      {id:"SELECT",x:220,y:225,r:12},
+      {id:"RUN",x:250,y:225,r:12},
+      {id:"UP",x:75,y:210,r:11},
+      {id:"DOWN",x:75,y:260,r:11},
+      {id:"LEFT",x:50,y:235,r:11},
+      {id:"RIGHT",x:100,y:235,r:11}
+    ]
+  }
+};
+
+
+/*
+-------------------------------------------------------------------------------
+CONSOLE TYPES AND AVAILABLE CONNECTED CONTROLLERS
+
+"6 Button Console" is intentionally omitted, as requested.
+-------------------------------------------------------------------------------
+*/
+
+const CONSOLES = {
+  n64: {
+    name:"N64",
+    shape:"n64",
+    controllers:["sixButton1","sixButton2","sixButtonLR1","sixButtonLR2","diamond1","diamond2","gamecube","tg16"]
+  },
+
+  gamecube: {
+    name:"GameCube",
+    shape:"gamecube",
+    controllers:["sixButton","sixButtonLR","diamond","n64"]
+  },
+
+  diamond: {
+    name:"Diamond",
+    shape:"diamond",
+    controllers:["sixButton1","sixButton2","sixButtonLR1","sixButtonLR2","diamond1","diamond2","threeButton","n64","gamecube"]
+  },
+
+  sixButton: {
+    name:"6 Button",
+    shape:"sixButton",
+    controllers:["diamond1","diamond2","sixButtonLR1","sixButtonLR2","threeButton","n64","gamecube"]
+  },
+
+  sixButtonLR: {
+    name:"6 Button LR",
+    shape:"sixButtonLR",
+    controllers:["diamond1","diamond2","sixButton1","sixButton2","threeButton","n64","gamecube"]
+  },
+  
+  twoButton: {
+    name:"2 Button",
+    shape:"twoButton",
+    controllers:["diamond1","diamond2","sixButtonLR1","sixButtonLR2","threeButton","n64","gamecube"]
+  },
+  
+  threeButton: {
+    name:"3 Button",
+    shape:"threeButton",
+    controllers:["diamond1","diamond2","sixButtonLR1","sixButtonLR2","threeButton","n64","gamecube"]
+  },
+
+  threeButtonLR: {
+    name:"3 Button LR",
+    shape:"threeButtonLR",
+    controllers:["diamond1","diamond2","sixButtonLR1","sixButtonLR2","threeButton","threeButtonLR","n64","gamecube"]
+  },
+  
+  tg16: {
+    name:"TG16",
+    shape:"tg16",
+    controllers:["diamond1","diamond2","sixButtonLR1","sixButtonLR2","threeButton","n64","gamecube"]
+  }
+};
+
+
+/*
+-------------------------------------------------------------------------------
+CONNECTED CONTROLLER TYPES
+
+The LR entries are separate because the N64 6-button controller has two
+different modes shown in the supplied sheet.
+-------------------------------------------------------------------------------
+*/
+
+const CONTROLLERS = {
+
+  sixButtonLR: {
+    name:"6 Button LR",
+    shape:"sixButtonLR",
+    mode:"Mode 1"
+  },
+  
+  sixButtonLR1: {
+    name:"6 Button LR Mode 1",
+    shape:"sixButtonLR",
+    mode:"Mode 1"
+  },
+
+  sixButtonLR2: {
+    name:"6 Button LR Mode 2",
+    shape:"sixButtonLR",
+    mode:"Mode 2"
+  },
+
+    sixButton: {
+    name:"6 Button",
+    shape:"sixButton",
+    mode:"Mode 1"
+  },
+  
+  sixButton1: {
+    name:"6 Button Mode 1",
+    shape:"sixButton",
+    mode:"Mode 1"
+  },
+
+  sixButton2: {
+    name:"6 Button Mode 2",
+    shape:"sixButton",
+    mode:"Mode 2"
+  },
+
+  diamond: {
+    name:"Diamond",
+    shape:"diamond",
+    mode:"Mode 1"
+  },
+  
+  diamond1: {
+    name:"Diamond Mode 1",
+    shape:"diamond",
+    mode:"Mode 1"
+  },
+
+  diamond2: {
+    name:"Diamond Mode 2",
+    shape:"diamond",
+    mode:"Mode 2"
+  },
+
+  gamecube: {
+    name:"GameCube",
+    shape:"gamecube"
+  },
+
+  n64: {
+    name:"N64",
+    shape:"n64"
+  },
+  
+  twoButton: {
+    name:"2 Button",
+    shape:"twoButton"
+  },
+  threeButton: {
+    name:"3 Button",
+    shape:"threeButton"
+  },
+  threeButtonLR: {
+    name:"3 Button LR",
+    shape:"threeButtonLR"
+  },
+  tg16: {
+    name:"Turbo Graphx",
+    shape:"tg16"
+  }
+};
+
+ 
+ 
+const NS = "http://www.w3.org/2000/svg";
+
+function svgEl(name, attrs) {
+  const e = document.createElementNS(NS,name);
+  for (const [k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+  return e;
+}
+
+// Legacy SVG outline code retained for reference only. The page now uses
+// repository backdrop images; edit button positions in SHAPES above instead.
+function drawOutline(stage, shapeName) {
+
+  if (shapeName === "n64") {
+    const lobes = [
+      "M55 105 Q48 70 82 58 Q105 50 145 58 Q175 65 188 102 L198 205 Q200 235 175 255 L125 280 Q92 292 77 255 Z",
+      "M185 130 Q185 105 210 98 L250 98 Q275 105 275 130 L275 300 Q275 345 230 388 Q185 345 185 300 Z",
+      "M262 102 Q275 65 305 58 Q345 50 378 58 Q412 70 405 105 L383 255 Q368 292 335 280 L285 255 Q260 235 262 205 Z"
+    ];
+    for (const d of lobes) {
+      stage.appendChild(svgEl("path", {d:d, class:"controller-outline"}));
+    }
+    return;
+  }
+
+  let d;
+
+  switch(shapeName) {
+
+    case "n64":
+      d = `
+        M100 135
+        C95 80 125 55 175 70
+        L220 90 L240 90 L285 70
+        C335 55 365 80 360 135
+        L345 325
+        C340 360 305 365 285 330
+        L250 270
+        L210 270
+        L175 330
+        C155 365 120 360 115 325 Z`;
+      break;
+
+    case "gamecube":
+      d = `
+        M100 135
+        C100 80 140 60 190 78
+        L220 95 L250 95 L280 78
+        C330 60 365 80 360 135
+        L350 315
+        C345 350 315 360 290 330
+        L255 275 L205 275 L170 330
+        C145 360 115 350 110 315 Z`;
+      break;
+
+    case "six":
+      d = `
+        M105 145
+        C105 95 140 70 190 85
+        L230 100 L270 85
+        C320 70 355 95 355 145
+        L345 320
+        C340 350 310 355 290 325
+        L255 275 L205 275 L170 325
+        C150 355 120 350 115 320 Z`;
+      break;
+
+    case "diamond":
+      d = `
+        M105 145
+        C105 95 145 70 195 85
+        L230 100 L265 85
+        C315 70 355 95 355 145
+        L345 320
+        C340 350 310 355 290 325
+        L255 275 L205 275 L170 325
+        C150 355 120 350 115 320 Z`;
+      break;
+
+    case "three":
+      d = `
+        M110 145
+        C110 90 150 70 195 88
+        L230 105 L265 88
+        C310 70 350 90 350 145
+        L340 320
+        C335 350 305 355 285 325
+        L250 275 L210 275 L175 325
+        C155 355 125 350 120 320 Z`;
+      break;
+
+    case "tg16":
+      d = `
+        M90 135
+        C90 90 135 70 180 85
+        L230 100 L280 85
+        C325 70 370 90 370 135
+        L360 315
+        C355 350 325 355 300 325
+        L260 275 L200 275 L160 325
+        C135 355 105 350 100 315 Z`;
+      break;
+  }
+
+  if (d) {
+    stage.appendChild(svgEl("path", {
+      d:d,
+      class:"controller-outline"
+    }));
+  }
+}
+
+function drawButton(stage,b,color) {
+
+  if (b.shape === "triangle") {
+    const s = 9;
+    const points = {
+      up:    `${b.x},${b.y-s} ${b.x-s},${b.y+s} ${b.x+s},${b.y+s}`,
+      down:  `${b.x},${b.y+s} ${b.x-s},${b.y-s} ${b.x+s},${b.y-s}`,
+      left:  `${b.x-s},${b.y} ${b.x+s},${b.y-s} ${b.x+s},${b.y+s}`,
+      right: `${b.x+s},${b.y} ${b.x-s},${b.y-s} ${b.x-s},${b.y+s}`
+    };
+    stage.appendChild(svgEl("polygon",{
+      points:points[b.direction], fill:color || b.color || "#fff", class:"button"
+    }));
+    return;
+  }
+
+  if (b.shape === "rectangle") {
+    const w = 30;
+    stage.appendChild(svgEl("rect",{
+      x:b.x-w/2, y:b.y-7, width:w, height:14,
+      rx:2, fill:color || b.color || "#fff", class:"button"
+    }));
+  } else if (b.shape === "trigger") {
+    stage.appendChild(svgEl("rect",{
+      x:b.x-19, y:b.y-8, width:38, height:16,
+      rx:6, fill:color || b.color || "#fff", class:"button"
+    }));
+  } else if (b.shape === "analog") {
+    stage.appendChild(svgEl("circle",{
+      cx:b.x, cy:b.y, r:16,
+      fill:color || b.color || "#ddd", class:"button"
+    }));
+  } else if (b.r) {
+    stage.appendChild(svgEl("circle",{
+      cx:b.x,cy:b.y,r:Math.max(7,b.r*0.76),
+      fill:color || b.color || "#fff",
+      class:"button"
+    }));
+  }
+
+  if (b.label !== false && b.id && (b.label || b.r >= 17 || ["L","R","SELECT","START","RUN","Z","MODE"].includes(b.id))) {
+    const t=svgEl("text",{
+      x:b.x,y:b.y,
+      class:"button-label"
+    });
+    t.textContent=b.label || (b.id === "START" ? "Srt" : b.id === "SELECT" ? "slc" : b.id === "MODE" ? "MOD" : b.id);
+    stage.appendChild(t);
+  }
+}
+
+function getButtonColor(button, colors, shapeName) {
+  const mappedColor = colors?.[button.id]
+    ?? colors?.controller?.[button.id]
+    ?? colors?.console?.[button.id];
+
+  if (mappedColor) return mappedColor;
+  if (button.color) return button.color;
+  if (shapeName === "n64" && N64_C_COLORS[button.id]) {
+    return N64_C_COLORS[button.id];
+  }
+  return "#fff";
+}
+
+function drawAnnotations(svg, buttons, annotationKey, side) {
+  const annotations = (ANNOTATIONS[annotationKey] || [])
+    .filter(annotation => annotation.side === side);
+  const buttonById = Object.fromEntries(buttons.map(button => [button.id, button]));
+
+  for (const annotation of annotations) {
+    if (annotation.note) {
+      const text = svgEl("text", {
+        x:annotation.x ?? 230,
+        y:annotation.y ?? 25,
+        "text-anchor":annotation.anchor || "middle",
+        class:"annotation-text"
+      });
+      text.textContent=annotation.note;
+      svg.appendChild(text);
+      continue;
+    }
+
+    if (annotation.boxButtons) {
+      const sources = annotation.boxButtons
+        .map(buttonId => buttonById[buttonId])
+        .filter(Boolean);
+      if (sources.length !== annotation.boxButtons.length) continue;
+
+      const padding = 14;
+      const left = Math.min(...sources.map(button => button.x - button.r)) - padding;
+      const top = Math.min(...sources.map(button => button.y - button.r)) - padding;
+      const right = Math.max(...sources.map(button => button.x + button.r)) + padding;
+      const bottom = Math.max(...sources.map(button => button.y + button.r)) + padding;
+      const targetX = annotation.targetX ?? 405;
+      const targetY = annotation.targetY ?? bottom;
+      const textX = 445;
+      const lines = annotation.lines || [annotation.text || ""];
+
+      svg.appendChild(svgEl("rect", {
+        x:left,
+        y:top,
+        width:right - left,
+        height:bottom - top,
+        rx:6,
+        class:"annotation-box"
+      }));
+      svg.appendChild(svgEl("line", {
+        x1:right,
+        y1:bottom,
+        x2:targetX,
+        y2:targetY,
+        class:"annotation-line"
+      }));
+
+      const text = svgEl("text", {
+        x:textX,
+        y:targetY - ((lines.length - 1) * 7),
+        "text-anchor":"end",
+        class:"annotation-text"
+      });
+      lines.forEach((line, index) => {
+        const tspan = svgEl("tspan", {
+          x:textX,
+          dy:index === 0 ? 0 : 15
+        });
+        tspan.textContent=line;
+        text.appendChild(tspan);
+      });
+      svg.appendChild(text);
+      continue;
+    }
+
+    const source = buttonById[annotation.button];
+    if (!source) continue;
+
+    const targetX = 405;
+    const targetY = annotation.targetY ?? source.y;
+    const textX = 445;
+    const lines = annotation.lines || [annotation.text || ""];
+
+    svg.appendChild(svgEl("line", {
+      x1:source.x,
+      y1:source.y,
+      x2:targetX,
+      y2:targetY,
+      class:"annotation-line"
+    }));
+
+    const text = svgEl("text", {
+      x:textX,
+      y:targetY - ((lines.length - 1) * 7),
+      "text-anchor":"end",
+      class:"annotation-text"
+    });
+    lines.forEach((line, index) => {
+      const tspan = svgEl("tspan", {
+        x:textX,
+        dy:index === 0 ? 0 : 15
+      });
+      tspan.textContent=line;
+      text.appendChild(tspan);
+    });
+    svg.appendChild(text);
+  }
+}
+
+function renderSide(containerId, shapeName, colors, mode, positionOverrides, annotationKey, annotationSide) {
+
+  const stage=document.getElementById(containerId);
+  stage.innerHTML="";
+
+  const svg=document.createElementNS(NS,"svg");
+  svg.setAttribute("viewBox","0 0 460 440");
+  svg.setAttribute("width","100%");
+  svg.setAttribute("height","100%");
+  stage.appendChild(svg);
+
+  const holder={
+    appendChild:x=>svg.appendChild(x)
+  };
+ 
+  
+  const backdropUrl = BACKDROP_URLS[SHAPES[shapeName].backdrop];
+  if (backdropUrl) {
+    svg.appendChild(svgEl("image",{
+      href:backdropUrl,
+      x:25, y:45, width:410, height:345,
+      opacity:"0.14",
+      preserveAspectRatio:"xMidYMid meet"
+    }));
+  }
+
+  const rawButtons=positionOverrides?.[shapeName] || [];
+  const buttons=Array.isArray(rawButtons)
+    ? rawButtons
+    : Object.entries(rawButtons).map(([id,button])=>({...button,id:id}));
+
+  for (const b of buttons) {
+    const color = getButtonColor(b, colors, shapeName);
+    drawButton(holder,b,color);
+  }
+
+  drawAnnotations(svg, buttons, annotationKey, annotationSide);
+
+}
+
+function fillConsoleSelect() {
+
+  const s=document.getElementById("consoleSelect");
+  s.innerHTML="";
+
+  for (const [id,data] of Object.entries(CONSOLES)) {
+    const o=document.createElement("option");
+    o.value=id;
+    o.textContent=data.name;
+    s.appendChild(o);
+  }
+}
+
+function fillControllerSelect() {
+
+  const consoleId=document.getElementById("consoleSelect").value;
+  const s=document.getElementById("controllerSelect");
+
+  s.innerHTML="";
+
+  const available = Object.keys(MAPPER[consoleId + "_console"] || {});
+
+  for (const id of available) {
+    const data=CONTROLLERS[id];
+    if (!data) continue;
+    const o=document.createElement("option");
+    o.value=id;
+    o.textContent=data.name;
+    s.appendChild(o);
+  }
+}
+
+function render() {
+
+  const consoleId=document.getElementById("consoleSelect").value;
+  const controllerId=document.getElementById("controllerSelect").value;
+  const consoleData=CONSOLES[consoleId];
+  const controllerData=CONTROLLERS[controllerId];
+
+  if (!consoleData || !controllerData) return;
+
+  const consoleMap=MAPPER[consoleId+"_console"];
+  const map=consoleMap?.[controllerId];
+
+  document.getElementById("consoleTitle").textContent=consoleData.name;
+  document.getElementById("controllerTitle").textContent=controllerData.name;
+
+  if (!map) {
+    document.getElementById("consoleStage").innerHTML=
+      "<div class='no-map'>No mapping defined.</div>";
+    document.getElementById("controllerStage").innerHTML="";
+    return;
+  }
+
+  renderSide(
+    "consoleStage",
+    consoleData.shape,
+    null,
+    "",
+    CONSOLE_POSITIONS,
+    consoleId + "|" + controllerId,
+    "console"
+  );
+
+  renderSide(
+    "controllerStage",
+    controllerData.shape,
+    map,
+    controllerData.mode,
+    RIGHT_SIDE_POSITIONS,
+    consoleId + "|" + controllerId,
+    "controller"
+  );
+}
+
+document.getElementById("consoleSelect")
+  .addEventListener("change",()=>{
+    fillControllerSelect();
+    render();
+  });
+
+document.getElementById("controllerSelect")
+  .addEventListener("change",render);
+
+fillConsoleSelect();
+document.getElementById("consoleSelect").value="n64";
+fillControllerSelect();
+document.getElementById("controllerSelect").value="sixButtonLR1";
+render();
+
+</script>
+</body>
+</html>

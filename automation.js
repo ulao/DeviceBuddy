@@ -15,8 +15,11 @@ let RIGHTTRIGGER = 12;
 let autoVersion = null;
 let autoRules  = [];
 let counter=1;
+let nextRun = 0;
 let previousController = ""
  
+let API_Reply =0;
+
  async function selectFile()
 {
     const input = document.createElement("input");
@@ -186,7 +189,11 @@ function auto_Parse(file) // parse the file and see what vars will be watched
 
 async function auto_Run()
 {
- 
+
+	if (Date.now() < nextRun) return;
+    nextRun = Date.now() + counter;
+	
+	
 	for (const rule of autoRules)
 	{
 		let result = null;
@@ -253,7 +260,7 @@ async function auto_Run()
 
 				if (action.command === "API_READ")
 				{
-					await BlissBox_readFeature(action.id);
+					API_Reply = await BlissBox_readFeature( action.id );
 				}
 
 				if (action.command === "RANGE")
@@ -268,6 +275,10 @@ async function auto_Run()
 				if (action.command === "DOJS")
 				{
 					 eval(action.parms[0]);
+				}
+				if (action.command === "WAIT")
+				{
+					counter = action.parms[0]
 				}
 			}
 		}
