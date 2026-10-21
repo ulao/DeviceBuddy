@@ -1,6 +1,7 @@
-﻿//This file is not part of device buddy.
+﻿
 
 <!DOCTYPE html>
+////This file is not part of device buddy.
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -383,10 +384,10 @@ const CONSOLE_POSITIONS = {
     R:     { x:315, y:125, r:18, shape:"rectangle" , color:C.lime}
   },
   twoButton: {
-    A:     { x:300, y:225, r:25, shape:"circle", color:C.red},
-    B:     { x:360, y:225, r:25, shape:"circle", color:C.orange},
-    SELECT:{ x:180, y:225, r:13, shape:"rectangle", color:C.purple},
-    START: { x:230, y:225, r:13, shape:"rectangle", color:C.purple},
+    1:     { x:300, y:225, r:25, shape:"circle", color:C.red},
+    2:     { x:360, y:225, r:25, shape:"circle", color:C.orange},
+    SELECT:{ x:180, y:225, r:13, shape:"rectangle", color:C.white},
+    START: { x:230, y:225, r:13, shape:"rectangle", color:C.white},
     UP:    { x: 95, y:210, r:11, shape:"triangle", direction:"up", label:false, color:C.white},
     DOWN:  { x: 95, y:260, r:11, shape:"triangle", direction:"down", label:false, color:C.white},
     LEFT:  { x: 70, y:235, r:11, shape:"triangle", direction:"left", label:false, color:C.white},
@@ -411,93 +412,92 @@ const CONSOLE_POSITIONS = {
 
 
 const MAPPER = {
-  "n64_console": {
-    "sixButton1": { "A": C.orange, "B": C.red, "C": C.blue, "X": C.purple, "Y": C.white, "Z": C.green , "L": C.green, "R": C.blue, "MODE":C.purple},
-    "sixButton2": { "A": C.red, "B": C.brown, "C": C.lime, "X": C.orange, "Y": C.yellow, "Z": C.lblue , "L": C.green, "R": C.blue, "MODE":C.purple},
-    "sixButtonLR1": { "A": C.orange, "B": C.red, "C": C.brown, "X": C.purple, "Y": C.white, "Z": C.lblue , "L": C.green, "R": C.blue},
-    "sixButtonLR2": { "A": C.red, "B": C.brown, "C": C.lime, "X": C.orange, "Y": C.yellow, "Z": C.lblue , "L": C.green, "R": C.blue},
-    "diamond1": { "2": C.red, "1": C.orange, "4": C.purple, "3": C.white , "L": C.green, "R": C.blue, "SELECT": C.purple, "L2": C.yellow, "R2": C.brown},
-    "diamond2": { "2": C.brown, "1": C.red, "4": C.orange, "3": C.yellow, "L": C.green, "R": C.blue, "SELECT": C.purple, "L2": C.lblue, "R2": C.brown},
-    "gamecube": { "A": C.red, "B": C.orange, "L": C.green, "R": C.blue, "X": C.white, "Y": C.purple, "Z": C.purple },
+"n64_console": {
+	"sixButton1": { "A": C.orange, "B": C.red, "C": C.blue, "X": C.purple, "Y": C.white, "Z": C.green , "L": C.green, "R": C.blue, "MODE":C.purple},
+	"sixButton2": { "A": C.red, "B": C.brown, "C": C.lime, "X": C.orange, "Y": C.yellow, "Z": C.lblue , "L": C.green, "R": C.blue, "MODE":C.purple},
+	"sixButtonLR1": { "A": C.orange, "B": C.red, "C": C.brown, "X": C.purple, "Y": C.white, "Z": C.lblue , "L": C.green, "R": C.blue},
+	"sixButtonLR2": { "A": C.red, "B": C.brown, "C": C.lime, "X": C.orange, "Y": C.yellow, "Z": C.lblue , "L": C.green, "R": C.blue},
+	"diamond1": { "2": C.red, "1": C.orange, "3": C.purple, "4": C.white , "L": C.green, "R": C.blue, "SELECT": C.purple, "L2": C.yellow, "R2": C.brown},
+	"diamond2": { "2": C.brown, "1": C.red, "3": C.orange, "4": C.yellow, "L": C.green, "R": C.blue, "SELECT": C.purple, "L2": C.lblue, "R2": C.brown},
+	"gamecube": { "A": C.red, "B": C.orange, "L": C.green, "R": C.blue, "X": C.white, "Y": C.purple, "Z": C.purple },
 	"threeButton": { "A": C.orange, "B": C.red, "C": C.purple   },
 	"threeButtonLR": { "A": C.orange, "B": C.red, "C": C.brown, "L": C.green, "R": C.blue,"SELECT": C.purple   },
 	"tg16": { "I": C.red, "II": C.orange, "III": C.blue, "IV": C.green, "V": C.purple, "VI": C.white ,"SELECT": C.purple ,"RUN": C.white    },
-  },
-  "gamecube_console": {
-    "sixButton": { "A": C.orange, "B": C.red, "C": C.blue, "X": C.brown, "Y": C.yellow, "Z": C.green , "MODE":C.purple},
-    "sixButtonLR":{ "A": C.orange, "B": C.red, "C": C.white, "X": C.brown, "Y": C.yellow, "Z": C.purple , "L": C.green, "R": C.blue, "MODE":C.purple},
-    "diamond": { "2": C.red, "1": C.orange, "4": C.brown, "3": C.yellow , "L": C.green, "R": C.blue, "SELECT": C.purple, "L2": C.white, "R2": C.white},
+},
+"gamecube_console": {
+	"sixButton": { "A": C.orange, "B": C.red, "C": C.blue, "X": C.brown, "Y": C.yellow, "Z": C.green , "MODE":C.purple},
+	"sixButtonLR":{ "A": C.orange, "B": C.red, "C": C.white, "X": C.brown, "Y": C.yellow, "Z": C.purple , "L": C.green, "R": C.blue, "MODE":C.purple},
+	"diamond": { "2": C.red, "1": C.orange, "3": C.brown, "4": C.yellow , "L": C.green, "R": C.blue, "SELECT": C.purple, "L2": C.white, "R2": C.white},
 	"threeButton": { "A": C.orange, "B": C.red, "C": C.purple   },
 	"threeButtonLR": { "A": C.orange, "B": C.red, "C": C.white, "L": C.green, "R": C.blue,"SELECT": C.purple   },
 	"tg16": { "I": C.red, "II": C.orange, "III": C.blue, "IV": C.green, "V": C.brown, "VI": C.yellow ,"SELECT": C.purple ,"RUN": C.white    },
-    "n64": { "A": C.red, "B": C.orange, "L": C.green, "R": C.blue,  "Z": C.purple,  "C-UP": C.purple,"C-DOWN": C.yellow, "C-LEFT": C.brown, "C-RIGHT": C.white },
-  },
-  "diamond_console": {
-    "sixButtonLR": { "A": C.red, "B": C.orange, "C": C.lblue, "X": C.green, "Y": C.yellow, "Z": C.purple, "L": C.brown, "R": C.lime },
-    "sixButton": { "A": C.red, "B": C.orange, "C": C.lime, "X": C.green, "Y": C.yellow, "Z": C.brown },
-    "threeButton": { "A": C.green, "B": C.red, "C": C.orange, "L": C.brown, "R": C.lime, "L": C.brown, "R": C.lime },
-    "threeButtonLR": { "A": C.green, "B": C.red, "C": C.white, "L": C.brown, "R": C.lime },
-	"n64": { "A": C.green, "B": C.red, "L": C.yellow, "R": C.white,   "Z": C.white , "L": C.brown, "R": C.lime,  "C-DOWN": C.orange,"C-LEFT": C.yellow, "C-UP": C.purple,"C-RIGHT": C.lblue},
-    "gamecube": { "A": C.red, "B": C.green, "X": C.orange, "Y": C.yellow, "L": C.brown, "R": C.lime,   "Z": C.white },
+	"n64": { "A": C.red, "B": C.orange, "L": C.green, "R": C.blue,  "Z": C.purple,  "C-UP": C.purple,"C-DOWN": C.yellow, "C-LEFT": C.brown, "C-RIGHT": C.white },
+},
+"diamond_console": {
+	"sixButtonLR": { "A": C.red, "B": C.orange, "C": C.lblue, "X": C.green, "Y": C.yellow, "Z": C.purple, "L": C.brown, "R": C.lime },
+	"sixButton": { "A": C.red, "B": C.orange, "C": C.lime, "X": C.green, "Y": C.yellow, "Z": C.brown },
+	"threeButton": { "A": C.green, "B": C.red, "C": C.orange, "L": C.brown, "R": C.lime, "L": C.brown, "R": C.lime },
+	"threeButtonLR": { "A": C.green, "B": C.red, "C": C.white, "L": C.brown, "R": C.lime },
+	"n64": { "A": C.green, "B": C.red, "L": C.yellow, "R": C.white,   "Z": C.white , "L": C.brown, "R": C.lime,  "C-DOWN": C.orange,"C-LEFT": C.yellow, "C-UP": C.purple, "C-RIGHT": C.lblue},
+	"gamecube": { "A": C.red, "B": C.green, "X": C.orange, "Y": C.yellow, "L": C.brown, "R": C.lime,   "Z": C.white },
 	"tg16": { "I": C.orange, "II": C.red, "III": C.lime, "IV": C.brown, "V": C.green, "VI": C.yellow ,"SELECT": C.white ,"RUN": C.white    },
-  },
-  "sixButton_console": {
-    "sixButtonLR":{ "A": C.red, "B": C.orange, "C": C.lblue,"X": C.green, "Y": C.yellow, "Z": C.purple, "MODE": C.white, "L": C.green, "R": C.yellow  },
-	"diamond": { "2": C.lblue, "1": C.orange, "4": C.red, "3": C.yellow , "L": C.green, "R": C.purple, "SELECT": C.white, "L2": C.white, "R2": C.white},
-    "threeButton": { "A": C.red, "B": C.orange, "C": C.lblue, "MODE": C.white },
+},
+"sixButton_console": {
+	"sixButtonLR":{ "A": C.red, "B": C.orange, "C": C.lblue,"X": C.green, "Y": C.yellow, "Z": C.purple, "MODE": C.white, "L": C.green, "R": C.yellow  },
+	"diamond": { "2": C.lblue, "1": C.orange, "3": C.red, "4": C.yellow , "L": C.green, "R": C.purple, "SELECT": C.white, "L2": C.white, "R2": C.white},
+	"threeButton": { "A": C.red, "B": C.orange, "C": C.lblue, "MODE": C.white },
 	"threeButtonLR": { "A": C.red, "B": C.orange, "C": C.lblue, "MODE": C.white, "L": C.green, "R": C.yellow  },
-    "n64": { "A": C.red, "B": C.green, "L": C.green, "R": C.yellow,  "Z": C.white , "C-UP": C.purple,"C-DOWN": C.orange, "C-LEFT": C.yellow, "C-RIGHT": C.lblue },
-    "gamecube": { "A": C.red, "B": C.orange, "X": C.lblue, "Y": C.yellow, "L": C.green, "R": C.purple,"Z": C.white },
+	"n64": { "A": C.red, "B": C.green, "L": C.green, "R": C.yellow,  "Z": C.white , "C-UP": C.purple,"C-DOWN": C.orange, "C-LEFT": C.yellow, "C-RIGHT": C.lblue },
+	"gamecube": { "A": C.red, "B": C.orange, "X": C.lblue, "Y": C.yellow, "L": C.green, "R": C.purple,"Z": C.white },
 	"tg16": { "I": C.lblue, "II": C.orange, "III": C.red, "IV": C.green, "V": C.yellow, "VI": C.purple ,"SELECT": C.white ,"RUN": C.white    },
-  },
-  "sixButtonLR_console": {
-    "sixButton":{ "A": C.red, "B": C.orange, "C": C.blue,"X": C.green, "Y": C.yellow, "Z": C.brown, "MODE": C.white },
-	"diamond": { "2": C.blue, "1": C.orange, "4": C.red, "3": C.yellow , "L": C.green, "R": C.brown, "SELECT": C.white, "L2": C.purple, "R2": C.lbluew},
-    "threeButton": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white },
+},
+"sixButtonLR_console": {
+	"sixButton":{ "A": C.red, "B": C.orange, "C": C.blue,"X": C.green, "Y": C.yellow, "Z": C.brown, "MODE": C.white },
+	"diamond": { "2": C.blue, "1": C.orange, "3": C.red, "4": C.yellow , "L": C.green, "R": C.brown, "SELECT": C.white, "L2": C.purple, "R2": C.lbluew},
+	"threeButton": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white },
 	"threeButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white, "L": C.purple, "R": C.lblue  },
-    "n64": { "A": C.red, "B": C.green, "L": C.purple, "R": C.lblue,  "Z": C.white , "C-UP": C.brown,"C-DOWN": C.orange, "C-LEFT": C.yellow, "C-RIGHT": C.blue },
-    "gamecube": { "A": C.red, "B": C.orange, "X": C.blue, "Y": C.yellow, "L": C.green, "R": C.brown,"Z": C.white },
+	"n64": { "A": C.red, "B": C.green, "L": C.purple, "R": C.lblue,  "Z": C.white , "C-UP": C.brown,"C-DOWN": C.orange, "C-LEFT": C.yellow, "C-RIGHT": C.blue },
+	"gamecube": { "A": C.red, "B": C.orange, "X": C.blue, "Y": C.yellow, "L": C.green, "R": C.brown,"Z": C.white },
 	"tg16": { "I": C.blue, "II": C.orange, "III": C.red, "IV": C.green, "V": C.yellow, "VI": C.brown ,"SELECT": C.white ,"RUN": C.white    },
-  },
-  "threeButton_console": {
-    "sixButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.white, "Y": C.white, "Z": C.white , "L": C.white, "R": C.white},
-    "sixButton": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.white, "Y": C.white, "Z": C.white },
+},
+"threeButton_console": {
+	"sixButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.white, "Y": C.white, "Z": C.white , "L": C.white, "R": C.white},
+	"sixButton": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.white, "Y": C.white, "Z": C.white },
 	"diamond": { "2": C.blue, "1": C.orange, "4": C.white, "3": C.red , "L": C.white, "R": C.white, "SELECT": C.white, "L2": C.white, "R2": C.white},
 	"threeButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white, "L": C.white, "R": C.white  },
-    "n64": { "A": C.red, "B": C.white, "L": C.white, "R": C.white,  "Z": C.white , "C-UP": C.white,"C-DOWN": C.orange, "C-LEFT": C.white, "C-RIGHT": C.blue },
-    "gamecube": { "A": C.red, "B": C.orange, "X": C.blue, "Y": C.white, "L": C.white, "R": C.white,"Z": C.white },
+	"n64": { "A": C.red, "B": C.white, "L": C.white, "R": C.white,  "Z": C.white , "C-UP": C.white,"C-DOWN": C.orange, "C-LEFT": C.white, "C-RIGHT": C.blue },
+	"gamecube": { "A": C.red, "B": C.orange, "X": C.blue, "Y": C.white, "L": C.white, "R": C.white,"Z": C.white },
 	"tg16": { "I": C.blue, "II": C.orange, "III": C.red, "IV": C.white, "V": C.white, "VI": C.white ,"SELECT": C.white ,"RUN": C.white    },
- 
-  },
-  "threeButtonLR_console": {
-    "sixButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.brown, "Y": C.white, "Z": C.lime , "L": C.brown, "R": C.lime},
-    "sixButton": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.white, "Y": C.white, "Z": C.white },
+},
+"threeButtonLR_console": {
+	"sixButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.brown, "Y": C.white, "Z": C.lime , "L": C.brown, "R": C.lime},
+	"sixButton": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.white, "Y": C.white, "Z": C.white },
 	"diamond": { "2": C.blue, "1": C.orange, "4": C.white, "3": C.red , "SELECT": C.white, "L": C.brown, "R": C.lime, "L2": C.brown, "R2": C.lime},
 	"threeButton": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white   },
-    "n64": { "A": C.red, "B": C.brown, "L": C.brown, "R": C.lime,  "Z": C.white , "C-UP": C.lime,"C-DOWN": C.orange, "C-LEFT": C.white, "C-RIGHT": C.blue },
-    "gamecube": { "A": C.red, "B": C.orange, "X": C.blue, "Y": C.white, "L": C.brown, "R": C.lime,"Z": C.white },
+	"n64": { "A": C.red, "B": C.brown, "L": C.brown, "R": C.lime,  "Z": C.white , "C-UP": C.lime,"C-DOWN": C.orange, "C-LEFT": C.white, "C-RIGHT": C.blue },
+	"gamecube": { "A": C.red, "B": C.orange, "X": C.blue, "Y": C.white, "L": C.brown, "R": C.lime,"Z": C.white },
 	"tg16": { "I": C.blue, "II": C.orange, "III": C.red, "IV": C.brown, "V": C.white, "VI": C.lime ,"SELECT": C.white ,"RUN": C.white    },
- 
-  },
-  "twoButton_console": {//todo
-    "sixButtonLR1": { "A": C.green, "B": C.red, "C": C.yellow, "X": C.blue, "Y": C.green, "Z": C.pink },
-    "sixButtonLR2": { "A": C.green, "B": C.red, "C": C.yellow, "X": C.blue, "Y": C.green, "Z": C.pink },
-    "diamond1": { "A": C.green, "B": C.red, "X": C.yellow, "Y": C.blue },
-    "diamond2": { "A": C.green, "B": C.red, "X": C.yellow, "Y": C.blue },
-    "threeButton": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white },
-    "n64": { "A": C.green, "B": C.red, "L": C.yellow, "R": C.white,  "Z": C.blue },
-    "gamecube": { "A": C.red, "B": C.orange, "X": C.yellow, "Y": C.white },
-  },
-  "tg16_console": {
-    "sixButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.brown, "Y": C.green, "Z": C.yellow , "L": C.red, "R": C.brown},
-    "sixButton": { "A": C.red, "B": C.orange, "C": C.blue,"X": C.brown, "Y": C.green, "Z": C.yellow },
-	"diamond": { "2": C.blue, "1": C.orange, "4": C.yellow, "3": C.green , "L": C.brown, "R": C.red, "SELECT": C.white, "L2": C.red, "R2": C.brown},
-    "threeButton": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white },
-	"threeButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white, "L": C.red, "R": C.brown  },
-    "n64": { "A": C.blue, "B": C.ornage, "L": C.brown, "R": C.red,  "Z": C.white , "C-UP": C.red,"C-DOWN": C.yellow, "C-LEFT": C.green, "C-RIGHT": C.brown },
-    "gamecube": { "A": C.orange, "B": C.red, "X": C.yellow, "Y": C.green, "L": C.brown, "R": C.red,"Z": C.white },
 
-  },
+},
+"twoButton_console": { 
+	"sixButtonLR": { "A": C.red, "B": C.orange, "C": C.white, "X": C.white, "Y": C.white, "Z": C.white , "L": C.white, "R": C.white},
+	"sixButton": { "A": C.red, "B": C.orange, "C": C.white,"X": C.white, "Y": C.white, "Z": C.white },
+	"diamond": { "2": C.red, "1": C.orange, "4": C.white, "3": C.white , "L": C.white, "R": C.white, "SELECT": C.white, "L2": C.white, "R2": C.white},
+	"threeButton": { "A": C.red, "B": C.orange, "C": C.white, "MODE": C.white },
+	"threeButtonLR": { "A": C.red, "B": C.orange, "C": C.white, "MODE": C.white, "L": C.white, "R": C.white  },
+	"n64": { "A": C.orange, "B": C.red, "L": C.white, "R": C.white,  "Z": C.white , "C-UP": C.white,"C-DOWN": C.white, "C-LEFT": C.white, "C-RIGHT": C.white },
+	"gamecube": { "A": C.orange, "B": C.red, "X": C.white, "Y": C.white, "L": C.white, "R": C.white,"Z": C.white },
+	"tg16": { "I": C.orange, "II": C.red, "III": C.white, "IV": C.white, "V": C.white, "VI": C.white ,"SELECT": C.white ,"RUN": C.white    },
+},
+"tg16_console": {
+	"sixButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "X": C.brown, "Y": C.green, "Z": C.yellow , "L": C.red, "R": C.brown},
+	"sixButton": { "A": C.red, "B": C.orange, "C": C.blue,"X": C.brown, "Y": C.green, "Z": C.yellow },
+	"diamond": { "2": C.blue, "1": C.orange, "4": C.yellow, "3": C.green , "L": C.brown, "R": C.red, "SELECT": C.white, "L2": C.red, "R2": C.brown},
+	"threeButton": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white },
+	"threeButtonLR": { "A": C.red, "B": C.orange, "C": C.blue, "MODE": C.white, "L": C.red, "R": C.brown  },
+	"n64": { "A": C.blue, "B": C.ornage, "L": C.brown, "R": C.red,  "Z": C.white , "C-UP": C.red,"C-DOWN": C.yellow, "C-LEFT": C.green, "C-RIGHT": C.brown },
+	"gamecube": { "A": C.orange, "B": C.red, "X": C.yellow, "Y": C.green, "L": C.brown, "R": C.red,"Z": C.white },
+},
 };
 
 const ANNOTATIONS = {
@@ -585,6 +585,42 @@ const ANNOTATIONS = {
   }
   ],
   "threeButtonLR|n64": [
+  {
+    side: "controller",
+    boxButtons: ["Z"],
+    targetX: 405,
+    targetY: 350,
+    lines: ["Triggers select"]
+  }
+  ],
+  "twoButton|threeButton": [
+  {
+    side: "controller",
+    boxButtons: ["C"],
+    targetX: 405,
+    targetY: 350,
+    lines: ["Triggers select"]
+  }
+  ],
+  "twoButton|sixButtonLR": [
+  {
+    side: "controller",
+    boxButtons: ["C"],
+    targetX: 405,
+    targetY: 350,
+    lines: ["Triggers select"]
+  }
+  ],
+ "twoButton|gamecube": [
+  {
+    side: "controller",
+    boxButtons: ["Z"],
+    targetX: 405,
+    targetY: 350,
+    lines: ["Triggers select"]
+  }
+  ],
+  "twoButton|n64": [
   {
     side: "controller",
     boxButtons: ["Z"],
