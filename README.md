@@ -5,6 +5,8 @@
 <img src="https://github.com/user-attachments/assets/89fe4f43-66c1-4b2c-a019-4cc2914b3423" width="275">
 
 ---
+ 
+The Bliss-Box adapters and firmware are proprietary software owned by Bliss-Box LLC. They are not released under an open-source license  and may not be copied, modified, ported, redistributed, or used to create derivative works without authorization from Bliss-Box LLC. Device Buddy has its own licenses within. 
 
 ## 🚧 Project Status 🚧
 
