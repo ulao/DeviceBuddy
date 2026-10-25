@@ -44,6 +44,7 @@ Current status:
 - Bliss-Box API support is implemented, including device flashing. 
 - Tested with multiple controllers
 - Windows support
+- MAC OS Support
 - Linux support
 - WebHID/WebHID controller communication
 
